@@ -1,0 +1,9 @@
+{
+	"id": "com.jettero.hiveminder",
+	"version": "0.0.1",
+	"vendor": "voltar.org",
+	"type": "web",
+	"main": "index.html",
+	"title": "Hiveminder",
+	"icon": "icon.png"
+}
