@@ -8,10 +8,13 @@ myinstall: clean build
 	scp *.ipk castle.vhb:
 	ssh castle.vhb
 
-build:
+build: locations.js
 	ln -sf ./ GWeather && \
         palm-package --exclude="*.ipk" --exclude GWeather --exclude=Makefile GWeather && \
         rm GWeather
+
+locations.js:
+	./process_locations.pl
 
 clean:
 	git clean -dfx
