@@ -1,13 +1,4 @@
 [
-    { "source": "app/accounts/edit_a.js",   "scene": "edit_a" },
-    { "source": "app/accounts/create_a.js", "scene": "create_a" },
-    { "source": "app/accounts/list_a.js",   "scene": "list_a" },
-
-    { "source": "app/accounts/issue_login.js" },
-    { "source": "app/accounts/fetch_logins.js" },
-
-    { "source": "app/tasks/list_t.js",   "scene": "list_t" },
-    { "source": "app/tasks/searcher.js" },
-
+    { "source": "locations.js"       },
     { "source": "stage-assistant.js" },
 ]

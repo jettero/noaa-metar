@@ -36,9 +36,9 @@ StageAssistant.prototype.handleCommand = function (event) {
 				    });			
 				break;	
 
-			case 'do-accts':
-                Mojo.Log.info("showing accounts list... hopefully...");
-                Mojo.Controller.stageController.assistant.showScene('accounts', 'list_a');
+			case 'do-locations':
+                Mojo.Log.info("showing locations list... hopefully...");
+                Mojo.Controller.stageController.assistant.showScene('settings', 'list_l');
 				break;
 		}
 	}
@@ -48,7 +48,7 @@ StageAssistant.prototype.menu_setup = function (event) {
     this.appMenuModel = {
         visible: true,
         items: [
-            { label: $L('Accounts...'), command: 'do-accts' },
+            { label: $L('Locations...'), command: 'do-locations' },
         ]
     };
 
