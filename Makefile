@@ -9,9 +9,9 @@ myinstall: clean build
 	ssh castle.vhb
 
 build:
-	ln -sf ./ Hiveminder && \
-        palm-package --exclude="*.ipk" --exclude Hiveminder --exclude=Makefile Hiveminder && \
-        rm Hiveminder
+	ln -sf ./ GWeather && \
+        palm-package --exclude="*.ipk" --exclude GWeather --exclude=Makefile GWeather && \
+        rm GWeather
 
 clean:
 	git clean -dfx

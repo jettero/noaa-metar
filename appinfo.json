@@ -1,9 +1,9 @@
 {
-	"id": "com.jettero.hiveminder",
+	"id": "com.jettero.gweather",
 	"version": "0.0.1",
 	"vendor": "voltar.org",
 	"type": "web",
 	"main": "index.html",
-	"title": "Hiveminder",
+	"title": "GWeather",
 	"icon": "icon.png"
 }
