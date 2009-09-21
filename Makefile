@@ -10,7 +10,7 @@ myinstall: clean build
 
 build: locations.js
 	ln -sf ./ GWeather && \
-        palm-package --exclude=cgi --exclude="*.ipk" --exclude=GWeather --exclude=Makefile \
+        palm-package --exclude=.git --exclude=cgi --exclude="*.ipk" --exclude=GWeather --exclude=Makefile \
             --exclude=img --exclude=Locations.xml \
             GWeather && rm GWeather
 
