@@ -4,7 +4,7 @@ function StageAssistant() {
 
 StageAssistant.prototype.setup = function() {
 	Mojo.Log.info("StageAssistant()::setup()")
-    this.controller.assistant.showScene('tasks', 'list_t');
+    this.controller.assistant.showScene('metar', 'show_metar');
 }
 
 StageAssistant.prototype.showScene = function (directory, sceneName, args) {

@@ -26,7 +26,7 @@ my %q = (
     }
 );
 
-my @res;
+my %res;
 for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
     for my $country (@{ $region->{country} }) {
         for my $state (@{ $country->{state} }) {
@@ -36,17 +36,19 @@ for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
 
                 # print "$region->{_name} $country->{_name} $state->{_name} $location->{_name}\n";
                 # print "code: $location->{code}; zone: $location->{zone}; radar: $location->{radar}\n";
+                # warn "country: $country->{_name}; state/location: $state->{_name}/$location->{_name}\n";
 
-                push @res, { region=>$region->{_name}, country=>$country->{_name},
-                    state=>$state->{_name}, location=>$location->{_name},
-
-                    code=>$location->{code},
-                    zone=>$location->{zone},
-                    radar=>$location->{radar} 
+                $res{ "$country->{_name} $state->{_name}/$location->{_name}" } = {
+                    code  => $location->{code},
+                    zone  => $location->{zone},
+                    radar => $location->{radar} 
                 };
             }
         }
     }
 }
 
-write_file( "locations.js" => to_json(\@res) );
+my $js = to_json(\%res);
+   $js =~ s/:{/:\n{/g;
+
+write_file( "locations.js" => $js );

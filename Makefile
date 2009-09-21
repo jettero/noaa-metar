@@ -13,7 +13,7 @@ build: locations.js
         palm-package --exclude="*.ipk" --exclude GWeather --exclude=Makefile GWeather && \
         rm GWeather
 
-locations.js:
+locations.js: process_locations.pl Locations.xml
 	./process_locations.pl
 
 clean:
