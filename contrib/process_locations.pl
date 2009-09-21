@@ -6,7 +6,7 @@ use XML::CuteQueries;
 use File::Slurp qw(write_file);
 use JSON qw(to_json);
 
-my $CQ = XML::CuteQueries->new->parsefile("Locations.xml");
+my $CQ = XML::CuteQueries->new->parsefile("contrib/Locations.xml");
 
 my %q = (
     region => {

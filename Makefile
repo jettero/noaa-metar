@@ -10,12 +10,11 @@ myinstall: clean build
 
 build: locations.js
 	ln -sf ./ GWeather && \
-        palm-package --exclude=.git --exclude=cgi --exclude="*.ipk" --exclude=GWeather --exclude=Makefile \
-            --exclude=img --exclude=Locations.xml \
+        palm-package --exclude=.git --exclude=cgi --exclude="*.ipk" --exclude=GWeather --exclude=contrib --exclude=Makefile \
             GWeather && rm GWeather
 
-locations.js: process_locations.pl Locations.xml
-	./process_locations.pl
+locations.js: contrib/process_locations.pl contrib/Locations.xml
+	./contrib/process_locations.pl
 
 clean:
 	git clean -dfx
