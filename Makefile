@@ -10,8 +10,8 @@ myinstall: clean build
 
 build: locations.js
 	ln -sf ./ GWeather && \
-        palm-package --exclude="*.ipk" --exclude GWeather --exclude=Makefile GWeather && \
-        rm GWeather
+        palm-package --exclude NOAA_logo.svg --exclude cgi --exclude="*.ipk" --exclude GWeather --exclude=Makefile \
+            GWeather && rm GWeather
 
 locations.js: process_locations.pl Locations.xml
 	./process_locations.pl
