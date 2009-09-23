@@ -20,6 +20,8 @@ int main() {
     const gchar * country_code = "US"; // <iso-code> from <country>
     const gchar * tz_hint      = "America/New_York"; // <tz-hint> from <state>
 
+    g_thread_init(NULL);
+
     // TODO: this needs to be freed I bet, dunno for sure
     location = weather_location_new(trans_name, code, zone, radar, coordinates, country_code, tz_hint);
 
