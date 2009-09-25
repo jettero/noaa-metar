@@ -38,7 +38,7 @@ for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
                 # print "code: $location->{code}; zone: $location->{zone}; radar: $location->{radar}\n";
                 # warn "country: $country->{_name}; state/location: $state->{_name}/$location->{_name}\n";
 
-                $res{ "$country->{_name} $state->{_name}/$location->{_name}" } = {
+                $res{ "$state->{_name}, $country->{_name}" }{ $location->{_name} } = {
                     code  => $location->{code},
                     zone  => $location->{zone},
                     radar => $location->{radar} 
@@ -48,7 +48,6 @@ for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
     }
 }
 
-my $js = to_json(\%res);
-   $js =~ s/},"/},\n"/g;
+my $js = to_json(\%res, {pretty=>1});
 
 write_file( "locations.js" => $js );
