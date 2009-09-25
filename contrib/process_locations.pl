@@ -49,6 +49,6 @@ for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
 }
 
 my $js = to_json(\%res);
-   $js =~ s/:{/:\n{/g;
+   $js =~ s/},"/},\n"/g;
 
 write_file( "locations.js" => $js );
