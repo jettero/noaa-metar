@@ -1,4 +1,6 @@
 [
+    { "source": "app/metar/show_metar.js" },
+
     { "source": "locations.js"       },
     { "source": "stage-assistant.js" },
 ]

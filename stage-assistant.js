@@ -38,7 +38,7 @@ StageAssistant.prototype.handleCommand = function (event) {
 
 			case 'do-locations':
                 Mojo.Log.info("showing locations list... hopefully...");
-                Mojo.Controller.stageController.assistant.showScene('settings', 'list_l');
+                Mojo.Controller.stageController.assistant.showScene('metar', 'show_metar');
 				break;
 		}
 	}
