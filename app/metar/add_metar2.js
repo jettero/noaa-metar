@@ -53,7 +53,6 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
             if( r.message )
                 message = r.message;
 
-            this.nospin();
             this.controller.showAlertDialog({
                 onChoose: function(value) { Mojo.Controller.stageController.popScene(); },
                 title:    'Location Added',
@@ -65,7 +64,6 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
 
         function(transaction,result) {
             Mojo.Controller.errorDialog("Database error saving location details: " + result.message);
-            this.nospin();
 
         }.bind(this)
     );
