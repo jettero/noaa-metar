@@ -4,7 +4,7 @@ function Add_metarAssistant(args) {
     //this.dbo = args[0];
 }
 
-Create_aAssistant.prototype.setup = function() {
+Add_metarAssistant.prototype.setup = function() {
 	Mojo.Log.info("Add_metarAssistant()::setup()");
 
     var attrs = {
@@ -13,8 +13,13 @@ Create_aAssistant.prototype.setup = function() {
         emptyTemplate: 'metar/misc/empty',
     };
 
-    this.locations_model = {listTitle: $L('GWeather Locations'), items: ["blarg", "blarg", "blarg"]};
+    this.locations_model = {listTitle: $L('GWeather Locations'), items: []};
     this.controller.setupWidget('gw_locations', attrs, this.locations_model);
+
+    /*
+    this.locations_model.items = [ {'location': "blarg"} ];
+    this.controller.modelChanged(this.locations_model);
+    */
 }
 
 Create_aAssistant.prototype.activate = function(event) {
