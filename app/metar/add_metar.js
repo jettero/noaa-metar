@@ -9,17 +9,19 @@ Add_metarAssistant.prototype.setup = function() {
 
     var attrs = {
         listTemplate:  'metar/misc/listcontainer',
-        itemTemplate:  'metar/misc/METARItem',
+        itemTemplate:  'metar/misc/LocationItem',
         emptyTemplate: 'metar/misc/empty',
     };
 
     this.locations_model = {listTitle: $L('GWeather Locations'), items: []};
-    this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 
-    /*
-    this.locations_model.items = [ {'location': "blarg"} ];
-    this.controller.modelChanged(this.locations_model);
-    */
+    for(state in location_data) {
+        this.locations_model.items.push({
+            'location': state,
+        });
+    }
+
+    this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 }
 
 Create_aAssistant.prototype.activate = function(event) {

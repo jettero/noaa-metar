@@ -50,4 +50,4 @@ for my $region ($CQ->cute_query({nostrict_match=>1}, %q)) {
 
 my $js = to_json(\%res, {pretty=>1});
 
-write_file( "locations.js" => $js );
+write_file( "locations.js" => "var location_data = $js;" );
