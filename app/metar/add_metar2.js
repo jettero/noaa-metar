@@ -33,7 +33,7 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
     };
 
     var dbo = new Mojo.Depot(options, function(){}, function(t,r){
-        Mojo.Controller.errorDialog("Can't open account database (#" + r.message + ").");
+        Mojo.Controller.errorDialog("Can't open location database (#" + r.message + ").");
     });
 
     this.our_locations = {};

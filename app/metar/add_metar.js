@@ -1,7 +1,5 @@
 function Add_metarAssistant(args) {
 	Mojo.Log.info("Add_metarAssistant()");
-
-    //this.dbo = args[0];
 }
 
 Add_metarAssistant.prototype.setup = function() {
