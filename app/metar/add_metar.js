@@ -6,6 +6,15 @@ function Add_metarAssistant(args) {
 
 Create_aAssistant.prototype.setup = function() {
 	Mojo.Log.info("Add_metarAssistant()::setup()");
+
+    var attrs = {
+        listTemplate:  'metar/misc/listcontainer',
+        itemTemplate:  'metar/misc/METARItem',
+        emptyTemplate: 'metar/misc/empty',
+    };
+
+    this.locations_model = {listTitle: $L('GWeather Locations'), items: ["blarg", "blarg", "blarg"]};
+    this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 }
 
 Create_aAssistant.prototype.activate = function(event) {
