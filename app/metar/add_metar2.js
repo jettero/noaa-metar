@@ -47,18 +47,22 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
     );
     this.our_locations[event.item.location] = event.item.data;
 
+    Mojo.Log.info("[built our_locations]");
     dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
         function() {
             message = 'This location has been added to your location database.';
-            if( r.message )
-                message = r.message;
 
             this.controller.showAlertDialog({
-                onChoose: function(value) { Mojo.Controller.stageController.popScene(); },
+                onChoose: function(value) {
+                    Mojo.Controller.stageController.popScene();
+                    Mojo.Controller.stageController.popScene();
+                },
                 title:    'Location Added',
                 message:  message,
                 choices:  [ {label: 'OK', value: 'OK', type: 'color'} ]
             });
+
+            Mojo.Log.info("[added] ", event.item.location);
 
         }.bind(this),
 
