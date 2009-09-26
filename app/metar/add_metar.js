@@ -13,13 +13,11 @@ Add_metarAssistant.prototype.setup = function() {
         emptyTemplate: 'metar/misc/empty',
     };
 
-    this.locations_model = {listTitle: $L('GWeather Locations'), items: []};
+    this.locations_model = {listTitle: $L('Choose State'), items: []};
 
-    for(state in location_data) {
-        this.locations_model.items.push({
-            'location': state,
-        });
-    }
+    var states = Object.keys(location_data).sort(function(a,b) { if(a<b) return -1; if (a>b) return 1; return 0; });
+    for(var i=0; i<states.length; i++)
+        this.locations_model.items.push({ 'location': states[i] });
 
     this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 }
