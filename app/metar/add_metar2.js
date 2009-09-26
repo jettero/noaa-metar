@@ -21,10 +21,6 @@ Add_metar2Assistant.prototype.setup = function() {
 
     this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 	Mojo.Event.listen(this.controller.get("gw_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
-}
-
-Add_metar2Assistant.prototype.listClickHandler = function(event) {
-    Mojo.Log.info("[clicked] ", event.item.location);
 
     var options = {
         name:    "gweather_locations",
@@ -32,12 +28,12 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
         replace: false, // opening existing if possible
     };
 
-    var dbo = new Mojo.Depot(options, function(){}, function(t,r){
+    this.dbo = new Mojo.Depot(options, function(){}, function(t,r){
         Mojo.Controller.errorDialog("Can't open location database (#" + r.message + ").");
     });
 
     this.our_locations = {};
-    dbo.simpleGet("locations",
+    this.dbo.simpleGet("locations",
         function(locations) { this.our_locations = locations.evalJSON(); }.bind(this),
 
         function(transaction, error) {
@@ -45,10 +41,15 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
 
         }.bind(this)
     );
+}
+
+Add_metar2Assistant.prototype.listClickHandler = function(event) {
+    Mojo.Log.info("[clicked] ", event.item.location);
+
     this.our_locations[event.item.location] = event.item.data;
 
     Mojo.Log.info("[built our_locations]");
-    dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
+    this.dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
         function() {
             message = 'This location has been added to your location database.';
 
