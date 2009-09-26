@@ -25,6 +25,50 @@ Add_metar2Assistant.prototype.setup = function() {
 
 Add_metar2Assistant.prototype.listClickHandler = function(event) {
     Mojo.Log.info("[clicked] ", event.item.location);
+
+    var options = {
+        name:    "gweather_locations",
+        version: 1,
+        replace: false, // opening existing if possible
+    };
+
+    var dbo = new Mojo.Depot(options, function(){}, function(t,r){
+        Mojo.Controller.errorDialog("Can't open account database (#" + r.message + ").");
+    });
+
+    this.our_locations = {};
+    dbo.simpleGet("locations",
+        function(locations) { this.our_locations = locations.evalJSON(); }.bind(this),
+
+        function(transaction, error) {
+            Mojo.Controller.errorDialog("Can't open account database (#" + error.message + ").");
+
+        }.bind(this)
+    );
+    this.our_locations[event.item.location] = event.item.data;
+
+    dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
+        function() {
+            message = 'This location has been added to your location database.';
+            if( r.message )
+                message = r.message;
+
+            this.nospin();
+            this.controller.showAlertDialog({
+                onChoose: function(value) { Mojo.Controller.stageController.popScene(); },
+                title:    'Location Added',
+                message:  message,
+                choices:  [ {label: 'OK', value: 'OK', type: 'color'} ]
+            });
+
+        }.bind(this),
+
+        function(transaction,result) {
+            Mojo.Controller.errorDialog("Database error saving location details: " + result.message);
+            this.nospin();
+
+        }.bind(this)
+    );
 }
 
 Add_metar2Assistant.prototype.activate = function(event) {
