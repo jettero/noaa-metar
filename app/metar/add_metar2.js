@@ -41,7 +41,7 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
         function(locations) { this.our_locations = locations.evalJSON(); }.bind(this),
 
         function(transaction, error) {
-            Mojo.Controller.errorDialog("Can't open account database (#" + error.message + ").");
+            Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
 
         }.bind(this)
     );
