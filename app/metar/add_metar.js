@@ -24,15 +24,8 @@ Add_metarAssistant.prototype.setup = function() {
 }
 
 Add_metarAssistant.prototype.listClickHandler = function(event) {
-    Mojo.Log.info("clicked!!");
-    /*
-    if (event.originalEvent.target.hasClassName('title')) {
-        Mojo.Log.info("Clicked on " + event.item.data);
-
-        var index = event.model.items.indexOf(event.item);
-        Mojo.Log.info("Index is " + index);
-    }        
-    */
+    Mojo.Log.info("[clicked] ", event.item.location);
+    this.controller.stageController.assistant.showScene('metar', 'add_metar2', [event.item.location]);
 }
 
 Add_metarAssistant.prototype.activate = function(event) {
