@@ -43,7 +43,13 @@ Show_metarAssistant.prototype.activate = function(event) {
 
             this.metar_model.items = [];
             for(var l in this.our_locations)
-                this.metar_model.items.push({ 'location': l });
+                this.metar_model.items.push({
+                    METAR:   "fetching " + this.our_locations[l].code + " ...",
+                    fetched: false,
+                    code:    this.our_locations[l].code,
+                    city:    l,
+                    state:   this.our_locations[l].state,
+                });
             this.controller.modelChanged(this.metar_model);
 
         }.bind(this),

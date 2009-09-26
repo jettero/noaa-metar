@@ -47,6 +47,7 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
     Mojo.Log.info("[clicked] ", event.item.location);
 
     this.our_locations[event.item.location] = event.item.data;
+    this.our_locations[event.item.location].state = this.state;
 
     Mojo.Log.info("[built our_locations]");
     this.dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
