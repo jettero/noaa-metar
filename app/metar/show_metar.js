@@ -31,6 +31,33 @@ Show_metarAssistant.prototype.addMETAR = function(event) {
     this.controller.stageController.assistant.showScene('metar', 'add_metar');
 }
 
+Show_metarAssistant.prototype.receive_metar = function(code,METAR) {
+    var next  = false;
+    var metar = false;
+    var next_code;
+
+    for(var i=0; i<this.metar_model.items.length && (!next || !metar); i++) {
+        if( this.metar_model.items[i].code == code ) {
+            this.metar_model.items[i].METAR = METAR;
+            this.metar_model.items[i].fetched = true;
+            this.controller.modelChanged(this.metar_model);
+            metar = true;
+
+        } else {
+            if( !this.metar_model.items[i].fetched ) {
+                if(!next) {
+                    next = true;
+                    next_code = this.metar_model.items[i].code;
+                }
+            }
+
+        }
+    }
+
+    if( next )
+        get_metar(next_code, this.receive_metar.bind(this));
+}
+
 Show_metarAssistant.prototype.activate = function(event) {
     Mojo.Log.info("fetching list of items for METAR display");
 
@@ -50,7 +77,9 @@ Show_metarAssistant.prototype.activate = function(event) {
                     city:    l,
                     state:   this.our_locations[l].state,
                 });
+
             this.controller.modelChanged(this.metar_model);
+            get_metar(this.metar_model.items[0].code, this.receive_metar.bind(this));
 
         }.bind(this),
 

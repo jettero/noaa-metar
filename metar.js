@@ -15,3 +15,7 @@ function extract_metar(airport, html) {
 
     return metar;
 }
+
+function get_metar(code, callback) {
+    callback(code, code + " blarg blarg blarg");
+}
