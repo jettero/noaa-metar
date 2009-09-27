@@ -16,6 +16,44 @@ function extract_metar(airport, html) {
     return metar;
 }
 
-function get_metar(code, callback) {
-    callback(code, code + " blarg blarg blarg");
+function my_error(text, calback) {
+    Mojo.Controller.showAlertDialog({
+        onChoose: function(value) {callback()},
+        title: $L("Error"),
+        message: $L(text),
+        choices:[
+             {label:$L("OK"), value:"OK", type:'dismiss'}    
+        ]
+    });
+}
+
+function get_metar(req, callback) {
+    req.worked = false;
+
+    var request = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
+        method: 'get', parameters: { cccc: req.code }, 
+
+        onSuccess: function(transport) {
+            if( transport.status == 200 ) {
+                req.worked = true;
+                req.METAR  = extract_metar(transport.responseText);
+                callback(req);
+
+            } else {
+                my_error("Transport error: " + transport.statusText + " (" + transport.status + ")",
+                    function() { callback(req); });
+            }
+
+        }.bind(this),
+
+        onFailure: function(transport) {
+            var t = new Template($L("Ajax Error: #{status}"));
+            var m = t.evaluate(transport);
+            var e = [m];
+
+            Mojo.Controller.errorDialog(e.join("... "));
+            my_error(e.join("... "), function() { callback(req); });
+
+        }.bind(this)
+    });
 }

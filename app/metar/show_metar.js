@@ -31,31 +31,31 @@ Show_metarAssistant.prototype.addMETAR = function(event) {
     this.controller.stageController.assistant.showScene('metar', 'add_metar');
 }
 
-Show_metarAssistant.prototype.receive_metar = function(code,METAR) {
-    var next  = false;
-    var metar = false;
-    var next_code;
+Show_metarAssistant.prototype.receive_metar = function(res) {
+    if( res.worked ) {
+        this.metar_model.items[res.index].METAR = res.METAR;
+        this.metar_model.items[res.index].fetched = true;
+        this.controller.modelChanged(this.metar_model);
 
-    for(var i=0; i<this.metar_model.items.length && (!next || !metar); i++) {
-        if( this.metar_model.items[i].code == code ) {
-            this.metar_model.items[i].METAR = METAR;
-            this.metar_model.items[i].fetched = true;
-            this.controller.modelChanged(this.metar_model);
-            metar = true;
+    } else {
+        if( this.metar_model.items[res.index].fails == undefined ) {
+            this.metar_model.items[res.index].fails = 1;
 
         } else {
-            if( !this.metar_model.items[i].fetched ) {
-                if(!next) {
-                    next = true;
-                    next_code = this.metar_model.items[i].code;
-                }
-            }
+            this.metar_model.items[res.index].tries ++;
 
+            if( this.metar_model.items[res.index].tries >= 3 ) {
+                Mojo.Controller.errorDialog("failed at " + res.code + " 3 times already, giving up on it.");
+                this.metar_model.items[res.index].METAR = res.code + " :(";
+            }
         }
     }
 
-    if( next )
-        get_metar(next_code, this.receive_metar.bind(this));
+    for(var i=0; i<this.metar_model.items.length; i++)
+        if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fetched.fails < 3 ) {
+            get_metar({code: this.metar_model.items[i].code, index: i}, this.receive_metar.bind(this));
+            return;
+        }
 }
 
 Show_metarAssistant.prototype.activate = function(event) {
@@ -79,7 +79,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                 });
 
             this.controller.modelChanged(this.metar_model);
-            get_metar(this.metar_model.items[0].code, this.receive_metar.bind(this));
+            get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
 
         }.bind(this),
 
