@@ -32,27 +32,24 @@ Show_metarAssistant.prototype.addMETAR = function(event) {
 }
 
 Show_metarAssistant.prototype.receive_metar = function(res) {
+    Mojo.Log.info("receive_metar(): ", res.code, res.worked ? "[success]" : "[fail]");
+
     if( res.worked ) {
         this.metar_model.items[res.index].METAR = res.METAR;
         this.metar_model.items[res.index].fetched = true;
         this.controller.modelChanged(this.metar_model);
 
     } else {
-        if( this.metar_model.items[res.index].fails == undefined ) {
-            this.metar_model.items[res.index].fails = 1;
+        this.metar_model.items[res.index].fails ++;
 
-        } else {
-            this.metar_model.items[res.index].tries ++;
-
-            if( this.metar_model.items[res.index].tries >= 3 ) {
-                Mojo.Controller.errorDialog("failed at " + res.code + " 3 times already, giving up on it.");
-                this.metar_model.items[res.index].METAR = res.code + " :(";
-            }
+        if( this.metar_model.items[res.index].fails >= 3 ) {
+            Mojo.Controller.errorDialog("failed at " + res.code + " 3 times already, giving up on it.");
+            this.metar_model.items[res.index].METAR = res.code + " :(";
         }
     }
 
     for(var i=0; i<this.metar_model.items.length; i++)
-        if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fetched.fails < 3 ) {
+        if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
             get_metar({code: this.metar_model.items[i].code, index: i}, this.receive_metar.bind(this));
             return;
         }
@@ -76,6 +73,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                     code:    this.our_locations[l].code,
                     city:    l,
                     state:   this.our_locations[l].state,
+                    fails: 0,
                 });
 
             this.controller.modelChanged(this.metar_model);
