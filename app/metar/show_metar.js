@@ -74,7 +74,7 @@ Show_metarAssistant.prototype.activate = function(event) {
     this.our_locations = {};
     this.dbo.simpleGet("locations",
         function(locations) {
-            this.our_locations = locations.evalJSON();
+            this.our_locations = locations; // locations.evalJSON();
 
             Mojo.Log.info("found list of items for METAR display, building Mojo List");
 

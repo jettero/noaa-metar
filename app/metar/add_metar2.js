@@ -52,7 +52,7 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
     this.our_locations[key].city  = event.item.location;
 
     Mojo.Log.info("[built our_locations]");
-    this.dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
+    this.dbo.simpleAdd("locations", this.our_locations, // Object.toJSON(this.our_locations),
         function() {
             message = 'This location has been added to your location database.';
 
