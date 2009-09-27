@@ -93,7 +93,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                 });
 
             this.controller.modelChanged(this.metar_model);
-            // get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+            get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
 
         }.bind(this),
 
