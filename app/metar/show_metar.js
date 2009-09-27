@@ -73,18 +73,21 @@ Show_metarAssistant.prototype.activate = function(event) {
             Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
             this.metar_model.items = [];
-            for(var l in this.our_locations)
+            for(var code in this.our_locations)
                 this.metar_model.items.push({
-                    METAR:   "fetching " + this.our_locations[l].code + " ...",
+                    METAR:   "fetching " + code + " ("
+                        + this.our_locations[code].state + ", " + this.our_locations[code].city 
+                        + ") ...",
+
                     fetched: false,
-                    code:    this.our_locations[l].code,
-                    city:    l,
-                    state:   this.our_locations[l].state,
+                    code:    code,
+                    city:    this.our_locations[code].city,
+                    state:   this.our_locations[code].state,
                     fails: 0,
                 });
 
             this.controller.modelChanged(this.metar_model);
-            get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+            // get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
 
         }.bind(this),
 
