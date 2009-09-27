@@ -30,8 +30,14 @@ Show_metarAssistant.prototype.setup = function() {
 }
 
 Show_metarAssistant.prototype.rmMETAR = function(event) {
-    Mojo.Log.info("rmMETAR");
-    Mojo.Log.info("rmMETAR: ", event.item.code);
+    Mojo.Log.info("rmMETAR(): ", event.item.code);
+    delete this.our_locations[event.item.code];
+    this.dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
+        function() { Mojo.Log.info("[removed] ", event.item.code); }.bind(this),
+        function(transaction,result) {
+            Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
+        }.bind(this)
+    );
 }
 
 Show_metarAssistant.prototype.addMETAR = function(event) {
