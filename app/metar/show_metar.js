@@ -16,6 +16,7 @@ Show_metarAssistant.prototype.setup = function() {
     });
 
     var attrs = {
+        swipeToDelete: true,
         listTemplate:  'metar/misc/listcontainer',
         itemTemplate:  'metar/misc/METARItem',
         emptyTemplate: 'metar/misc/empty',
@@ -24,7 +25,13 @@ Show_metarAssistant.prototype.setup = function() {
 
     this.metar_model = {listTitle: $L('METAR'), items: []};
     this.controller.setupWidget('gw_metar', attrs, this.metar_model);
-    Mojo.Event.listen(this.controller.get('gw_metar'), Mojo.Event.listAdd, this.addMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('gw_metar'), Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('gw_metar'), Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
+}
+
+Show_metarAssistant.prototype.rmMETAR = function(event) {
+    Mojo.Log.info("rmMETAR");
+    Mojo.Log.info("rmMETAR: ", event.item.code);
 }
 
 Show_metarAssistant.prototype.addMETAR = function(event) {
