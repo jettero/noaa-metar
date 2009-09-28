@@ -34,7 +34,7 @@ Add_metar2Assistant.prototype.setup = function() {
 
     this.our_locations = {};
     this.dbo.simpleGet("locations",
-        function(locations) { this.our_locations = locations.evalJSON(); }.bind(this),
+        function(locations) { if(locations) this.our_locations = locations; }.bind(this),
 
         function(transaction, error) {
             Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
@@ -52,7 +52,7 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
     this.our_locations[key].city  = event.item.location;
 
     Mojo.Log.info("[built our_locations]");
-    this.dbo.simpleAdd("locations", this.our_locations, // Object.toJSON(this.our_locations),
+    this.dbo.simpleAdd("locations", this.our_locations,
         function() {
             message = 'This location has been added to your location database.';
 

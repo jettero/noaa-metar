@@ -32,7 +32,7 @@ Show_metarAssistant.prototype.setup = function() {
 Show_metarAssistant.prototype.rmMETAR = function(event) {
     Mojo.Log.info("rmMETAR(): ", event.item.code);
     delete this.our_locations[event.item.code];
-    this.dbo.simpleAdd("locations", Object.toJSON(this.our_locations),
+    this.dbo.simpleAdd("locations", this.our_locations,
         function() { Mojo.Log.info("[removed] ", event.item.code); }.bind(this),
         function(transaction,result) {
             Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
@@ -74,26 +74,28 @@ Show_metarAssistant.prototype.activate = function(event) {
     this.our_locations = {};
     this.dbo.simpleGet("locations",
         function(locations) {
-            this.our_locations = locations; // locations.evalJSON();
+            if( locations ) {
+                this.our_locations = locations;
 
-            Mojo.Log.info("found list of items for METAR display, building Mojo List");
+                Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
-            this.metar_model.items = [];
-            for(var code in this.our_locations)
-                this.metar_model.items.push({
-                    METAR:   "fetching " + code + " ("
-                        + this.our_locations[code].state + ", " + this.our_locations[code].city 
-                        + ") ...",
+                this.metar_model.items = [];
+                for(var code in this.our_locations)
+                    this.metar_model.items.push({
+                        METAR:   "fetching " + code + " ("
+                            + this.our_locations[code].state + ", " + this.our_locations[code].city 
+                            + ") ...",
 
-                    fetched: false,
-                    code:    code,
-                    city:    this.our_locations[code].city,
-                    state:   this.our_locations[code].state,
-                    fails: 0,
-                });
+                        fetched: false,
+                        code:    code,
+                        city:    this.our_locations[code].city,
+                        state:   this.our_locations[code].state,
+                        fails: 0,
+                    });
 
-            this.controller.modelChanged(this.metar_model);
-            get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+                this.controller.modelChanged(this.metar_model);
+                // get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+            }
 
         }.bind(this),
 
