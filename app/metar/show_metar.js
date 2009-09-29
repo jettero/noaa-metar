@@ -25,8 +25,13 @@ Show_metarAssistant.prototype.setup = function() {
 
     this.metar_model = {listTitle: $L('METAR'), items: []};
     this.controller.setupWidget('gw_metar', attrs, this.metar_model);
-    Mojo.Event.listen(this.controller.get('gw_metar'), Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
-    Mojo.Event.listen(this.controller.get('gw_metar'), Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
+    //this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
+
+    Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
+	//Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.listTap,    this.force_update.bind(this));
+
+    this.force_update = false;
 }
 
 Show_metarAssistant.prototype.rmMETAR = function(event) {
@@ -63,9 +68,16 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
 
     for(var i=0; i<this.metar_model.items.length; i++)
         if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
-            get_metar({code: this.metar_model.items[i].code, index: i}, this.receive_metar.bind(this));
+            get_metar({code: this.metar_model.items[i].code, force: this.force_update, index: i}, this.receive_metar.bind(this));
             return;
         }
+
+    this.force_udpate = false;
+}
+
+Show_metarAssistant.prototype.force_update = function(event) {
+    this.force_udpate = true;
+    this.activate();
 }
 
 Show_metarAssistant.prototype.activate = function(event) {
@@ -94,7 +106,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                     });
 
                 this.controller.modelChanged(this.metar_model);
-                get_metar({index: 0, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+                get_metar({index: 0, force: this.force_update, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
             }
 
         }.bind(this),
