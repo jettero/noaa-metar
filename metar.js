@@ -1,7 +1,7 @@
 function extract_metar(airport, html) {
     html = html.replace(/<[^>]+>/g, "");
 
-    var metar = "?";
+    var metar = "? " + airport + " ?";
 
     Mojo.Log.info("extract_metar(): " + airport);
 
