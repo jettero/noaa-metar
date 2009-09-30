@@ -42,6 +42,7 @@ function get_metar(req, callback) {
     if( cached && !req.force ) {
         req.worked = true;
         req.METAR  = cached;
+        req.cached = true;
 
         Mojo.Log.info("fetched cached METAR("+req.code+"): ", cached);
         callback(req);

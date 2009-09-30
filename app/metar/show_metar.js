@@ -58,7 +58,7 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
         this.metar_model.items[res.index].fetched = true;
         this.controller.modelChanged(this.metar_model);
 
-        try {
+        if( !res.cached ) {
             var node = this.controller.get("gw_metar").mojo.getNodeByIndex(res.index).select("div.METAR")[0];
 
             Mojo.Log.info("trying to set success-background on list item.");
@@ -66,10 +66,6 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
             window.setTimeout(function(){ node.style.color = "#007700"; }, 1000);
             window.setTimeout(function(){ node.style.color = "#005500"; }, 1100);
             window.setTimeout(function(){ node.style.color = "#000000"; }, 1200);
-        }
-
-        catch(e) {
-            Mojo.Log.error("background fail: " + e);
         }
 
     } else {
