@@ -30,9 +30,9 @@ Show_metarAssistant.prototype.setup = function() {
 
     Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
     Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
-	Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.listTap,    this.force_update.bind(this));
+	Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.tap,        this.force_update.bind(this));
 
-    this.force_update = false;
+    this.force_update_flag = false;
 }
 
 Show_metarAssistant.prototype.rmMETAR = function(event) {
@@ -58,6 +58,20 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
         this.metar_model.items[res.index].fetched = true;
         this.controller.modelChanged(this.metar_model);
 
+        try {
+            var node = this.controller.get("gw_metar").mojo.getNodeByIndex(res.index).select("div.METAR")[0];
+
+            Mojo.Log.info("trying to set success-background on list item.");
+            node.style.color = "#009900";
+            window.setTimeout(function(){ node.style.color = "#007700"; }, 1000);
+            window.setTimeout(function(){ node.style.color = "#005500"; }, 1300);
+            window.setTimeout(function(){ node.style.color = "#000000"; }, 1500);
+        }
+
+        catch(e) {
+            Mojo.Log.error("background fail: " + e);
+        }
+
     } else {
         this.metar_model.items[res.index].fails ++;
 
@@ -69,15 +83,20 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
 
     for(var i=0; i<this.metar_model.items.length; i++)
         if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
-            get_metar({code: this.metar_model.items[i].code, force: this.force_update, index: i}, this.receive_metar.bind(this));
+            get_metar({code: this.metar_model.items[i].code, force: this.force_update_flag, index: i}, this.receive_metar.bind(this));
             return;
         }
 
-    this.force_udpate = false;
+    if( this.force_update_flag ) {
+        Mojo.Log.info("deactivating spinner, hopefully");
+        this.force_update_flag = false;
+        this.controller.get("force_update").mojo.deactivate();
+    }
 }
 
 Show_metarAssistant.prototype.force_update = function(event) {
-    this.force_udpate = true;
+    Mojo.Log.info("forcing updates");
+    this.force_update_flag = true;
     this.activate();
 }
 
@@ -107,7 +126,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                     });
 
                 this.controller.modelChanged(this.metar_model);
-                get_metar({index: 0, force: this.force_update, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
+                get_metar({index: 0, force: this.force_update_flag, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
             }
 
         }.bind(this),
