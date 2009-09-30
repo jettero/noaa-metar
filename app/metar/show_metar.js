@@ -96,8 +96,19 @@ Show_metarAssistant.prototype.force_update = function(event) {
     this.activate();
 }
 
+Show_metarAssistant.prototype.update_timer = function(event) {
+    if( !this.timer_active )
+        return;
+
+    Mojo.Log.info("update timer fired");
+    this.activate();
+}
+
 Show_metarAssistant.prototype.activate = function(event) {
     Mojo.Log.info("fetching list of items for METAR display");
+
+    this.timer_active = true;
+    window.setTimeout( this.update_timer.bind(this), 1000 * 9 );
 
     this.our_locations = {};
     this.dbo.simpleGet("locations",
@@ -135,9 +146,11 @@ Show_metarAssistant.prototype.activate = function(event) {
 }
 
 Show_metarAssistant.prototype.deactivate = function(event) {
+    Mojo.Log.info("disabling update timer");
+    this.timer_active = false;
 }
 
-Add_metar2Assistant.prototype.cleanup = function(event) {
+Show_metarAssistant.prototype.cleanup = function(event) {
     // XXX: What needs to be cleaned up?  Seriously.  Does any of this clean
     // itself up? or do you have to go through and destroy each object and
     // click handler?
