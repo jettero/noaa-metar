@@ -64,8 +64,8 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
             Mojo.Log.info("trying to set success-background on list item.");
             node.style.color = "#009900";
             window.setTimeout(function(){ node.style.color = "#007700"; }, 1000);
-            window.setTimeout(function(){ node.style.color = "#005500"; }, 1300);
-            window.setTimeout(function(){ node.style.color = "#000000"; }, 1500);
+            window.setTimeout(function(){ node.style.color = "#005500"; }, 1100);
+            window.setTimeout(function(){ node.style.color = "#000000"; }, 1200);
         }
 
         catch(e) {

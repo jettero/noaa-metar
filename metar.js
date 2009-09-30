@@ -39,7 +39,7 @@ function get_metar(req, callback) {
     var cookie = new Mojo.Model.Cookie(req.code);
     var cached = cookie.get();
 
-    if( cached ) {
+    if( cached && !req.force ) {
         req.worked = true;
         req.METAR  = cached;
 
