@@ -108,7 +108,7 @@ Show_metarAssistant.prototype.activate = function(event) {
     Mojo.Log.info("fetching list of items for METAR display");
 
     this.timer_active = true;
-    window.setTimeout( this.update_timer.bind(this), 1000 * 9 );
+    window.setTimeout( this.update_timer.bind(this), 1000 * 90 );
 
     this.our_locations = {};
     this.dbo.simpleGet("locations",
