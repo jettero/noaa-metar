@@ -1,85 +1,171 @@
+// function my_parseint(ilike) {{{
+function my_parseint(ilike, units) {
+    ilike = ilike.replace(/[^0-9]/g, "").replace(/^0+/, "");
+
+    return [parseInt(ilike), units];
+}
+// }}}
+
+// function decode_metar(metar) {{{
+function decode_metar(metar) {
+    var msplit = metar.split(/\s+/);
+    var res = { cloud_cover: [], unknown_tokens: msplit };
+    var remark_index = -1;
+
+    if( msplit[0].match(/^METAR$/) )
+        msplit.shift();
+        // TODO: maybe we should look for things besides METAR? NOAA doesn't put it there anyway
+
+    if( msplit[0].match(/^[A-Z]{4}$/) )
+        res.sation_id = msplit.shift();
+        // TODO: use facts: /^K/ indicates a US station, KAZO is K=us, AZO=kalamazoo-airport
+
+    var parts; // as needed regex result parts (see wind)
+    var items_examined = 0;
+    while(msplit.length && items_examined < msplit.length) {
+        items_examined = 0;
+
+        for(var i=0; i<msplit.length; i++) {
+            items_examined ++;
+
+            if( msplit[i].match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
+                var zulu = msplit.splice(i,1)[0];
+                var d = zulu.substr(0,2);
+                var H = zulu.substr(2,2);
+                var M = zulu.substr(4,2);
+
+                var date_ob = new Date();
+
+                var m = date_ob.getUTCMonth();
+                if( d < date_ob.getUTCDate() ) {
+                    m ++; // if the zulu date is less than the current date, it's probably next month
+                    if( m>12 )
+                        m = 1; // also rollover to january
+                }
+
+                date_ob.setUTCDate(d);
+                date_ob.setUTCMonth(m);
+                date_ob.setUTCHours(H);
+                date_ob.setUTCMinutes(M);
+
+                res.date = date_ob.toLocaleString();
+
+                break;
+            }
+
+            else if( parts = msplit[i].match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
+                var wind = msplit.splice(i,1); // not really used, must be spliced
+
+                var deg   = parts[1];
+                var gusts = parts[3];
+
+                res.wind = { speed: my_parseint( parts[2], "knots" ) };
+
+                if( deg == "VBR" )
+                    res.wind.variable = true;
+                else
+                    res.wind.direction = my_parseint( deg, "degrees" );
+
+                if( gusts )
+                    res.wind.gusts = my_parseint( gusts, "knots" );
+
+                // 26016G22KT is 260deg 16knots and gusts to 22knots
+                // VBR05KT is variable at 5knots
+                break;
+            }
+
+            else if( msplit[i].match(/^\d+SM$/) ) {
+                res.visibility = my_parseint( msplit.splice(i,1)[0], "miles" );
+
+                break;
+            }
+
+            else if( msplit[i].match(/^FEW\d+$/) ) {
+                var alt = msplit.splice(i,1)[0].substr(3);
+                    alt += "00";
+
+                res.cloud_cover.push({few: my_parseint(alt, "feet")});
+
+                break;
+            }
+
+            else if( msplit[i].match(/^BKN\d+$/) ) {
+                var alt = msplit.splice(i,1)[0].substr(3);
+                    alt += "00";
+
+                res.cloud_cover.push({broken: my_parseint(alt, "feet")});
+
+                break;
+            }
+
+            else if( parts = msplit[i].match(/^(\d+)\/(\d+)$/) ) {
+                msplit.splice(i,1);
+
+                res.temperature = my_parseint( parts[1], "C" );
+                res.dewpoint    = my_parseint( parts[2], "C" );
+            }
+
+            else if( msplit[i].match(/^OVC\d+$/) ) {
+                var alt = msplit.splice(i,1)[0].substr(3);
+                    alt += "00";
+
+                res.cloud_cover.push({overcast: my_parseint(alt, "feet")});
+
+                break;
+            }
+
+            else if( msplit[i].match(/^RMK$/) ) {
+                var remark_tokens = msplit.splice(i);
+
+                res.unknown_remark_tokens = remark_tokens;
+                res.unknown_remark_tokens.shift(); // lose RMK
+
+                break;
+            }
+        }
+    }
+
+    var rem = res.unknown_remark_tokens;
+
+    if( rem ) {
+        items_examined = 0;
+        while( rem.length && items_examined < rem.length ) {
+            items_examined = 0;
+
+            for(var i=0; i<rem.length; i++) {
+                items_examined ++;
+
+                if( rem[i].match(/^AO[12]$/) ) {
+                    var automated = rem.splice(i,1)[0];
+
+                    res.automated_weather_station = true;
+                    res.precipiation_detector = automated.match(/2$/) ? true:false;
+
+                    break;
+                }
+            }
+        }
+    }
+
+    return res;
+}
+// }}}
+// function extract_metar(airport, html) {{{
 function extract_metar(airport, html) {
     html = html.replace(/<[^>]+>/g, "");
 
     var metar = "? " + airport + " ?";
 
-    Mojo.Log.info("extract_metar(): " + airport);
-
     var lines = html.split("\n");
     for(var i=0; i<lines.length; i++) {
         if( lines[i].substr(0, airport.length) == airport ) {
-            if( lines[i].substr(airport.length).match(/\s[A-Z0-9\/:/-]+$/) ) {
+            if( lines[i].substr(airport.length).match(/^[\sA-Z0-9\/:/\-\$]+$/) ) {
                 metar = lines[i];
                 break;
             }
         }
     }
 
-    Mojo.Log.info("extract_metar() got: " + metar);
     return metar;
 }
-
-function my_error(text, calback) {
-    Mojo.Log.info("my_error(): " + text);
-
-    Mojo.Controller.showAlertDialog({
-        onChoose: function(value) {callback()},
-        title: $L("Error"),
-        message: $L(text),
-        choices:[
-             {label:$L("OK"), value:"OK", type:'dismiss'}    
-        ]
-    });
-}
-
-function get_metar(req, callback) {
-    req.worked = false;
-    Mojo.Log.info("get_metar() fetching: " + req.code);
-
-    var cookie = new Mojo.Model.Cookie(req.code);
-    var cached = cookie.get();
-
-    if( cached && !req.force ) {
-        req.worked = true;
-        req.METAR  = cached;
-        req.cached = true;
-
-        Mojo.Log.info("fetched cached METAR("+req.code+"): ", cached);
-        callback(req);
-
-        return;
-    }
-
-    var d = new Date();
-        d.setTime( d.getTime() + 3600000 ); // unix-milliseconds I guess
-
-    var request = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
-        method: 'get', parameters: { cccc: req.code }, 
-
-        onSuccess: function(transport) {
-            if( transport.status == 200 ) {
-                req.worked = true;
-                req.METAR  = extract_metar(req.code, transport.responseText);
-
-                Mojo.Log.info("fetched fresh METAR("+req.code+"): ", req.METAR);
-                cookie.put(req.METAR, d);
-                callback(req);
-
-            } else {
-                my_error("Transport error: " + transport.statusText + " (" + transport.status + ")",
-                    function() { callback(req); });
-            }
-
-        }.bind(this),
-
-        onFailure: function(transport) {
-            var t = new Template($L("Ajax Error: #{status}"));
-            var m = t.evaluate(transport);
-            var e = [m];
-
-            Mojo.Controller.errorDialog(e.join("... "));
-            my_error(e.join("... "), function() { callback(req); });
-
-        }.bind(this)
-    });
-}
+// }}}

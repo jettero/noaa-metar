@@ -4,6 +4,7 @@
     { "source": "app/metar/add_metar2.js" },
 
     { "source": "metar.js" },
+    { "source": "metar_support.js" },
     { "source": "locations.js"       },
     { "source": "stage-assistant.js" },
 ]
