@@ -11,8 +11,9 @@ myinstall: clean build
 build: locations.js
 	@-rm -vf *.ipk NOAA-METAR *.tar.gz ipkgtmp*
 	ln -sf ./ NOAA-METAR && \
-        palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" --exclude NOAA-METAR --exclude contrib --exclude Makefile \
-            NOAA-METAR && rm NOAA-METAR
+        palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
+                     --exclude NOAA-METAR --exclude contrib --exclude Makefile \
+        NOAA-METAR && rm NOAA-METAR
 
 contrib/locations.html:
 	wget -O contrib/locations.html http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_K
