@@ -19,8 +19,8 @@ Add_metar2Assistant.prototype.setup = function() {
     for(var i=0; i<cities.length; i++)
         this.locations_model.items.push({ 'location': cities[i], data: location_data[this.state][cities[i]] });
 
-    this.controller.setupWidget('gw_locations', attrs, this.locations_model);
-	Mojo.Event.listen(this.controller.get("gw_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
+    this.controller.setupWidget('noaa_locations', attrs, this.locations_model);
+	Mojo.Event.listen(this.controller.get("noaa_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
 
     var options = {
         name:    "noaametar_locations",

@@ -25,11 +25,11 @@ Show_metarAssistant.prototype.setup = function() {
     };
 
     this.metar_model = {listTitle: $L('METAR'), items: []};
-    this.controller.setupWidget('gw_metar', attrs, this.metar_model);
+    this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
-    Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
-    Mojo.Event.listen(this.controller.get('gw_metar'),     Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'),     Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'),     Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
 	Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.tap,        this.force_update.bind(this));
 
     this.force_update_flag = false;
@@ -59,7 +59,7 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
         this.controller.modelChanged(this.metar_model);
 
         if( !res.cached ) {
-            var node = this.controller.get("gw_metar").mojo.getNodeByIndex(res.index).select("div.METAR")[0];
+            var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.METAR")[0];
 
             Mojo.Log.info("trying to set success-background on list item.");
             node.style.color = "#009900";
