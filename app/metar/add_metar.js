@@ -11,7 +11,7 @@ Add_metarAssistant.prototype.setup = function() {
         emptyTemplate: 'metar/misc/empty',
     };
 
-    this.locations_model = {listTitle: $L('Choose State'), items: []};
+    this.locations_model = {listTitle: $L('-or- Tap A Region'), items: []};
 
     var states = Object.keys(location_data).sort(function(a,b) { if(a<b) return -1; if (a>b) return 1; return 0; });
     for(var i=0; i<states.length; i++)
@@ -19,6 +19,37 @@ Add_metarAssistant.prototype.setup = function() {
 
     this.controller.setupWidget('gw_locations', attrs, this.locations_model);
 	Mojo.Event.listen(this.controller.get("gw_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
+
+    var ICAO_attributes = {
+        // XXX: how many many of these are default?
+        hintText:         'e.g., KORD',
+        textFieldName:    'ICAO',
+        modelProperty:    'original',
+        multiline:        false,
+        disabledProperty: 'disabled',
+        focus:            true,
+        modifierState:    Mojo.Widget.capsLock,
+        limitResize:      false,
+        holdToEnable:     false,
+        focusMode:        Mojo.Widget.focusSelectMode,
+        changeOnKeyPress: true,
+        textReplacement:  false,
+        maxLength:        30,
+        requiresEnterKey: false
+    };
+
+    this.ICAO_model = {
+        original: '',
+        disabled: false
+    };
+
+    this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAO_model);
+    this.controller.setupWidget('manual_add', {type: Mojo.Widget.activityButton}, {label: "Add Code"} );
+    Mojo.Event.listen($("manual_add"), Mojo.Event.tap, this.add_code.bind(this))
+}
+
+Add_metarAssistant.prototype.add_code = function(event) {
+    Mojo.Log.info("[add_code] (my god, do something)");
 }
 
 Add_metarAssistant.prototype.listClickHandler = function(event) {
