@@ -16,6 +16,7 @@ build: locations.js
 
 contrib/locations.html:
 	wget -O contrib/locations.html http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_K
+	git add contrib/locations.html
 
 locations.js: contrib/process_locations.pl contrib/locations.html
 	./contrib/process_locations.pl
