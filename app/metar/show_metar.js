@@ -7,7 +7,7 @@ Show_metarAssistant.prototype.setup = function() {
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     var options = {
-        name:    "gweather_locations",
+        name:    "noaametar_locations",
         version: 1,
         replace: false, // opening existing if possible
     };

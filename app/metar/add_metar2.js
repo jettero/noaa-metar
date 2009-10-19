@@ -23,7 +23,7 @@ Add_metar2Assistant.prototype.setup = function() {
 	Mojo.Event.listen(this.controller.get("gw_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
 
     var options = {
-        name:    "gweather_locations",
+        name:    "noaametar_locations",
         version: 1,
         replace: false, // opening existing if possible
     };

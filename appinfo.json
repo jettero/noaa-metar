@@ -1,9 +1,9 @@
 {
-	"id": "com.jettero.gweather",
-	"version": "0.0.2",
+	"id": "com.jettero.noaa-metar",
+	"version": "0.0.3",
 	"vendor": "voltar.org",
 	"type": "web",
 	"main": "index.html",
-	"title": "GWeather",
+	"title": "NOAA-METAR",
 	"icon": "icon.png"
 }

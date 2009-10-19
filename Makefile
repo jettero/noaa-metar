@@ -9,12 +9,15 @@ myinstall: clean build
 	ssh castle.vhb
 
 build: locations.js
-	@-rm -vf *.ipk GWeather *.tar.gz ipkgtmp*
-	ln -sf ./ GWeather && \
-        palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" --exclude GWeather --exclude contrib --exclude Makefile \
-            GWeather && rm GWeather
+	@-rm -vf *.ipk NOAA-METAR *.tar.gz ipkgtmp*
+	ln -sf ./ NOAA-METAR && \
+        palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" --exclude NOAA-METAR --exclude contrib --exclude Makefile \
+            NOAA-METAR && rm NOAA-METAR
 
-locations.js: contrib/process_locations.pl contrib/Locations.xml
+contrib/locations.html:
+	wget -O contrib/locations.html http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_K
+
+locations.js: contrib/process_locations.pl contrib/locations.html
 	./contrib/process_locations.pl
 
 clean:
