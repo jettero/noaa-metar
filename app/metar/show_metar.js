@@ -118,13 +118,20 @@ Show_metarAssistant.prototype.activate = function(event) {
 
                 Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
+                if( Object.keys( this.our_locations ).length < 1 ) {
+                    Mojo.Log.info("deactivating spinner, hopefully");
+                    this.force_update_flag = false;
+                    this.controller.get("force_update").mojo.deactivate();
+                }
+
                 this.metar_model.items = [];
                 for(var code in this.our_locations)
-                    this.metar_model.items.push({
-                        METAR:   "fetching " + code + " ("
-                            + this.our_locations[code].state + ", " + this.our_locations[code].city 
-                            + ") ...",
+                    var desc = code;
+                    if( this.our_locations[code].state )
+                        desc += " (" + this.our_locations[code].state + ", " + this.our_locations[code].city + ") ...";
 
+                    this.metar_model.items.push({
+                        METAR:   "fetching " + desc,
                         fetched: false,
                         code:    code,
                         city:    this.our_locations[code].city,
