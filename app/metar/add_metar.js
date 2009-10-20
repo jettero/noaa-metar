@@ -46,10 +46,57 @@ Add_metarAssistant.prototype.setup = function() {
     this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAO_model);
     this.controller.setupWidget('manual_add', {type: Mojo.Widget.activityButton}, {label: "Add Code"} );
     Mojo.Event.listen($("manual_add"), Mojo.Event.tap, this.add_code.bind(this))
+
+    this.our_locations = {};
+
+    var options = {
+        name:    "noaametar_locations",
+        version: 1,
+        replace: false, // opening existing if possible
+    };
+
+    this.dbo = new Mojo.Depot(options, function(){}, function(t,r){
+        Mojo.Controller.errorDialog("Can't open location database (#" + r.message + ").");
+    });
+
+    this.dbo.simpleGet("locations",
+        function(locations) { if(locations) this.our_locations = locations; }.bind(this),
+
+        function(transaction, error) {
+            Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
+
+        }.bind(this)
+    );
 }
 
 Add_metarAssistant.prototype.add_code = function(event) {
-    Mojo.Log.info("[add_code] (my god, do something)");
+    Mojo.Log.info("[manual add]");
+
+    this.our_locations.blarg = {};
+
+    Mojo.Log.info("[built our_locations]");
+    this.dbo.simpleAdd("locations", this.our_locations,
+        function() {
+            message = 'This location has been added to your location database.';
+
+            this.controller.showAlertDialog({
+                onChoose: function(value) {
+                    Mojo.Controller.stageController.popScene();
+                },
+                title:    'Location Added',
+                message:  message,
+                choices:  [ {label: 'OK', value: 'OK', type: 'color'} ]
+            });
+
+            Mojo.Log.info("[added] ", event.item.location);
+
+        }.bind(this),
+
+        function(transaction,result) {
+            Mojo.Controller.errorDialog("Database error saving location details: " + result.message);
+
+        }.bind(this)
+    );
 }
 
 Add_metarAssistant.prototype.listClickHandler = function(event) {
