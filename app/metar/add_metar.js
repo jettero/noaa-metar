@@ -69,10 +69,30 @@ Add_metarAssistant.prototype.setup = function() {
     );
 }
 
+Add_metarAssistant.prototype.nospin = function(event) {
+    $('manual_add').mojo.deactivate();
+    this.spinning = false;
+}
+
 Add_metarAssistant.prototype.add_code = function(event) {
     Mojo.Log.info("[manual add]");
 
-    this.our_locations.blarg = {};
+    var ICAO = this.ICAO_model.original.strip().toUpperCase();
+
+    if( this.spinning ) return;
+        this.spinning = true;
+
+    if (!ICAO.match(/^[A-Z]{4}$/)) {
+        Mojo.Controller.errorDialog('Bad ICAO airport code, or code not understood: ' + ICAO);
+        this.nospin();
+        return;
+    }
+
+    this.our_locations[ICAO] = {
+        // Since this is manual, we don't ahve the city and state and airport
+        // name information we would using the our list...
+
+    };
 
     Mojo.Log.info("[built our_locations]");
     this.dbo.simpleAdd("locations", this.our_locations,
