@@ -125,7 +125,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                 }
 
                 this.metar_model.items = [];
-                for(var code in this.our_locations)
+                for(var code in this.our_locations) {
                     var desc = code;
                     if( this.our_locations[code].state )
                         desc += " (" + this.our_locations[code].state + ", " + this.our_locations[code].city + ") ...";
@@ -138,6 +138,7 @@ Show_metarAssistant.prototype.activate = function(event) {
                         state:   this.our_locations[code].state,
                         fails: 0,
                     });
+                }
 
                 this.controller.modelChanged(this.metar_model);
                 get_metar({index: 0, force: this.force_update_flag, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
