@@ -1,5 +1,5 @@
 {
-	"id": "com.jettero.noaa-metar",
+	"id": "org.voltar.noaa-metar",
 	"version": "0.0.3",
 	"vendor": "voltar.org",
 	"type": "web",
