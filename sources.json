@@ -1,10 +1,11 @@
 [
-    { "source": "app/metar/show_metar.js" },
-    { "source": "app/metar/add_metar.js" },
-    { "source": "app/metar/add_metar2.js" },
-
-    { "source": "metar.js" },
-    { "source": "metar_support.js" },
+    { "source": "metar.js"           },
+    { "source": "metar_support.js"   },
     { "source": "locations.js"       },
     { "source": "stage-assistant.js" },
+
+    { "source": "app/assistants/METAR.js" },
+    { "source": "app/assistants/AddCode.js" },
+    { "source": "app/assistants/AddCode2.js" },
+
 ]

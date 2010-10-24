@@ -1,9 +1,13 @@
-function Show_metarAssistant() {
-    Mojo.Log.info("show_metar()");
+function METARAssistant() {
+    Mojo.Log.info("METAR()");
+
+    this.receiveData = this.receiveData.bind(this);
+    this.dbRecv      = this.dbRecv.bind(this);
+    this.updateTimer = this.updateTimer.bind(this);
 }
 
-Show_metarAssistant.prototype.setup = function() {
-    Mojo.Log.info("show_metar::setup()");
+METARAssistant.prototype.setup = function() {
+    Mojo.Log.info("METAR::setup()");
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     var options = {
@@ -28,16 +32,18 @@ Show_metarAssistant.prototype.setup = function() {
     this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
-    Mojo.Event.listen(this.controller.get('noaa_metar'),     Mojo.Event.listAdd,    this.addMETAR.bindAsEventListener(this));
-    Mojo.Event.listen(this.controller.get('noaa_metar'),     Mojo.Event.listDelete, this.rmMETAR.bindAsEventListener(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listAdd,    this.addCode.bind(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listDelete, this.rmCode.bind(this));
 	Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.tap,        this.force_update.bind(this));
 
     this.force_update_flag = false;
-}
+};
 
-Show_metarAssistant.prototype.rmMETAR = function(event) {
-    Mojo.Log.info("rmMETAR(): ", event.item.code);
+METARAssistant.prototype.rmCode = function(event) {
+    Mojo.Log.info("METAR::rmCode(): ", event.item.code);
+
     delete this.our_locations[event.item.code];
+
     this.dbo.simpleAdd("locations", this.our_locations,
         function() { Mojo.Log.info("[removed] ", event.item.code); }.bind(this),
         function(transaction,result) {
@@ -46,12 +52,14 @@ Show_metarAssistant.prototype.rmMETAR = function(event) {
     );
 }
 
-Show_metarAssistant.prototype.addMETAR = function(event) {
+METARAssistant.prototype.addCode = function(event) {
+    Mojo.Log.info("METAR::addCode(): ", event.item.code);
+
     this.controller.stageController.assistant.showScene('metar', 'add_metar');
 }
 
-Show_metarAssistant.prototype.receive_metar = function(res) {
-    Mojo.Log.info("receive_metar(): ", res.code, res.worked ? "[success]" : "[fail]");
+METARAssistant.prototype.receiveData = function(res) {
+    Mojo.Log.info("METAR::receiveData(): ", res.code, res.worked ? "[success]" : "[fail]");
 
     if( res.worked ) {
         this.metar_model.items[res.index].METAR = res.METAR;
@@ -79,7 +87,7 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
 
     for(var i=0; i<this.metar_model.items.length; i++)
         if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
-            get_metar({code: this.metar_model.items[i].code, force: this.force_update_flag, index: i}, this.receive_metar.bind(this));
+            get_metar({code: this.metar_model.items[i].code, force: this.force_update_flag, index: i}, this.receiveData.bind(this));
             return;
         }
 
@@ -90,13 +98,13 @@ Show_metarAssistant.prototype.receive_metar = function(res) {
     }
 }
 
-Show_metarAssistant.prototype.force_update = function(event) {
+METARAssistant.prototype.force_update = function(event) {
     Mojo.Log.info("forcing updates");
     this.force_update_flag = true;
     this.activate();
 }
 
-Show_metarAssistant.prototype.update_timer = function(event) {
+METARAssistant.prototype.updateTimer = function() {
     if( !this.timer_active )
         return;
 
@@ -104,62 +112,58 @@ Show_metarAssistant.prototype.update_timer = function(event) {
     this.activate();
 }
 
-Show_metarAssistant.prototype.activate = function(event) {
+METARAssistant.prototype.activate = function(event) {
     Mojo.Log.info("fetching list of items for METAR display");
 
     this.timer_active = true;
-    window.setTimeout( this.update_timer.bind(this), 1000 * 90 );
+    setTimeout( this.updateTimer, 90e3 );
 
     this.our_locations = {};
-    this.dbo.simpleGet("locations",
-        function(locations) {
-            if( locations ) {
-                this.our_locations = locations;
+    this.dbo.simpleGet("locations", this.dbRecv, this.dbError);
+};
 
-                Mojo.Log.info("found list of items for METAR display, building Mojo List");
+METARAssistant.prototype.dbRecv = function(locations) {
+    Mojo.Log.info("fetching list of items for METAR display");
 
-                if( Object.keys( this.our_locations ).length < 1 ) {
-                    Mojo.Log.info("deactivating spinner, hopefully");
-                    this.force_update_flag = false;
-                    this.controller.get("force_update").mojo.deactivate();
-                }
+    if( locations ) {
+        this.our_locations = locations;
 
-                this.metar_model.items = [];
-                for(var code in this.our_locations) {
-                    var desc = code;
-                    if( this.our_locations[code].state )
-                        desc += " (" + this.our_locations[code].state + ", " + this.our_locations[code].city + ") ...";
+        Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
-                    this.metar_model.items.push({
-                        METAR:   "fetching " + desc,
-                        fetched: false,
-                        code:    code,
-                        city:    this.our_locations[code].city,
-                        state:   this.our_locations[code].state,
-                        fails: 0,
-                    });
-                }
+        if( Object.keys( this.our_locations ).length < 1 ) {
+            Mojo.Log.info("deactivating spinner, hopefully");
+            this.force_update_flag = false;
+            this.controller.get("force_update").mojo.deactivate();
+        }
 
-                this.controller.modelChanged(this.metar_model);
-                get_metar({index: 0, force: this.force_update_flag, code: this.metar_model.items[0].code}, this.receive_metar.bind(this));
-            }
+        this.metar_model.items = [];
+        for(var code in this.our_locations) {
+            var desc = code;
+            if( this.our_locations[code].state )
+                desc += " (" + this.our_locations[code].state + ", " + this.our_locations[code].city + ") ...";
 
-        }.bind(this),
+            this.metar_model.items.push({
+                METAR:   "fetching " + desc,
+                fetched: false,
+                code:    code,
+                city:    this.our_locations[code].city,
+                state:   this.our_locations[code].state,
+                fails: 0,
+            });
+        }
 
-        function(transaction, error) {
-            Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
+        this.controller.modelChanged(this.metar_model);
+        get_metar({index: 0, force: this.force_update_flag, code: this.metar_model.items[0].code}, this.receiveData);
+    }
 
-        }.bind(this)
-    );
-}
+};
 
-Show_metarAssistant.prototype.deactivate = function(event) {
-    Mojo.Log.info("disabling update timer");
+METARAssistant.prototype.dbError = function(transaction,error) {
+    Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
+};
+
+METARAssistant.prototype.deactivate = function(event) {
+    Mojo.Log.info("METAR::deactivate()");
+
     this.timer_active = false;
-}
-
-Show_metarAssistant.prototype.cleanup = function(event) {
-    // XXX: What needs to be cleaned up?  Seriously.  Does any of this clean
-    // itself up? or do you have to go through and destroy each object and
-    // click handler?
 }

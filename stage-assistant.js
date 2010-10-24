@@ -1,58 +1,104 @@
+/*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
+*/
+/*global Mojo
+*/
+
+var OPT;
+
 function StageAssistant() {
-	Mojo.Log.info("StageAssistant()")
+	Mojo.Log.info("StageAssistant()");
+
+    OPT = Mojo.loadJSONFile(Mojo.appPath + "runtime_options.json");
+
+    var pc = new Mojo.Model.Cookie("OPT.prefs");
+
+    OPT.loadPrefs = function() {
+        var l = pc.get();
+
+        if( l )
+            for( var k in l ) {
+                if( OPT[k] != null )
+                    OPT[k] = l[k];
+            }
+    };
+
+    OPT.savePrefs = function() {
+        var x = {};
+
+        for( var k in OPT ) {
+            if( typeof OPT[k] !== "function" )
+                x[k] = OPT[k];
+        }
+
+        pc.put(x);
+    };
 }
 
 StageAssistant.prototype.setup = function() {
-	Mojo.Log.info("StageAssistant()::setup()")
-    this.controller.assistant.showScene('metar', 'show_metar');
-}
+	Mojo.Log.info("StageAssistant()::setup()");
 
-StageAssistant.prototype.showScene = function (directory, sceneName, args) {
-	Mojo.Log.info("StageAssistant()::showScene(%s, %s)", directory, sceneName)
+    this.controller.assistant.showScene('METAR');
+
+    this.controller.lockOrientation = function() {
+        this.setWindowOrientation(this.getWindowOrientation());
+    };
+
+    this.controller.freeOrientation = function() {
+        this.setWindowOrientation("free");
+    };
+};
+
+StageAssistant.prototype.showScene = function (sceneName, args) {
+	Mojo.Log.info("StageAssistant()::showScene(%s)", sceneName);
 
 	if (args === undefined) {
-		this.controller.pushScene({name: sceneName, sceneTemplate: directory + "/" + sceneName});
+		this.controller.pushScene({name: sceneName, sceneTemplate: sceneName});
 
 	} else {
-		this.controller.pushScene({name: sceneName, sceneTemplate: directory + "/" + sceneName}, args);
+		this.controller.pushScene({name: sceneName, sceneTemplate: sceneName}, args);
 	}
 };
 
-StageAssistant.prototype.handleCommand = function (event) {
-	// this.controller = Mojo.Controller.stageController.activeScene();
-    // I have this bound to the current scene, so ... this isn't necessary
+StageAssistant.prototype.handleCommand = function(event) {
+    // NOTE: if the stageassistant and the sceneassistant both have a
+    // handleCommand, they *both* receive commands
 
-    if(event.type == Mojo.Event.command) {	
-		switch (event.command) {
-			// these are built-in commands. we haven't enabled any of them, but
-			// they are listed here as part of the boilerplate, to be enabled later if needed
-			case 'do-myPrefs':
-				this.controller.showAlertDialog({
-				    title: $L("Prefs Menu"),
-				    message: $L("You have selected the prefs menu"),
-					choices:[
-         				{label:$L('Thanks'), value:"refresh", type:'affirmative'}
-						]				    
-				    });			
-				break;	
+    if(event.type === Mojo.Event.command) {
+        var cmd = event.command;
+        Mojo.Log.info("StageAssistant::handleCommand(%s)", cmd);
 
-			case 'do-locations':
-                Mojo.Log.info("showing locations list... hopefully...");
-                Mojo.Controller.stageController.assistant.showScene('metar', 'show_metar');
-				break;
-		}
-	}
-}
+        var a;
+        if( a = cmd.match(/^myshow-(.+)/) )
+            Mojo.Controller.stageController.assistant.showScene(a[1]);
 
-StageAssistant.prototype.menu_setup = function (event) {
+        else switch( cmd ) {
+            case 'refresh-login':
+                AMO.refreshCurrentLogin();
+                break;
+
+            case 'clear-cache':
+                REQ.dbNewk();
+                TMO.dbNewk();
+
+                break;
+
+            default:
+                Mojo.Log.info("StageAssistant::handleCommand(%s): unknown menu command", cmd);
+                break;
+        }
+    }
+};
+
+StageAssistant.prototype.menuSetup = function() {
     this.appMenuModel = {
         visible: true,
         items: [
-            { label: $L('Locations...'), command: 'do-locations' },
+            { label: "Help",  command: 'myshow-Help'  },
+            { label: "About", command: 'myshow-About' },
         ]
     };
 
-    this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: false}, this.appMenuModel);
-}
+    this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, this.appMenuModel);
+};
 
 Mojo.Log.info('loaded(stage-assistant.js)');
