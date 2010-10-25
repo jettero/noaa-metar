@@ -57,10 +57,8 @@ METARAssistant.prototype.rmCode = function(event) {
     );
 };
 
-METARAssistant.prototype.addCode = function(event) {
-    Mojo.Log.info("METAR::addCode(): ", event.item.code);
-
-    this.controller.stageController.assistant.showScene('metar', 'add_metar');
+METARAssistant.prototype.addCode = function() {
+    this.controller.stageController.assistant.showScene('AddCode');
 };
 
 METARAssistant.prototype.receiveData = function(res) {
