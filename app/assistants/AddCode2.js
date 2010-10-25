@@ -1,11 +1,11 @@
-function Add_metar2Assistant(args) {
-	Mojo.Log.info("Add_metar2Assistant()");
+function AddCode2Assistant(args) {
+	Mojo.Log.info("AddCode2Assistant()");
 
     this.state = args[0];
 }
 
-Add_metar2Assistant.prototype.setup = function() {
-	Mojo.Log.info("Add_metar2Assistant()::setup()");
+AddCode2Assistant.prototype.setup = function() {
+	Mojo.Log.info("AddCode2Assistant()::setup()");
 
     var attrs = {
         listTemplate:  'metar/misc/listcontainer',
@@ -43,7 +43,7 @@ Add_metar2Assistant.prototype.setup = function() {
     );
 }
 
-Add_metar2Assistant.prototype.listClickHandler = function(event) {
+AddCode2Assistant.prototype.listClickHandler = function(event) {
     Mojo.Log.info("[clicked] ", event.item.location);
 
     var key = event.item.data.code;
@@ -75,16 +75,4 @@ Add_metar2Assistant.prototype.listClickHandler = function(event) {
 
         }.bind(this)
     );
-}
-
-Add_metar2Assistant.prototype.activate = function(event) {
-}
-
-Add_metar2Assistant.prototype.deactivate = function(event) {
-}
-
-Add_metar2Assistant.prototype.cleanup = function(event) {
-    // XXX: What needs to be cleaned up?  Seriously.  Does any of this clean
-    // itself up? or do you have to go through and destroy each object and
-    // click handler?
 }
