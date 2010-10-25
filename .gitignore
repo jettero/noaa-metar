@@ -1,2 +1,9 @@
+*.ipk
 NOAA-METAR
-com.jettero.*.ipk
+cookies.txt
+framework_config.json
+runtime_options.json
+last_run.log
+file.html
+envvars
+newenvvars

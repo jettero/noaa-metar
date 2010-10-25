@@ -1,3 +1,8 @@
+/*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
+*/
+/*global Mojo OPT setTimeout get_metar
+*/
+
 function METARAssistant() {
     Mojo.Log.info("METAR()");
 
@@ -13,7 +18,7 @@ METARAssistant.prototype.setup = function() {
     var options = {
         name:    "noaametar_locations",
         version: 1,
-        replace: false, // opening existing if possible
+        replace: false // opening existing if possible
     };
 
     this.dbo = new Mojo.Depot(options, function(){}, function(t,r){
@@ -25,10 +30,10 @@ METARAssistant.prototype.setup = function() {
         listTemplate:  'metar/misc/listcontainer',
         itemTemplate:  'metar/misc/METARItem',
         emptyTemplate: 'metar/misc/empty',
-        addItemLabel:  $L("Add...")
+        addItemLabel:  "Add..."
     };
 
-    this.metar_model = {listTitle: $L('METAR'), items: []};
+    this.metar_model = {listTitle: 'METAR', items: []};
     this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
@@ -50,13 +55,13 @@ METARAssistant.prototype.rmCode = function(event) {
             Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
         }.bind(this)
     );
-}
+};
 
 METARAssistant.prototype.addCode = function(event) {
     Mojo.Log.info("METAR::addCode(): ", event.item.code);
 
     this.controller.stageController.assistant.showScene('metar', 'add_metar');
-}
+};
 
 METARAssistant.prototype.receiveData = function(res) {
     Mojo.Log.info("METAR::receiveData(): ", res.code, res.worked ? "[success]" : "[fail]");
@@ -71,9 +76,9 @@ METARAssistant.prototype.receiveData = function(res) {
 
             Mojo.Log.info("trying to set success-background on list item.");
             node.style.color = "#009900";
-            window.setTimeout(function(){ node.style.color = "#007700"; }, 1000);
-            window.setTimeout(function(){ node.style.color = "#005500"; }, 1100);
-            window.setTimeout(function(){ node.style.color = "#000000"; }, 1200);
+            setTimeout(function(){ node.style.color = "#007700"; }, 1000);
+            setTimeout(function(){ node.style.color = "#005500"; }, 1100);
+            setTimeout(function(){ node.style.color = "#000000"; }, 1200);
         }
 
     } else {
@@ -96,13 +101,13 @@ METARAssistant.prototype.receiveData = function(res) {
         this.force_update_flag = false;
         this.controller.get("force_update").mojo.deactivate();
     }
-}
+};
 
 METARAssistant.prototype.force_update = function(event) {
     Mojo.Log.info("forcing updates");
     this.force_update_flag = true;
     this.activate();
-}
+};
 
 METARAssistant.prototype.updateTimer = function() {
     if( !this.timer_active )
@@ -110,7 +115,7 @@ METARAssistant.prototype.updateTimer = function() {
 
     Mojo.Log.info("update timer fired");
     this.activate();
-}
+};
 
 METARAssistant.prototype.activate = function(event) {
     Mojo.Log.info("fetching list of items for METAR display");
@@ -148,7 +153,7 @@ METARAssistant.prototype.dbRecv = function(locations) {
                 code:    code,
                 city:    this.our_locations[code].city,
                 state:   this.our_locations[code].state,
-                fails: 0,
+                fails: 0
             });
         }
 
@@ -166,4 +171,4 @@ METARAssistant.prototype.deactivate = function(event) {
     Mojo.Log.info("METAR::deactivate()");
 
     this.timer_active = false;
-}
+};

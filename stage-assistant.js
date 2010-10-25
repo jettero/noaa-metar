@@ -72,16 +72,6 @@ StageAssistant.prototype.handleCommand = function(event) {
             Mojo.Controller.stageController.assistant.showScene(a[1]);
 
         else switch( cmd ) {
-            case 'refresh-login':
-                AMO.refreshCurrentLogin();
-                break;
-
-            case 'clear-cache':
-                REQ.dbNewk();
-                TMO.dbNewk();
-
-                break;
-
             default:
                 Mojo.Log.info("StageAssistant::handleCommand(%s): unknown menu command", cmd);
                 break;
@@ -94,7 +84,7 @@ StageAssistant.prototype.menuSetup = function() {
         visible: true,
         items: [
             { label: "Help",  command: 'myshow-Help'  },
-            { label: "About", command: 'myshow-About' },
+            { label: "About", command: 'myshow-About' }
         ]
     };
 
