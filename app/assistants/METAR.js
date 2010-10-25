@@ -15,6 +15,13 @@ METARAssistant.prototype.setup = function() {
     Mojo.Log.info("METAR::setup()");
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
+    this.refreshModel = { label: "Reload",  icon: 'refresh', command: 'refresh' };
+    this.commandMenuModel = {
+        label: 'Command Menu',
+        items: [ {}, this.refreshModel ]
+    };
+	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
+
     var options = {
         name:    "noaametar_locations",
         version: 1,
@@ -39,9 +46,8 @@ METARAssistant.prototype.setup = function() {
 
     Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listAdd,    this.addCode.bind(this));
     Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listDelete, this.rmCode.bind(this));
-	Mojo.Event.listen(this.controller.get("force_update"), Mojo.Event.tap,        this.force_update.bind(this));
 
-    this.force_update_flag = false;
+    this.forceUpdateFlag = false;
 };
 
 METARAssistant.prototype.rmCode = function(event) {
@@ -90,21 +96,15 @@ METARAssistant.prototype.receiveData = function(res) {
 
     for(var i=0; i<this.metar_model.items.length; i++)
         if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
-            get_metar({code: this.metar_model.items[i].code, force: this.force_update_flag, index: i}, this.receiveData.bind(this));
+            get_metar({code: this.metar_model.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveData.bind(this));
             return;
         }
 
-    if( this.force_update_flag ) {
+    if( this.forceUpdateFlag ) {
         Mojo.Log.info("deactivating spinner, hopefully");
-        this.force_update_flag = false;
+        this.forceUpdateFlag = false;
         this.controller.get("force_update").mojo.deactivate();
     }
-};
-
-METARAssistant.prototype.force_update = function(event) {
-    Mojo.Log.info("forcing updates");
-    this.force_update_flag = true;
-    this.activate();
 };
 
 METARAssistant.prototype.updateTimer = function() {
@@ -115,7 +115,7 @@ METARAssistant.prototype.updateTimer = function() {
     this.activate();
 };
 
-METARAssistant.prototype.activate = function(event) {
+METARAssistant.prototype.activate = function() {
     Mojo.Log.info("fetching list of items for METAR display");
 
     this.timer_active = true;
@@ -135,7 +135,7 @@ METARAssistant.prototype.dbRecv = function(locations) {
 
         if( Object.keys( this.our_locations ).length < 1 ) {
             Mojo.Log.info("deactivating spinner, hopefully");
-            this.force_update_flag = false;
+            this.forceUpdateFlag = false;
             this.controller.get("force_update").mojo.deactivate();
         }
 
@@ -156,7 +156,7 @@ METARAssistant.prototype.dbRecv = function(locations) {
         }
 
         this.controller.modelChanged(this.metar_model);
-        get_metar({index: 0, force: this.force_update_flag, code: this.metar_model.items[0].code}, this.receiveData);
+        get_metar({index: 0, force: this.forceUpdateFlag, code: this.metar_model.items[0].code}, this.receiveData);
     }
 
 };
@@ -165,8 +165,33 @@ METARAssistant.prototype.dbError = function(transaction,error) {
     Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
 };
 
-METARAssistant.prototype.deactivate = function(event) {
+METARAssistant.prototype.deactivate = function() {
     Mojo.Log.info("METAR::deactivate()");
 
     this.timer_active = false;
 };
+
+METARAssistant.prototype.handleCommand = function() {
+    if (event.type === Mojo.Event.command) {
+        var s_a = event.command.split(/\s*(?:@@)\s*/);
+
+        if( s_a.length > 0 )
+            Mojo.Log.info("Task::handleCommand(%s) [rl=%s]", s_a[0], rl);
+
+        switch (s_a[0]) {
+            case 'refresh':
+                Mojo.Log.info("forcing updates");
+
+                this.forceUpdateFlag = true;
+                this.activate();
+                break;
+
+            default:
+                Mojo.Log.info("Task::handleCommand(unknown command: %s) [rl=%s]", Object.toJSON(s_a), rl);
+                break;
+        }
+    }
+
+};
+
+/*}}}*/
