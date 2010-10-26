@@ -109,17 +109,8 @@ AddCodeAssistant.prototype.addCode = function(event) {
 };
 
 AddCodeAssistant.prototype.dbSent = function(event) {
-    this.controller.showAlertDialog({
-        onChoose: function(value) {
-            Mojo.Controller.stageController.popScene();
-        },
-        title:    'Location Added',
-        message:  'This location has been added to your location database.',
-        choices:  [ {label: 'OK', value: 'OK', type: 'color'} ]
-    });
-
     Mojo.Log.info("[added] ", event.item.location);
-
+    Mojo.Controller.stageController.popScene();
 };
 
 AddCodeAssistant.prototype.dbSendFail = function(transaction,result) {

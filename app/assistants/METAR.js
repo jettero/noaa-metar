@@ -34,17 +34,15 @@ METARAssistant.prototype.setup = function() {
 
     var attrs = {
         swipeToDelete: true,
-        listTemplate:  'metar/misc/listcontainer',
-        itemTemplate:  'metar/misc/METARItem',
-        emptyTemplate: 'metar/misc/empty',
-        addItemLabel:  "Add..."
+        listTemplate:  'misc/listcontainer',
+        itemTemplate:  'misc/METARItem',
+        emptyTemplate: 'misc/empty',
     };
 
-    this.metar_model = {listTitle: 'METAR', items: []};
+    this.metar_model = {items: []};
     this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
-    Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listAdd,    this.addCode.bind(this));
     Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listDelete, this.rmCode.bind(this));
 
     this.forceUpdateFlag = false;
@@ -61,10 +59,6 @@ METARAssistant.prototype.rmCode = function(event) {
             Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
         }.bind(this)
     );
-};
-
-METARAssistant.prototype.addCode = function() {
-    this.controller.stageController.assistant.showScene('AddCode');
 };
 
 METARAssistant.prototype.receiveData = function(res) {
@@ -181,9 +175,13 @@ METARAssistant.prototype.handleCommand = function() {
         switch (s_a[0]) {
             case 'refresh':
                 Mojo.Log.info("forcing updates");
-
                 this.forceUpdateFlag = true;
                 this.activate();
+                break;
+
+            case 'add':
+                Mojo.Log.info("add-code");
+                this.controller.stageController.assistant.showScene('AddCode');
                 break;
 
             default:
