@@ -9,6 +9,9 @@ function METARAssistant() {
     this.receiveData = this.receiveData.bind(this);
     this.dbRecv      = this.dbRecv.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
+
+    this.SCa = Mojo.Controller.stageController.assistant;
+    this.menuSetup = this.SCa.menuSetup.bind(this);
 }
 
 METARAssistant.prototype.setup = function() {

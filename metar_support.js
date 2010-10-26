@@ -5,10 +5,10 @@ function my_error(text, calback) {
 
     Mojo.Controller.showAlertDialog({
         onChoose: function(value) {callback()},
-        title: $L("Error"),
-        message: $L(text),
+        title: "Error",
+        message: text,
         choices:[
-             {label:$L("OK"), value:"OK", type:'dismiss'}    
+             {label: "OK", value: "OK", type: 'dismiss'}    
         ]
     });
 }
@@ -26,7 +26,7 @@ function get_metar(req, callback) {
         req.METAR  = cached;
         req.cached = true;
 
-        Mojo.Log.info("fetched cached METAR("+req.code+"): ", cached);
+        Mojo.Log.info("fetched cached METAR(" + req.code + "): ", cached);
         callback(req);
 
         return;
@@ -43,7 +43,7 @@ function get_metar(req, callback) {
                 req.worked = true;
                 req.METAR  = extract_metar(req.code, transport.responseText);
 
-                Mojo.Log.info("fetched fresh METAR("+req.code+"): ", req.METAR);
+                Mojo.Log.info("fetched fresh METAR(" + req.code + "): ", req.METAR);
                 cookie.put(req.METAR, d);
                 callback(req);
 
@@ -55,7 +55,7 @@ function get_metar(req, callback) {
         }.bind(this),
 
         onFailure: function(transport) {
-            var t = new Template($L("Ajax Error: #{status}"));
+            var t = new Template("Ajax Error: #{status}");
             var m = t.evaluate(transport);
             var e = [m];
 

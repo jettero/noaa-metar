@@ -1,3 +1,7 @@
 .palm-page-header .icon.noaa-metar {
 	background-image: url(header-icon.png);
 }
+
+.metar-text {
+    font-size: 10pt;
+}
