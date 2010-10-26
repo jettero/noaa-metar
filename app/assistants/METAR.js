@@ -39,7 +39,7 @@ METARAssistant.prototype.setup = function() {
         swipeToDelete: true,
         listTemplate:  'misc/listcontainer',
         itemTemplate:  'misc/METARItem',
-        emptyTemplate: 'misc/empty',
+        emptyTemplate: 'misc/empty'
     };
 
     this.metar_model = {items: []};
@@ -168,12 +168,12 @@ METARAssistant.prototype.deactivate = function() {
     this.timer_active = false;
 };
 
-METARAssistant.prototype.handleCommand = function() {
+METARAssistant.prototype.handleCommand = function(event) {
     if (event.type === Mojo.Event.command) {
         var s_a = event.command.split(/\s*(?:@@)\s*/);
 
         if( s_a.length > 0 )
-            Mojo.Log.info("Task::handleCommand(%s) [rl=%s]", s_a[0], rl);
+            Mojo.Log.info("METAR::handleCommand(%s)", s_a[0]);
 
         switch (s_a[0]) {
             case 'refresh':
@@ -188,7 +188,7 @@ METARAssistant.prototype.handleCommand = function() {
                 break;
 
             default:
-                Mojo.Log.info("Task::handleCommand(unknown command: %s) [rl=%s]", Object.toJSON(s_a), rl);
+                Mojo.Log.info("METAR::handleCommand(unknown command: %s)", Object.toJSON(s_a));
                 break;
         }
     }

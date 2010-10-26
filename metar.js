@@ -1,8 +1,11 @@
+/*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
+*/
+
 // function my_parseint(ilike) {{{
 function my_parseint(ilike, units) {
-    ilike = ilike.replace(/[^0-9]/g, "").replace(/^0+/, "");
+    ilike = ilike.replace(/[^0-9]/g, "").replace(/^0+/, ""); // STFU
 
-    return [parseInt(ilike), units];
+    return [parseInt(ilike, 10), units];
 }
 // }}}
 
@@ -20,12 +23,15 @@ function decode_metar(metar) {
         res.sation_id = msplit.shift();
         // TODO: use facts: /^K/ indicates a US station, KAZO is K=us, AZO=kalamazoo-airport
 
+    var i;
     var parts; // as needed regex result parts (see wind)
     var items_examined = 0;
     while(msplit.length && items_examined < msplit.length) {
         items_examined = 0;
 
-        for(var i=0; i<msplit.length; i++) {
+        var alt;
+
+        for(i=0; i<msplit.length; i++) {
             items_examined ++;
 
             if( msplit[i].match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
@@ -61,7 +67,7 @@ function decode_metar(metar) {
 
                 res.wind = { speed: my_parseint( parts[2], "knots" ) };
 
-                if( deg == "VBR" )
+                if( deg === "VBR" )
                     res.wind.variable = true;
                 else
                     res.wind.direction = my_parseint( deg, "degrees" );
@@ -81,8 +87,8 @@ function decode_metar(metar) {
             }
 
             else if( msplit[i].match(/^FEW\d+$/) ) {
-                var alt = msplit.splice(i,1)[0].substr(3);
-                    alt += "00";
+                alt = msplit.splice(i,1)[0].substr(3);
+                alt += "00";
 
                 res.cloud_cover.push({few: my_parseint(alt, "feet")});
 
@@ -90,8 +96,8 @@ function decode_metar(metar) {
             }
 
             else if( msplit[i].match(/^BKN\d+$/) ) {
-                var alt = msplit.splice(i,1)[0].substr(3);
-                    alt += "00";
+                alt = msplit.splice(i,1)[0].substr(3);
+                alt += "00";
 
                 res.cloud_cover.push({broken: my_parseint(alt, "feet")});
 
@@ -106,8 +112,8 @@ function decode_metar(metar) {
             }
 
             else if( msplit[i].match(/^OVC\d+$/) ) {
-                var alt = msplit.splice(i,1)[0].substr(3);
-                    alt += "00";
+                alt = msplit.splice(i,1)[0].substr(3);
+                alt += "00";
 
                 res.cloud_cover.push({overcast: my_parseint(alt, "feet")});
 
@@ -132,7 +138,7 @@ function decode_metar(metar) {
         while( rem.length && items_examined < rem.length ) {
             items_examined = 0;
 
-            for(var i=0; i<rem.length; i++) {
+            for(i=0; i<rem.length; i++) {
                 items_examined ++;
 
                 if( rem[i].match(/^AO[12]$/) ) {
@@ -152,14 +158,14 @@ function decode_metar(metar) {
 // }}}
 // function extract_metar(airport, html) {{{
 function extract_metar(airport, html) {
-    html = html.replace(/<[^>]+>/g, "");
+    html = html.replace(/<[^>]+>/g, ""); // STFU
 
     var metar = "? " + airport + " ?";
 
     var lines = html.split("\n");
     for(var i=0; i<lines.length; i++) {
-        if( lines[i].substr(0, airport.length) == airport ) {
-            if( lines[i].substr(airport.length).match(/^[\sA-Z0-9\/:/\-\$]+$/) ) {
+        if( lines[i].substr(0, airport.length) === airport ) {
+            if( lines[i].substr(airport.length).match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
                 metar = lines[i];
                 break;
             }

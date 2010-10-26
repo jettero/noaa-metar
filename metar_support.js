@@ -1,10 +1,14 @@
+/*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
+*/
+/*global Mojo Ajax extract_metar Template
+*/
 
 // function my_error(text, calback) {{{
-function my_error(text, calback) {
+function my_error(text, callback) {
     Mojo.Log.info("my_error(): " + text);
 
     Mojo.Controller.showAlertDialog({
-        onChoose: function(value) {callback()},
+        onChoose: function(value) {callback();},
         title: "Error",
         message: text,
         choices:[
@@ -39,7 +43,7 @@ function get_metar(req, callback) {
         method: 'get', parameters: { cccc: req.code }, 
 
         onSuccess: function(transport) {
-            if( transport.status == 200 ) {
+            if( transport.status === 200 ) {
                 req.worked = true;
                 req.METAR  = extract_metar(req.code, transport.responseText);
 
