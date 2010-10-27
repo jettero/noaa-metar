@@ -64,7 +64,7 @@ METARAssistant.prototype.rmCode = function(event) {
     delete this.our_locations[event.item.code];
 
     this.dbo.simpleAdd("locations", this.our_locations,
-        function() { Mojo.Log.info("[removed] ", event.item.code); }.bind(this),
+        function() { Mojo.Log.info("[removed] %s", event.item.code); }.bind(this),
         function(transaction,result) {
             Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
         }.bind(this)
