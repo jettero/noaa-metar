@@ -97,11 +97,8 @@ METARAssistant.prototype.receiveData = function(res) {
             return;
         }
 
-    if( this.forceUpdateFlag ) {
-        Mojo.Log.info("deactivating spinner, hopefully");
+    if( this.forceUpdateFlag )
         this.forceUpdateFlag = false;
-        this.controller.get("force_update").mojo.deactivate();
-    }
 };
 
 METARAssistant.prototype.updateTimer = function() {
@@ -130,11 +127,8 @@ METARAssistant.prototype.dbRecv = function(locations) {
 
         Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
-        if( Object.keys( this.our_locations ).length < 1 ) {
-            Mojo.Log.info("deactivating spinner, hopefully");
+        if( Object.keys( this.our_locations ).length < 1 )
             this.forceUpdateFlag = false;
-            this.controller.get("force_update").mojo.deactivate();
-        }
 
         this.metar_model.items = [];
         for(var code in this.our_locations) {
@@ -153,7 +147,8 @@ METARAssistant.prototype.dbRecv = function(locations) {
         }
 
         this.controller.modelChanged(this.metar_model);
-        get_metar({index: 0, force: this.forceUpdateFlag, code: this.metar_model.items[0].code}, this.receiveData);
+        if( this.metar_model.items.length > 0 )
+            get_metar({index: 0, force: this.forceUpdateFlag, code: this.metar_model.items[0].code}, this.receiveData);
     }
 
 };
