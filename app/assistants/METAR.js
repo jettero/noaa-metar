@@ -19,10 +19,10 @@ METARAssistant.prototype.setup = function() {
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     this.refreshModel = { label: "Reload",  icon: 'refresh', command: 'refresh' };
-    this.addModel     = { label: "New",     icon: 'new',     command: 'new'     };
+    this.addModel     = { label: "Add",     icon: 'new',     command: 'add'     };
     this.commandMenuModel = {
         label: 'Command Menu',
-        items: [ this.addModel, this.refreshModel ]
+        items: [ this.refreshModel, this.addModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
 
@@ -183,7 +183,7 @@ METARAssistant.prototype.handleCommand = function(event) {
                 this.activate();
                 break;
 
-            case 'new':
+            case 'add':
                 Mojo.Log.info("add-code");
                 this.controller.stageController.assistant.showScene('AddCode');
                 break;
