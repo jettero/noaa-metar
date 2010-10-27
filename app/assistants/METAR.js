@@ -19,9 +19,10 @@ METARAssistant.prototype.setup = function() {
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     this.refreshModel = { label: "Reload",  icon: 'refresh', command: 'refresh' };
+    this.addModel     = { label: "New",     icon: 'new',     command: 'new'     };
     this.commandMenuModel = {
         label: 'Command Menu',
-        items: [ {}, this.refreshModel ]
+        items: [ this.addModel, this.refreshModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
 
