@@ -22,7 +22,7 @@ METARAssistant.prototype.setup = function() {
     this.addModel     = { label: "Add",     icon: 'new',     command: 'add'     };
     this.commandMenuModel = {
         label: 'Command Menu',
-        items: [ this.refreshModel, this.addModel ]
+        items: [ this.addModel, this.refreshModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
 
