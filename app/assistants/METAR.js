@@ -38,6 +38,7 @@ METARAssistant.prototype.setup = function() {
 
     var attrs = {
         swipeToDelete: true,
+        reorderable:   true,
         listTemplate:  'misc/listcontainer',
         itemTemplate:  'misc/METARItem',
         emptyTemplate: 'misc/empty'
@@ -47,13 +48,18 @@ METARAssistant.prototype.setup = function() {
     this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
-    Mojo.Event.listen(this.controller.get('noaa_metar'),   Mojo.Event.listDelete, this.rmCode.bind(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listDelete,  this.rmCode.bind(this));
+    Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listReorder, this.mvCode.bind(this));
 
     this.forceUpdateFlag = false;
 };
 
+METARAssistant.prototype.mvCode = function(event) {
+    Mojo.Log.info("METAR::mvCode(code=%s, from=%d, to=%d): ", event.item.code, event.fromIndex, event.toIndex);
+};
+
 METARAssistant.prototype.rmCode = function(event) {
-    Mojo.Log.info("METAR::rmCode(): ", event.item.code);
+    Mojo.Log.info("METAR::rmCode(code=%s): ", event.item.code);
 
     delete this.our_locations[event.item.code];
 
