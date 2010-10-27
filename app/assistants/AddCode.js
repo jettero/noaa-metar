@@ -108,8 +108,8 @@ AddCodeAssistant.prototype.addCode = function(event) {
     this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbSendFail);
 };
 
-AddCodeAssistant.prototype.dbSent = function(event) {
-    Mojo.Log.info("[added] ", event.item.location);
+AddCodeAssistant.prototype.dbSent = function() {
+    Mojo.Log.info("[db updated]");
     Mojo.Controller.stageController.popScene();
 };
 

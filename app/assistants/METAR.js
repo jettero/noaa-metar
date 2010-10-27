@@ -74,13 +74,18 @@ METARAssistant.prototype.receiveData = function(res) {
         this.controller.modelChanged(this.metar_model);
 
         if( !res.cached ) {
-            var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.METAR")[0];
+            var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.metar-text")[0];
 
-            Mojo.Log.info("trying to set success-background on list item.");
-            node.style.color = "#009900";
-            setTimeout(function(){ node.style.color = "#007700"; }, 1000);
-            setTimeout(function(){ node.style.color = "#005500"; }, 1100);
-            setTimeout(function(){ node.style.color = "#000000"; }, 1200);
+            Mojo.Log.info("trying to set success-color on list item.");
+            try {
+                node.style.color = "#009900";
+                setTimeout(function(){ node.style.color = "#007700"; }, 1000);
+                setTimeout(function(){ node.style.color = "#005500"; }, 1100);
+                setTimeout(function(){ node.style.color = "#000000"; }, 1200);
+
+            } catch(e) {
+                Mojo.Log.error("error setting success-color: %s", e);
+            }
         }
 
     } else {
@@ -114,7 +119,7 @@ METARAssistant.prototype.activate = function() {
     Mojo.Log.info("fetching list of items for METAR display");
 
     this.timer_active = true;
-    setTimeout( this.updateTimer, 90e3 );
+    setTimeout( this.updateTimer, 900e3 );
 
     this.our_locations = {};
     this.dbo.simpleGet("locations", this.dbRecv, this.dbError);
@@ -178,7 +183,7 @@ METARAssistant.prototype.handleCommand = function(event) {
                 this.activate();
                 break;
 
-            case 'add':
+            case 'new':
                 Mojo.Log.info("add-code");
                 this.controller.stageController.assistant.showScene('AddCode');
                 break;
