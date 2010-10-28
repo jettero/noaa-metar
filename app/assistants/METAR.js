@@ -12,6 +12,10 @@ function METARAssistant() {
 
     this.SCa = Mojo.Controller.stageController.assistant;
     this.menuSetup = this.SCa.menuSetup.bind(this);
+
+    this.dbSent = function() { Mojo.Log.info("[db saved]"); }.bind(this);
+    this.dbFail = function(transaction,result) {
+        Mojo.Controller.errorDialog("Database error removing location details: %s", result.message); }.bind(this)
 }
 
 METARAssistant.prototype.setup = function() {
@@ -66,13 +70,7 @@ METARAssistant.prototype.mvCode = function(event) {
     var i = this.metar_model.items;
     i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex]]));
 
-    this.dbo.simpleAdd("locations", this.our_locations,
-        function() { Mojo.Log.info("[sorted]"); }.bind(this),
-        function(transaction,result) {
-            Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
-        }.bind(this)
-    );
-
+    this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbFail);
 };
 
 METARAssistant.prototype.rmCode = function(event) {
@@ -80,12 +78,7 @@ METARAssistant.prototype.rmCode = function(event) {
 
     delete this.our_locations[event.item.code];
 
-    this.dbo.simpleAdd("locations", this.our_locations,
-        function() { Mojo.Log.info("[removed] %s", event.item.code); }.bind(this),
-        function(transaction,result) {
-            Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
-        }.bind(this)
-    );
+    this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbFail);
 };
 
 METARAssistant.prototype.receiveData = function(res) {
