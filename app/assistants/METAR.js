@@ -1,21 +1,20 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo OPT setTimeout get_metar
+/*global Mojo OPT setTimeout get_metar $H
 */
 
 function METARAssistant() {
     Mojo.Log.info("METAR()");
 
     this.receiveData = this.receiveData.bind(this);
-    this.dbRecv      = this.dbRecv.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
 
     this.SCa = Mojo.Controller.stageController.assistant;
     this.menuSetup = this.SCa.menuSetup.bind(this);
 
-    this.dbSent = function() { Mojo.Log.info("[db saved]"); }.bind(this);
-    this.dbFail = function(transaction,result) {
-        Mojo.Controller.errorDialog("Database error removing location details: %s", result.message); }.bind(this);
+    this.dbRecv = this.dbRecv.bind(this);
+    this.dbSent = this.dbSent.bind(this);
+    this.dbFail = this.dbFail.bind(this);
 }
 
 METARAssistant.prototype.setup = function() {
@@ -48,8 +47,8 @@ METARAssistant.prototype.setup = function() {
         emptyTemplate: 'misc/empty'
     };
 
-    this.metar_model = {items: []};
-    this.controller.setupWidget('noaa_metar', attrs, this.metar_model);
+    this.METARmodel = {items: []};
+    this.controller.setupWidget('noaa_metar', attrs, this.METARmodel);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listDelete,  this.rmCode.bind(this));
@@ -67,27 +66,27 @@ METARAssistant.prototype.mvCode = function(event) {
     ** 4,2,3,1,5
     */
 
-    var i = this.metar_model.items;
+    var i = this.METARmodel.items;
     i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex]));
 
-    this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbFail);
+    this.dbo.simpleAdd("locations", this.ourLocations, this.dbSent, this.dbFail);
 };
 
 METARAssistant.prototype.rmCode = function(event) {
     Mojo.Log.info("METAR::rmCode(code=%s): ", event.item.code);
 
-    delete this.our_locations[event.item.code];
+    delete this.ourLocations[event.item.code];
 
-    this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbFail);
+    this.dbo.simpleAdd("locations", this.ourLocations, this.dbSent, this.dbFail);
 };
 
 METARAssistant.prototype.receiveData = function(res) {
     Mojo.Log.info("METAR::receiveData(): ", res.code, res.worked ? "[success]" : "[fail]");
 
     if( res.worked ) {
-        this.metar_model.items[res.index].METAR = res.METAR;
-        this.metar_model.items[res.index].fetched = true;
-        this.controller.modelChanged(this.metar_model);
+        this.METARmodel.items[res.index].METAR = res.METAR;
+        this.METARmodel.items[res.index].fetched = true;
+        this.controller.modelChanged(this.METARmodel);
 
         if( !res.cached ) {
             var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.metar-text")[0];
@@ -105,17 +104,17 @@ METARAssistant.prototype.receiveData = function(res) {
         }
 
     } else {
-        this.metar_model.items[res.index].fails ++;
+        this.METARmodel.items[res.index].fails ++;
 
-        if( this.metar_model.items[res.index].fails >= 3 ) {
+        if( this.METARmodel.items[res.index].fails >= 3 ) {
             Mojo.Controller.errorDialog("failed at " + res.code + " 3 times already, giving up on it.");
-            this.metar_model.items[res.index].METAR = res.code + " :(";
+            this.METARmodel.items[res.index].METAR = res.code + " :(";
         }
     }
 
-    for(var i=0; i<this.metar_model.items.length; i++)
-        if( !this.metar_model.items[i].fetched && this.metar_model.items[i].fails < 3 ) {
-            get_metar({code: this.metar_model.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveData.bind(this));
+    for(var i=0; i<this.METARmodel.items.length; i++)
+        if( !this.METARmodel.items[i].fetched && this.METARmodel.items[i].fails < 3 ) {
+            get_metar({code: this.METARmodel.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveData.bind(this));
             return;
         }
 
@@ -137,45 +136,48 @@ METARAssistant.prototype.activate = function() {
     this.timer_active = true;
     setTimeout( this.updateTimer, 900e3 );
 
-    this.our_locations = {};
-    this.dbo.simpleGet("locations", this.dbRecv, this.dbError);
+    this.ourLocations = {};
+    this.dbo.simpleGet("locations", this.dbRecv, this.dbFail);
 };
 
+
+METARAssistant.prototype.dbSent = function() { Mojo.Log.info("[db saved]"); };
 METARAssistant.prototype.dbRecv = function(locations) {
     Mojo.Log.info("fetching list of items for METAR display");
 
     if( locations ) {
-        this.our_locations = locations;
+        var ol;
+        this.ourLocations = ol = $H(locations);
 
         Mojo.Log.info("found list of items for METAR display, building Mojo List");
 
-        if( Object.keys( this.our_locations ).length < 1 )
+        if( ol.keys().length < 1 )
             this.forceUpdateFlag = false;
 
-        this.metar_model.items = [];
-        for(var code in this.our_locations) {
+        this.METARmodel.items = [];
+        ol.keys().sortBy(function(k){ return k==null ? 0 : }).each(function(code){
             var desc = code;
-            if( this.our_locations[code].state )
-                desc += " (" + this.our_locations[code].state + ", " + this.our_locations[code].city + ") ...";
+            if( ol[code].state )
+                desc += " (" + ol[code].state + ", " + ol[code].city + ") ...";
 
-            this.metar_model.items.push({
+            this.METARmodel.items.push({
                 METAR:   "fetching " + desc,
                 fetched: false,
                 code:    code,
-                city:    this.our_locations[code].city,
-                state:   this.our_locations[code].state,
+                city:    ol[code].city,
+                state:   ol[code].state,
                 fails: 0
             });
-        }
+        });
 
-        this.controller.modelChanged(this.metar_model);
-        if( this.metar_model.items.length > 0 )
-            get_metar({index: 0, force: this.forceUpdateFlag, code: this.metar_model.items[0].code}, this.receiveData);
+        this.controller.modelChanged(this.METARmodel);
+        if( this.METARmodel.items.length > 0 )
+            get_metar({index: 0, force: this.forceUpdateFlag, code: this.METARmodel.items[0].code}, this.receiveData);
     }
 
 };
 
-METARAssistant.prototype.dbError = function(transaction,error) {
+METARAssistant.prototype.dbFail = function(transaction,error) {
     Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
 };
 
