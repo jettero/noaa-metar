@@ -56,6 +56,23 @@ METARAssistant.prototype.setup = function() {
 
 METARAssistant.prototype.mvCode = function(event) {
     Mojo.Log.info("METAR::mvCode(code=%s, from=%d, to=%d): ", event.item.code, event.fromIndex, event.toIndex);
+
+    /*
+    ** Rhino 1.7 release 2 2010 01 20
+    ** js> var x = [1,2,3,4,5]; x.splice(0,1,x.splice(3,1,x[0])); x
+    ** 4,2,3,1,5
+    */
+
+    var i = this.metar_model.items;
+    i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex]]));
+
+    this.dbo.simpleAdd("locations", this.our_locations,
+        function() { Mojo.Log.info("[sorted]"); }.bind(this),
+        function(transaction,result) {
+            Mojo.Controller.errorDialog("Database error removing location details: " + result.message);
+        }.bind(this)
+    );
+
 };
 
 METARAssistant.prototype.rmCode = function(event) {
