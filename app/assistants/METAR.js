@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo OPT setTimeout get_metar $H
+/*global Mojo OPT setTimeout get_metar $H $A
 */
 
 function METARAssistant() {
@@ -69,6 +69,17 @@ METARAssistant.prototype.mvCode = function(event) {
     var i = this.METARmodel.items;
     i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex]));
 
+    this.saveLocations();
+};
+
+METARAssistant.prototype.saveLocations = function() {
+    var ol = this.ourLocations;
+
+    var counter = 0;
+    $A(this.METARmodel.items).each(function(i){
+        ol[i.codde]._sort = counter ++;
+    });
+
     this.dbo.simpleAdd("locations", this.ourLocations, this.dbSent, this.dbFail);
 };
 
@@ -77,7 +88,7 @@ METARAssistant.prototype.rmCode = function(event) {
 
     delete this.ourLocations[event.item.code];
 
-    this.dbo.simpleAdd("locations", this.ourLocations, this.dbSent, this.dbFail);
+    this.saveLocations();
 };
 
 METARAssistant.prototype.receiveData = function(res) {
@@ -155,7 +166,7 @@ METARAssistant.prototype.dbRecv = function(locations) {
             this.forceUpdateFlag = false;
 
         this.METARmodel.items = [];
-        ol.keys().sortBy(function(k){ return k==null ? 0 : }).each(function(code){
+        ol.keys().sortBy(function(k){ return k._sort; }).each(function(code){
             var desc = code;
             if( ol[code].state )
                 desc += " (" + ol[code].state + ", " + ol[code].city + ") ...";
