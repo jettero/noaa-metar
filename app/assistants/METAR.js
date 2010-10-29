@@ -75,9 +75,12 @@ METARAssistant.prototype.mvCode = function(event) {
 METARAssistant.prototype.saveLocations = function() {
     var ol = this.ourLocations;
 
+    Mojo.Log.info("[saveLocations] %s", Object.toJSON(ol));
+
     var counter = 0;
     $A(this.METARmodel.items).each(function(i){
-        ol[i.codde]._sort = counter ++;
+        Mojo.Log.info("[saveLocations] %s : %s : %d", Object.toJSON(ol), i.code, counter);
+        ol[i.code]._sort = counter ++;
     });
 
     this.dbo.simpleAdd("locations", this.ourLocations, this.dbSent, this.dbFail);
@@ -154,10 +157,10 @@ METARAssistant.prototype.activate = function() {
 
 METARAssistant.prototype.dbSent = function() { Mojo.Log.info("[db saved]"); };
 METARAssistant.prototype.dbRecv = function(locations) {
-    Mojo.Log.info("fetching list of items for METAR display");
+    Mojo.Log.info("fetching list of items for METAR display: %s", Object.toJSON(locations));
 
     if( locations ) {
-        var ol;
+        var ol,me=this;
         this.ourLocations = ol = $H(locations);
 
         Mojo.Log.info("found list of items for METAR display, building Mojo List");
@@ -167,17 +170,13 @@ METARAssistant.prototype.dbRecv = function(locations) {
 
         this.METARmodel.items = [];
         ol.keys().sortBy(function(k){ return k._sort; }).each(function(code){
-            var desc = code;
-            if( ol[code].state )
-                desc += " (" + ol[code].state + ", " + ol[code].city + ") ...";
+            Mojo.Log.info("[each()] code=%s", code);
 
-            this.METARmodel.items.push({
-                METAR:   "fetching " + desc,
+            me.METARmodel.items.push({
+                METAR:   "fetching " + code,
                 fetched: false,
                 code:    code,
-                city:    ol[code].city,
-                state:   ol[code].state,
-                fails: 0
+                fails:   0
             });
         });
 
