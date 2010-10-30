@@ -75,10 +75,10 @@ function METARAssistant() {
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.rmCode = function(event) {
-    Mojo.Log.info("METAR::rmCode(code=%s): ", event.item.code);
+    var code = event.item.code;
+    Mojo.Log.info("METAR::rmCode(code=%s): ", code);
 
-    delete this.ourLocations[event.item.code];
-
+    this.METARModel.items = this.METARModel.icons.reject(function(m){ return m.code === code; });
     this.saveLocations();
 };
 
@@ -134,7 +134,7 @@ function METARAssistant() {
 
     for(var i=0; i<this.METARModel.items.length; i++)
         if( !this.METARModel.items[i].fetched && this.METARModel.items[i].fails < 3 ) {
-            get_metar({code: this.METARModel.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveMETARData.bind(this));
+            get_metar({code: this.METARModel.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveMETARData);
             return;
         }
 
@@ -183,7 +183,6 @@ function METARAssistant() {
     this.timerActive = true;
     setTimeout( this.updateTimer, 900e3 );
 
-    this.ourLocations = {};
     this.loadLocations();
 };
 
