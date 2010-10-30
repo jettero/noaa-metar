@@ -16,6 +16,12 @@ function METARAssistant() {
     this.dbSent = this.dbSent.bind(this);
     this.dbFail = this.dbFail.bind(this);
 
+    var options = {
+        name:    "noaametar_locations",
+        version: 1,
+        replace: false // opening existing if possible
+    };
+
     this.dbo = new Mojo.Depot(options, function(){}, function(t,r){
         Mojo.Controller.errorDialog("Can't open location database (#" + r.message + ").");
     });
@@ -32,12 +38,6 @@ function METARAssistant() {
         items: [ this.addModel, this.refreshModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
-
-    var options = {
-        name:    "noaametar_locations",
-        version: 1,
-        replace: false // opening existing if possible
-    };
 
     var attrs = {
         swipeToDelete: true,
@@ -85,7 +85,7 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.saveLocations = function() {
-    Mojo.Log.info("[saveLocations] %s", Object.toJSON(ol));
+    Mojo.Log.info("[saveLocations] %s", Object.toJSON(this.METARModel.items));
 
     this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail);
 };
@@ -95,7 +95,7 @@ function METARAssistant() {
     Mojo.Log.info("[loadLocations]");
 
     this.dbo.simpleGet("METARModelItems", this.dbRecv, this.dbFail);
-}
+};
 
 /*}}}*/
 
