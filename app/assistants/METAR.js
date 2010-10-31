@@ -51,8 +51,6 @@ function METARAssistant() {
 
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listDelete,  this.rmCode.bind(this));
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listReorder, this.mvCode.bind(this));
-
-    this.forceUpdateFlag = false;
     this.loadLocations();
 };
 
@@ -174,13 +172,10 @@ function METARAssistant() {
 
         if( (!j.fetched || o) && j.fails < 3 ) {
             this._running = true;
-            get_metar({code: j.code, force: this.forceUpdateFlag || o, index: i}, this.receiveMETARData);
+            get_metar({code: j.code, index: i}, this.receiveMETARData);
             return;
         }
     }
-
-    if( this.forceUpdateFlag )
-        this.forceUpdateFlag = false;
 };
 
 /*}}}*/
@@ -230,8 +225,8 @@ function METARAssistant() {
         switch (s_a[0]) {
             case 'refresh':
                 Mojo.Log.info("forcing updates");
-                this.forceUpdateFlag = true;
-                this.activate();
+                this.METARModel.items.each(function(i){ i.fetched = 0; });
+                this.updateTimer();
                 break;
 
             case 'add':
