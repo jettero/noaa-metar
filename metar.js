@@ -163,10 +163,15 @@ function extract_metar(airport, html) {
     var metar = "? " + airport + " ?";
 
     var lines = html.split("\n");
+    var potential;
     for(var i=0; i<lines.length; i++) {
         if( lines[i].substr(0, airport.length) === airport ) {
-            if( lines[i].substr(airport.length).match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
-                metar = lines[i];
+
+            // Everything but the airport code and the space
+            potential = lines[i].substr(airport.length + 1);
+
+            if( potential.match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
+                metar = potential;
                 break;
             }
         }
