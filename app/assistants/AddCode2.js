@@ -13,9 +13,9 @@ AddCode2Assistant.prototype.setup = function() {
 	Mojo.Log.info("AddCode2::setup()");
 
     var attrs = {
-        listTemplate:  'metar/misc/listcontainer',
-        itemTemplate:  'metar/misc/LocationItem',
-        emptyTemplate: 'metar/misc/empty'
+        listTemplate:  'misc/listcontainer',
+        itemTemplate:  'misc/LocationItem',
+        emptyTemplate: 'misc/empty'
     };
 
     this.locationsModel = {listTitle: 'Choose City', items: []};

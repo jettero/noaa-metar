@@ -11,9 +11,9 @@ function AddCodeAssistant(args) {
 	Mojo.Log.info("AddCodeAssistant()::setup()");
 
     var attrs = {
-        listTemplate:  'metar/misc/listcontainer',
-        itemTemplate:  'metar/misc/LocationItem',
-        emptyTemplate: 'metar/misc/empty'
+        listTemplate:  'misc/listcontainer',
+        itemTemplate:  'misc/LocationItem',
+        emptyTemplate: 'misc/empty'
     };
 
     this.locations_model = {listTitle: '-or- Tap A Region', items: []};
