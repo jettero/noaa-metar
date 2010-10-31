@@ -4,8 +4,6 @@
 */
 
 function METARAssistant() {
-    Mojo.Log.info("METAR()");
-
     this.receiveMETARData = this.receiveMETARData.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
 
@@ -86,14 +84,14 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.saveLocations = function() {
-    Mojo.Log.info("[saveLocations] %s", Object.toJSON(this.METARModel.items));
+    Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));
 
     this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail);
 };
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.loadLocations = function() {
-    Mojo.Log.info("[loadLocations]");
+    Mojo.Log.info("METAR::loadLocations()");
 
     this.dbo.simpleGet("METARModelItems", this.dbRecv, this.dbFail);
 };
@@ -101,7 +99,7 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.receiveMETARData = function(res) {
-    Mojo.Log.info("METAR::receiveMETARData(): ", res.code, res.worked ? "[success]" : "[fail]");
+    Mojo.Log.info("METAR::receiveMETARData() code=%s worked=%s", res.code, res.worked ? "[success]" : "[fail]");
 
     if( res.worked ) {
         this.METARModel.items[res.index].METAR = res.METAR;
@@ -146,17 +144,18 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.updateTimer = function() {
-    Mojo.Log.info("update timer fired");
+    Mojo.Log.info("METAR::updateTimer()");
 };
 
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.dbSent = function() {
-    Mojo.Log.info("[db saved]");
+    Mojo.Log.info("METAR::dbSent()");
 };
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.dbRecv = function(_in) {
+    Mojo.Log.info("METAR::dbRecv(%s)", Object.toJSON(_in));
     var items = $A(_in ? _in : []);
 
     Mojo.Log.info("fetching list of items for METAR display: %s", Object.toJSON(items));
@@ -169,7 +168,7 @@ function METARAssistant() {
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.dbFail = function(transaction,error) {
-    Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
+    Mojo.Log.info("METAR::dbFail()");
 };
 
 /*}}}*/
@@ -215,3 +214,5 @@ function METARAssistant() {
 };
 
 /*}}}*/
+
+Mojo.Log.info("METAR()");
