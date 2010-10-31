@@ -5,7 +5,8 @@
 
 function AddCode2Assistant(args) {
     this.state = args[0];
-    this._MA = Mojo.Controller.stageController.topScene().assistant;
+    this._MA = Mojo.Controller.stageController.topScene().assistant._MA;
+    // NOTE: evidentally, "topScene" means parentScene... pfft.
 }
 
 AddCode2Assistant.prototype.setup = function() {
@@ -30,9 +31,11 @@ AddCode2Assistant.prototype.setup = function() {
 };
 
 AddCode2Assistant.prototype.listClickHandler = function(event) {
-    var key = event.item.data.code;
-    Mojo.Log.info("AddCode2::listClickHandler(%s)", key);
-    this._MA.addCode(ICAO);
+    var code = event.item.data.code;
+    Mojo.Log.info("AddCode2::listClickHandler(%s)", code);
+
+    this._MA.addCode(code);
+
     Mojo.Controller.stageController.popScene();
     Mojo.Controller.stageController.popScene();
 };
