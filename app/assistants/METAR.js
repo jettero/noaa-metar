@@ -169,6 +169,7 @@ function METARAssistant() {
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.dbFail = function(transaction,error) {
     Mojo.Log.info("METAR::dbFail()");
+    Mojo.Controller.errorDialog("Internal database error: " + error.message);
 };
 
 /*}}}*/
