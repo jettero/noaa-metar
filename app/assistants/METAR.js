@@ -158,8 +158,6 @@ function METARAssistant() {
     Mojo.Log.info("METAR::dbRecv(%s)", Object.toJSON(_in));
     var items = $A(_in ? _in : []);
 
-    Mojo.Log.info("fetching list of items for METAR display: %s", Object.toJSON(items));
-
     this.METARModel.items = items;
     this.controller.modelChanged(this.METARModel);
 
