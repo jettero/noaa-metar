@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo OPT setTimeout get_metar $H $A clearTimeout
+/*global Mojo OPT get_metar $H $A setTimeout setInterval clearInterval
 */
 
 function METARAssistant() {
@@ -147,8 +147,6 @@ function METARAssistant() {
 
 /* {{{ */ METARAssistant.prototype.updateTimer = function() {
     Mojo.Log.info("update timer fired");
-
-    this._updateTimer = setTimeout( this.updateTimer, 900e3 );
 };
 
 /*}}}*/
@@ -177,14 +175,14 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.activate = function() {
-    Mojo.Log.info("fetching list of items for METAR display");
-    this._updateTimer = setTimeout( this.updateTimer, 900e3 );
+    Mojo.Log.info("METAR::activate()");
+    this._updateTimer = setInterval( this.updateTimer, 9e3 );
 };
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.deactivate = function() {
     Mojo.Log.info("METAR::deactivate()");
-    clearTimeout(this._updateTimer);
+    clearInterval(this._updateTimer);
 };
 
 /*}}}*/
