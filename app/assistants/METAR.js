@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo OPT setTimeout get_metar $H $A
+/*global Mojo OPT setTimeout get_metar $H $A clearTimeout
 */
 
 function METARAssistant() {
@@ -55,6 +55,7 @@ function METARAssistant() {
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listReorder, this.mvCode.bind(this));
 
     this.forceUpdateFlag = false;
+    this.loadLocations();
 };
 
 /*}}}*/
@@ -145,11 +146,9 @@ function METARAssistant() {
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.updateTimer = function() {
-    if( !this.timerActive )
-        return;
-
     Mojo.Log.info("update timer fired");
-    this.activate();
+
+    this._updateTimer = setTimeout( this.updateTimer, 900e3 );
 };
 
 /*}}}*/
@@ -179,18 +178,13 @@ function METARAssistant() {
 
 /* {{{ */ METARAssistant.prototype.activate = function() {
     Mojo.Log.info("fetching list of items for METAR display");
-
-    this.timerActive = true;
-    setTimeout( this.updateTimer, 900e3 );
-
-    this.loadLocations();
+    this._updateTimer = setTimeout( this.updateTimer, 900e3 );
 };
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.deactivate = function() {
     Mojo.Log.info("METAR::deactivate()");
-
-    this.timerActive = false;
+    clearTimeout(this._updateTimer);
 };
 
 /*}}}*/
