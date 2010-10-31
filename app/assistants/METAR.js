@@ -176,7 +176,7 @@ function METARAssistant() {
 
 /* {{{ */ METARAssistant.prototype.activate = function() {
     Mojo.Log.info("METAR::activate()");
-    this._updateTimer = setInterval( this.updateTimer, 9e3 );
+    this._updateTimer = setInterval( this.updateTimer, 10e3 );
 };
 
 /*}}}*/
