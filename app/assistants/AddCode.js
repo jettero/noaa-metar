@@ -4,12 +4,11 @@
 */
 
 function AddCodeAssistant(args) {
+    this._MA = Mojo.Controller.stageController.topScene().assistant;
 }
 
 /* {{{ */ AddCodeAssistant.prototype.setup = function() {
 	Mojo.Log.info("AddCodeAssistant()::setup()");
-
-    this._MA = Mojo.Controller.stageController.topScene().assistant;
 
     var attrs = {
         listTemplate:  'metar/misc/listcontainer',
