@@ -1,16 +1,14 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo $H $ location_data
+/*global Mojo $H location_data
 */
 
 function AddCodeAssistant(args) {
-	Mojo.Log.info("AddCodeAssistant()");
-
-    this.dbSent = this.dbSent.bind(this);
-    this.dbRecv = this.dbRecv.bind(this);
+    this._MA = Mojo.Controller.AppController.getStageController("METAR");
+    Mojo.Log.info("[blarg: %s]", this._MA);
 }
 
-AddCodeAssistant.prototype.setup = function() {
+/* {{{ */ AddCodeAssistant.prototype.setup = function() {
 	Mojo.Log.info("AddCodeAssistant()::setup()");
 
     var attrs = {
@@ -46,12 +44,12 @@ AddCodeAssistant.prototype.setup = function() {
         requiresEnterKey: false
     };
 
-    this.ICAO_model = {
+    this.ICAOModel = {
         original: '',
         disabled: false
     };
 
-    this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAO_model);
+    this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAOModel);
     this.controller.setupWidget('manual_add', {type: Mojo.Widget.activityButton}, {label: "Add Code"} );
     Mojo.Event.listen(this.controller.get("manual_add"), Mojo.Event.tap, this.addCode.bind(this));
 
@@ -70,24 +68,19 @@ AddCodeAssistant.prototype.setup = function() {
     this.dbo.simpleGet("locations", this.dbRecv, this.dbRecvFail);
 };
 
-AddCodeAssistant.prototype.dbRecv = function(locations) {
-    if(locations)
-        this.our_locations = locations;
-};
+/*}}}*/
+/* {{{ */ AddCodeAssistant.prototype.nospin = function(event) {
+    Mojo.Log.info("AddCode::nospin()");
 
-AddCodeAssistant.prototype.dbRecvFail = function(transaction, error) {
-    Mojo.Controller.errorDialog("Can't open location database (#" + error.message + ").");
-};
-
-AddCodeAssistant.prototype.nospin = function(event) {
     this.controller.get('manual_add').mojo.deactivate();
     this.spinning = false;
 };
 
-AddCodeAssistant.prototype.addCode = function(event) {
-    Mojo.Log.info("[manual add]");
+/*}}}*/
+/* {{{ */ AddCodeAssistant.prototype.addCode = function(event) {
+    var ICAO = this.ICAOModel.original.strip().toUpperCase();
 
-    var ICAO = this.ICAO_model.original.strip().toUpperCase();
+    Mojo.Log.info("AddCode::addCode(%s)", ICAO);
 
     if( this.spinning ) return;
         this.spinning = true;
@@ -98,26 +91,15 @@ AddCodeAssistant.prototype.addCode = function(event) {
         return;
     }
 
-    this.our_locations[ICAO] = {
-        // Since this is manual, we don't ahve the city and state and airport
-        // name information we would using the our list...
-
-    };
-
-    Mojo.Log.info("[built our_locations]");
-    this.dbo.simpleAdd("locations", this.our_locations, this.dbSent, this.dbSendFail);
+    this._MA.addCode(ICAO);
 };
 
-AddCodeAssistant.prototype.dbSent = function() {
-    Mojo.Log.info("[db updated]");
-    Mojo.Controller.stageController.popScene();
-};
-
-AddCodeAssistant.prototype.dbSendFail = function(transaction,result) {
-    Mojo.Controller.errorDialog("Database error saving location details: " + result.message);
-};
-
-AddCodeAssistant.prototype.listClickHandler = function(event) {
-    Mojo.Log.info("[clicked] ", event.item.location);
+/*}}}*/
+/* {{{ */ AddCodeAssistant.prototype.listClickHandler = function(event) {
+    Mojo.Log.info("AddCode::listClickHandler(%s)", event.item.location);
     this.controller.stageController.assistant.showScene('AddCode2', [event.item.location]);
 };
+
+/*}}}*/
+
+Mojo.Log.info("AddCodeAssistant()");
