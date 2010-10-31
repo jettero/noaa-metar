@@ -163,7 +163,8 @@ function METARAssistant() {
     this.METARModel.items = items;
     this.controller.modelChanged(this.METARModel);
 
-    get_metar({index: 0, force: this.forceUpdateFlag, code: this.METARModel.items[0].code}, this.receiveMETARData);
+    if( items.length )
+        get_metar({index: 0, force: false, code: items[0].code}, this.receiveMETARData);
 };
 
 /*}}}*/
