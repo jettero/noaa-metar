@@ -61,12 +61,12 @@ function METARAssistant() {
 
     /*
     ** Rhino 1.7 release 2 2010 01 20
-    ** js> var x = [1,2,3,4,5]; x.splice(0,1,x.splice(3,1,x[0])); x
+    ** js> var x = [1,2,3,4,5]; x.splice(0,1,x.splice(3,1,x[0])[0]); x
     ** 4,2,3,1,5
     */
 
     var i = this.METARModel.items;
-    i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex]));
+    i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex])[0]);
     this.saveLocations();
 };
 
