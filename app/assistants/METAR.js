@@ -72,10 +72,9 @@ function METARAssistant() {
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.rmCode = function(event) {
-    var code = event.item.code;
-    Mojo.Log.info("METAR::rmCode(code=%s): ", code);
+    Mojo.Log.info("METAR::rmCode(code=%s): ", event.item.code);
 
-    this.METARModel.items = this.METARModel.items.reject(function(m){ return m.code === code; });
+    this.METARModel.items = this.METARModel.items.reject(function(i){ return event.item === i; });
     this.saveLocations();
 };
 
