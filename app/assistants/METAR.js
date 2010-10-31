@@ -82,6 +82,11 @@ function METARAssistant() {
 };
 
 /*}}}*/
+/* {{{ */ METARAssistant.prototype.addCode = function(code) {
+    Mojo.Log.info("METAR::addCode(%s)", code);
+};
+
+/*}}}*/
 
 /* {{{ */ METARAssistant.prototype.saveLocations = function() {
     Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));

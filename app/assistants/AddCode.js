@@ -4,12 +4,12 @@
 */
 
 function AddCodeAssistant(args) {
-    this._MA = Mojo.Controller.AppController.getStageController("METAR");
-    Mojo.Log.info("[blarg: %s]", this._MA);
 }
 
 /* {{{ */ AddCodeAssistant.prototype.setup = function() {
 	Mojo.Log.info("AddCodeAssistant()::setup()");
+
+    this._MA = Mojo.Controller.stageController.topScene().assistant;
 
     var attrs = {
         listTemplate:  'metar/misc/listcontainer',
@@ -50,30 +50,8 @@ function AddCodeAssistant(args) {
     };
 
     this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAOModel);
-    this.controller.setupWidget('manual_add', {type: Mojo.Widget.activityButton}, {label: "Add Code"} );
+    this.controller.setupWidget('manual_add', {}, {label: "Add Code"} );
     Mojo.Event.listen(this.controller.get("manual_add"), Mojo.Event.tap, this.addCode.bind(this));
-
-    this.our_locations = {};
-
-    var options = {
-        name:    "noaametar_locations",
-        version: 1,
-        replace: false // opening existing if possible
-    };
-
-    this.dbo = new Mojo.Depot(options, function(){}, function(t,r){
-        Mojo.Controller.errorDialog("Can't open location database (#" + r.message + ").");
-    });
-
-    this.dbo.simpleGet("locations", this.dbRecv, this.dbRecvFail);
-};
-
-/*}}}*/
-/* {{{ */ AddCodeAssistant.prototype.nospin = function(event) {
-    Mojo.Log.info("AddCode::nospin()");
-
-    this.controller.get('manual_add').mojo.deactivate();
-    this.spinning = false;
 };
 
 /*}}}*/
@@ -82,16 +60,13 @@ function AddCodeAssistant(args) {
 
     Mojo.Log.info("AddCode::addCode(%s)", ICAO);
 
-    if( this.spinning ) return;
-        this.spinning = true;
-
     if (!ICAO.match(/^[A-Z]{4}$/)) {
         Mojo.Controller.errorDialog('Bad ICAO airport code, or code not understood: ' + ICAO);
-        this.nospin();
         return;
     }
 
     this._MA.addCode(ICAO);
+    Mojo.Controller.stageController.popScene();
 };
 
 /*}}}*/
