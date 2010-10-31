@@ -22,23 +22,6 @@ function get_metar(req, callback) {
     req.worked = false;
     Mojo.Log.info("get_metar() fetching: " + req.code);
 
-    var cookie = new Mojo.Model.Cookie(req.code);
-    var cached = cookie.get();
-
-    if( cached && !req.force ) {
-        req.worked = true;
-        req.METAR  = cached;
-        req.cached = true;
-
-        Mojo.Log.info("fetched cached METAR(" + req.code + "): ", cached);
-        callback(req);
-
-        return;
-    }
-
-    var d = new Date();
-        d.setTime( d.getTime() + 3600000 ); // unix-milliseconds I guess
-
     var request = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
         method: 'get', parameters: { cccc: req.code }, 
 
@@ -48,7 +31,6 @@ function get_metar(req, callback) {
                 req.METAR  = extract_metar(req.code, transport.responseText);
 
                 Mojo.Log.info("fetched fresh METAR(" + req.code + "): ", req.METAR);
-                cookie.put(req.METAR, d);
                 callback(req);
 
             } else {

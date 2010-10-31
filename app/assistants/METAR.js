@@ -45,7 +45,7 @@ function METARAssistant() {
         emptyTemplate: 'misc/empty'
     };
 
-    this.METARModel = {items: []};
+    this.METARModel = {items: $A([])};
     this.controller.setupWidget('noaa_metar', attrs, this.METARModel);
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
@@ -77,13 +77,17 @@ function METARAssistant() {
     var code = event.item.code;
     Mojo.Log.info("METAR::rmCode(code=%s): ", code);
 
-    this.METARModel.items = this.METARModel.icons.reject(function(m){ return m.code === code; });
+    this.METARModel.items = this.METARModel.items.reject(function(m){ return m.code === code; });
     this.saveLocations();
 };
 
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.addCode = function(code) {
     Mojo.Log.info("METAR::addCode(%s)", code);
+
+    this.METARModel.items.push({ code: code, fetched: 0, fails: 0, METAR: code });
+    this.saveLocations();
+    this.updateTimer();
 };
 
 /*}}}*/
@@ -92,6 +96,7 @@ function METARAssistant() {
     Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));
 
     this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail);
+    this.controller.modelChanged(this.METARModel);
 };
 
 /*}}}*/
@@ -103,14 +108,24 @@ function METARAssistant() {
 
 /*}}}*/
 
+/* {{{ */ METARAssistant.prototype.now = function() {
+    var d   = new Date();
+    var t   = d.getTime();
+    var now = Math.round( t/1000.0 );
+
+    return now;
+};
+
+/*}}}*/
+
 /* {{{ */ METARAssistant.prototype.receiveMETARData = function(res) {
     Mojo.Log.info("METAR::receiveMETARData() code=%s worked=%s", res.code, res.worked ? "[success]" : "[fail]");
 
     if( res.worked ) {
         this.METARModel.items[res.index].METAR = res.METAR;
-        this.METARModel.items[res.index].fetched = true;
+        this.METARModel.items[res.index].fetched = this.now();
         this.METARModel.items[res.index].fails = 0;
-        this.controller.modelChanged(this.METARModel);
+        this.saveLocations();
 
         if( !res.cached ) {
             var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.metar-text")[0];
@@ -136,20 +151,36 @@ function METARAssistant() {
         }
     }
 
-    for(var i=0; i<this.METARModel.items.length; i++)
-        if( !this.METARModel.items[i].fetched && this.METARModel.items[i].fails < 3 ) {
-            get_metar({code: this.METARModel.items[i].code, force: this.forceUpdateFlag, index: i}, this.receiveMETARData);
-            return;
-        }
-
-    if( this.forceUpdateFlag )
-        this.forceUpdateFlag = false;
+    this._running = false;
+    this.updateTimer();
 };
 
 /*}}}*/
 
 /* {{{ */ METARAssistant.prototype.updateTimer = function() {
     Mojo.Log.info("METAR::updateTimer()");
+
+    // anything that's not fetched should get fetched
+    // anything that's old should get re-fetched
+
+    if( this._running )
+        return;
+
+    var now = this.now();
+
+    for(var i=0; i<this.METARModel.items.length; i++) {
+        var j = this.METARModel.items[i];
+        var o = (now - j.fetched) > 3000;
+
+        if( (!j.fetched || o) && j.fails < 3 ) {
+            this._running = true;
+            get_metar({code: j.code, force: this.forceUpdateFlag || o, index: i}, this.receiveMETARData);
+            return;
+        }
+    }
+
+    if( this.forceUpdateFlag )
+        this.forceUpdateFlag = false;
 };
 
 /*}}}*/
@@ -165,9 +196,7 @@ function METARAssistant() {
 
     this.METARModel.items = items;
     this.controller.modelChanged(this.METARModel);
-
-    if( items.length )
-        get_metar({index: 0, force: false, code: items[0].code}, this.receiveMETARData);
+    this.updateTimer();
 };
 
 /*}}}*/
@@ -180,7 +209,7 @@ function METARAssistant() {
 
 /* {{{ */ METARAssistant.prototype.activate = function() {
     Mojo.Log.info("METAR::activate()");
-    this._updateTimer = setInterval( this.updateTimer, 10e3 );
+    this._updateTimer = setInterval( this.updateTimer, 60e3 );
 };
 
 /*}}}*/
