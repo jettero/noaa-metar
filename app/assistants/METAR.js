@@ -67,7 +67,10 @@ function METARAssistant() {
 
     var i = this.METARModel.items;
     i.splice(event.fromIndex,1, i.splice(event.toIndex,1, i[event.fromIndex])[0]);
-    this.saveLocations();
+
+    this.saveLocations(true);
+    // NOTE: Mojo already fudged the visible index; it's important to not
+    // modelChanged() until *this* callstack is complete ... later is fine.
 };
 
 /*}}}*/
@@ -89,10 +92,14 @@ function METARAssistant() {
 
 /*}}}*/
 
-/* {{{ */ METARAssistant.prototype.saveLocations = function() {
+/* {{{ */ METARAssistant.prototype.saveLocations = function(skipModelChanged) {
     Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));
 
     this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail);
+
+    if( skipModelChanged )
+        return;
+
     this.controller.modelChanged(this.METARModel);
 };
 
