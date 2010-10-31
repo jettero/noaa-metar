@@ -33,7 +33,7 @@ use HTML::TreeBuilder;
 
 =cut
 
-my $html = slurp("contrib/locations.html");
+my $html = slurp("contrib/locations.html", {binmode=>":utf8"});
 my $tree = new HTML::TreeBuilder;
    $tree->parse($html);
 
@@ -47,30 +47,54 @@ sub title_filter {
     return $title;
 }
 
+my %country_states = map {($_=>1)} ("Iraq", "United Arab Emirates", "Qatar", "Greece", "Italy", "Iceland", "Japan", "Romania");
+my @states = ( "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado",
+    "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+    "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+    "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New
+    Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Marianas Islands", "Ohio",
+    "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota",
+    "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Virgin Islands", "Washington", "West Virginia",
+    "Wisconsin", "Wyoming", keys %country_states);
+
+my $state_city_re = do { local $"="|"; my $s = "[^\\w]\\s+([^,]+),\\s+(@states)"; qr($s) };
+
 my %res;
 for my $li ( $tree->find_by_tag_name("li") ) {
     my $li_html = $li->as_HTML;
+    my $li_txt  = $li->as_text;
     next unless $li_html =~ m/<b>(K[A-Z]{3})<\/b>/;
     my $ICAO = $1;
-    my ($airport_a, @locs) = $li->find_by_tag_name("a");
+    my ($airport_a, @locs) = map {title_filter($_)} $li->find_by_tag_name("a");
+    my ($loc) = grep {@$_==2} map {[split m/\s*,\s*/, $_]} @locs;
 
-    for my $loc (@locs) {
-        my $ltitle = title_filter($loc);
-        my @L = split m/\s*,\s*/, $ltitle;
-
-        unless( @L == 2 ) {
-            local $" = ", ";
-            warn "unhandled exception: wrong amount of city state (@L) in $ltitle";
-            next;
+    unless( $loc ) {
+        if( $li_txt =~ $state_city_re ) {
+            $loc = [ $1, $2 ];
         }
 
-        my ($city, $state) = @L;
-        my $state_country = "$state, United States";
+        elsif( $ICAO eq "KNFG" ) {
+            $loc = [ "Oceanside", "California" ];
+        }
+    }
 
-        $res{ $state_country }{ $city } = {
-            code => $ICAO,
-            name => title_filter($airport_a),
+    if( $loc ) {
+        my ($city, $state) = @$loc;
+        my $state_country  = "$state, United States";
+        my $name           = $airport_a;
+        my $desc           = "$ICAO: $name";
+
+        $state_country = $loc->[1] if $country_states{$loc->[1]};
+
+        $res{ $state_country }{ $desc } = {
+            code    => $ICAO,
+            name    => $name,
+            'state' => $state,
+            city    => $city,
         };
+
+    } else {
+        die "couldn't figure out: $li_txt\n$li_html\n";
     }
 }
 
