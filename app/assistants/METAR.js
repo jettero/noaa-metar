@@ -27,6 +27,9 @@ function METARAssistant() {
 
 /* {{{ */ METARAssistant.prototype.setup = function() {
     Mojo.Log.info("METAR::setup()");
+
+    this.menuSetup();
+
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     this.refreshModel = { label: "Reload",  icon: 'refresh', command: 'refresh' };
