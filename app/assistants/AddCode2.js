@@ -23,8 +23,13 @@ AddCode2Assistant.prototype.setup = function() {
     var cities = $H(location_data[this.state]).keys().sort(function(a,b) {
         if(a<b) return -1; if (a>b) return 1; return 0; });
 
-    for(var i=0; i<cities.length; i++)
-        this.locationsModel.items.push({ 'location': cities[i], data: location_data[this.state][cities[i]] });
+    for(var i=0; i<cities.length; i++) {
+        var d = location_data[this.state][cities[i]];
+
+        this.locationsModel.items.push({
+            'location': "<div class='label'>" + d.code + "</div>" + d.name,
+            'data': d });
+    }
 
     this.controller.setupWidget('noaa_locations', attrs, this.locationsModel);
 	Mojo.Event.listen(this.controller.get("noaa_locations"), Mojo.Event.listTap, this.listClickHandler.bind(this));
