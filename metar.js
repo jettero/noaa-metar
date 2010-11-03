@@ -15,14 +15,6 @@ function decode_metar(metar) {
     var res = [];
     var remark_index = -1;
 
-    if( msplit[0].match(/^METAR$/) )
-        msplit.shift();
-        // TODO: maybe we should look for things besides METAR? NOAA doesn't put it there anyway
-
-    if( msplit[0].match(/^[A-Z]{4}$/) )
-        res.sation_id = msplit.shift();
-        // TODO: use facts: /^K/ indicates a US station, KAZO is K=us, AZO=kalamazoo-airport
-
     var i;
     var parts; // as needed regex result parts (see wind)
     var items_examined = 0;
