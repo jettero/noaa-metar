@@ -54,6 +54,7 @@ function METARAssistant() {
 
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listDelete,  this.rmCode.bind(this));
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listReorder, this.mvCode.bind(this));
+    Mojo.Event.listen(this.controller.get("noaa_metar"), Mojo.Event.listTap,     this.decode.bind(this));
     this.loadLocations();
 };
 
@@ -91,6 +92,12 @@ function METARAssistant() {
     this.METARModel.items.push({ code: code, fetched: 0, fails: 0, METAR: code });
     this.saveLocations();
     this.updateTimer();
+};
+
+/*}}}*/
+/* {{{ */ METARAssistant.prototype.decode = function(event) {
+    Mojo.Log.info("METAR::decode(%s)", event.item.code);
+    // this.controller.stageController.assistant.showScene('decode', [event.item]);
 };
 
 /*}}}*/
