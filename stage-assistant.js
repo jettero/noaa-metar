@@ -83,6 +83,7 @@ StageAssistant.prototype.menuSetup = function() {
     this.appMenuModel = {
         visible: true,
         items: [
+            { label: "Help",  command: 'myshow-Help'  },
             { label: "About", command: 'myshow-About' }
         ]
     };

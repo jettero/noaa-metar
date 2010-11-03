@@ -7,6 +7,7 @@
     { "source": "app/assistants/METAR.js" },
     { "source": "app/assistants/AddCode.js" },
     { "source": "app/assistants/AddCode2.js" },
-    { "source": "app/assistants/About.js" }
+    { "source": "app/assistants/About.js" },
+    { "source": "app/assistants/Help.js" }
 
 ]
