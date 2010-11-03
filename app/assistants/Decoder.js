@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo $H location_data
+/*global Mojo $A decode_metar
 */
 
 function DecoderAssistant(args) {
@@ -19,10 +19,9 @@ DecoderAssistant.prototype.setup = function() {
         emptyTemplate: 'misc/empty'
     };
 
-    this.decodeModel = {items: $A([{key:'test', value:'test'}])};
+    this.decodeModel = {items: decode_metar(this.METAR)};
     this.controller.setupWidget('decode', attrs, this.decodeModel);
-
-
+    this.controller.get("code").update(this.code);
 };
 
 Mojo.Log.info("DecoderAssistant()");
