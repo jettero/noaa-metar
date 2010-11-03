@@ -12,7 +12,7 @@ function my_parseint(ilike, units) {
 // function decode_metar(metar) {{{
 function decode_metar(metar) {
     var msplit = metar.split(/\s+/);
-    var res = { cloud_cover: [], unknown_tokens: msplit };
+    var res = [];
     var remark_index = -1;
 
     if( msplit[0].match(/^METAR$/) )
