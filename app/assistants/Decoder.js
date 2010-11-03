@@ -8,8 +8,20 @@ function DecoderAssistant(args) {
     this.code  = args[0].code
 }
 
-DecoderAssistant.prototype.activate = function() {
-    Mojo.Log.info("DecoderAssistant::activate() code=%s METAR=%s", this.code, this.METAR);
+DecoderAssistant.prototype.setup = function() {
+    Mojo.Log.info("DecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
+
+    var attrs = {
+        swipeToDelete: true,
+        reorderable:   true,
+        listTemplate:  'misc/listcontainer',
+        itemTemplate:  'misc/DecodeItem',
+        emptyTemplate: 'misc/empty'
+    };
+
+    this.decodeModel = {items: $A([{key:'test', value:'test'}])};
+    this.controller.setupWidget('decode', attrs, this.decodeModel);
+
 
 };
 
