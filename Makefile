@@ -41,6 +41,7 @@ README: app/views/About.html app/views/Help.html Makefile
 	@ echo                              >> README
 	@ echo -----=: app/views/Help.html  >> README
 	@ elinks -dump app/views/Help.html  >> README
+	@ git add README && git commit -m "updated README" README
 
 clean:
 	git clean -dfx
