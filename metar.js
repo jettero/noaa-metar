@@ -136,6 +136,12 @@ function decode_metar(metar) {
                 res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
             }
 
+            else if( parts = key.match(/^A(\d+)(\d+)$/) ) {
+                parts.shift();
+                res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
+                res.txt = "set altimeter to " + res.altimeter_setting;
+            }
+
             else if( key.match(/^RMK$/) ) {
                 remark_section = true;
                 res.txt = "(remarks follow)";
