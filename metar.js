@@ -102,13 +102,16 @@ function decode_metar(metar) {
                 res.txt = "visibility " + res.visibility;
             }
 
-            else if( parts = key.match(/^(SKC|CLR)/) ) {
-                res.automated = parts[0] === "CLR";
+            else if( key === "SKC" ) {
+                res.automated = false;
                 res.clear_sky = true;
                 res.txt = "blue skies";
+            }
 
-                if( res.automated )
-                    res.txt += " (automated observation)";
+            else if( key === "CLR" ) {
+                res.automated = true;
+                res.clear_sky = true;
+                res.txt = "blue skies (automated observation)";
             }
 
             else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+)$/) ) {
@@ -136,13 +139,23 @@ function decode_metar(metar) {
                 res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
             }
 
-            else if( parts = key.match(/^A(\d+)(\d+)$/) ) {
+            else if( parts = key.match(/^A(\d{2})(\d{2})$/) ) {
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
                 res.txt = "set altimeter to " + res.altimeter_setting;
             }
 
-            else if( key.match(/^RMK$/) ) {
+            else if( key === "AUTO" ) {
+                res.fully_automated = true;
+                res.txt = "fully automated report";
+            }
+
+            else if( key === "COR" ) {
+                res.correction = true;
+                res.txt = "corrected report";
+            }
+
+            else if( key === "RMK" ) {
                 remark_section = true;
                 res.txt = "(remarks follow)";
             }
