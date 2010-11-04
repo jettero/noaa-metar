@@ -4,6 +4,9 @@
 /* {{{ */ function my_parseint(ilike, units, singular) {
     ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
 
+    if( ilike.length === 0 )
+        ilike = "0";
+
     var ret = [parseInt(ilike, 10), units];
     ret.toString = function() {
         if( ret[0] === 1 ) {
@@ -76,24 +79,25 @@
                 var gusts = parts[3];
 
                 res.wind = { speed: my_parseint( parts[2], "knots" ) };
-                res.txt = "wind speed is " + res.wind.speed;
-
-                if( deg === "VBR" ) {
-                    res.wind.variable = true;
-                    res.txt += ", direction variable";
+                if( res.wind.speed[0] === 0 ) {
+                    res.txt = "little or no wind";
 
                 } else {
-                    res.wind.direction = my_parseint( deg, '&deg;' );
-                    res.txt += " at " + res.wind.direction;
-                }
+                    res.txt = "wind speed is " + res.wind.speed;
+                    if( deg === "VBR" ) {
+                        res.wind.variable = true;
+                        res.txt += ", direction variable";
 
-                if( gusts ) {
-                    res.wind.gusts = my_parseint( gusts, "knots" );
-                    res.txt += " — gusting to " + res.wind.gusts;
-                }
+                    } else {
+                        res.wind.direction = my_parseint( deg, '&deg;' );
+                        res.txt += " at " + res.wind.direction;
+                    }
 
-                // 26016G22KT is 260deg 16knots and gusts to 22knots
-                // VBR05KT is variable at 5knots
+                    if( gusts ) {
+                        res.wind.gusts = my_parseint( gusts, "knots" );
+                        res.txt += " — gusting to " + res.wind.gusts;
+                    }
+                }
             }
 
             else if( key.match(/^\d+SM$/) ) {
