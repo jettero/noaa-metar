@@ -17,8 +17,8 @@ DecoderAssistant.prototype.setup = function() {
     this.menuSetup();
 
     var attrs = {
-        swipeToDelete: true,
-        reorderable:   true,
+        swipeToDelete: false,
+        reorderable:   false,
         listTemplate:  'misc/listcontainer',
         itemTemplate:  'misc/DecodeItem',
         emptyTemplate: 'misc/empty'
