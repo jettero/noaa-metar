@@ -23,10 +23,9 @@ function decode_metar(metar) {
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
-                var zulu = msplit.splice(i,1)[0];
-                var d = zulu.substr(0,2);
-                var H = zulu.substr(2,2);
-                var M = zulu.substr(4,2);
+                var d = key.substr(0,2);
+                var H = key.substr(2,2);
+                var M = key.substr(4,2);
 
                 var date_ob = new Date();
 
@@ -42,12 +41,11 @@ function decode_metar(metar) {
                 date_ob.setUTCHours(H);
                 date_ob.setUTCMinutes(M);
 
-                res.date = date_ob.toLocaleString();
+                res.date_ob = date_ob;
+                res.txt = date_ob.toLocaleString();
             }
 
             else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
-                var wind = msplit.splice(i,1); // not really used, must be spliced
-
                 var deg   = parts[1];
                 var gusts = parts[3];
 
@@ -70,22 +68,20 @@ function decode_metar(metar) {
             }
 
             else if( key.match(/^FEW\d+$/) ) {
-                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp = key.substr(3);
                 tmp += "00";
 
                 // res.cloud_cover.push({few: my_parseint(tmp, "feet")});
             }
 
             else if( key.match(/^BKN\d+$/) ) {
-                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp = ,ey.substr(3);
                 tmp += "00";
 
                 // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
             }
 
             else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
-                msplit.splice(i,1);
-
                 res.temperature = my_parseint( parts[1], "C" );
                 res.dewpoint    = my_parseint( parts[2], "C" );
             }
@@ -98,7 +94,6 @@ function decode_metar(metar) {
             }
 
             else if( key.match(/^RMK$/) ) {
-                Mojo.Log.info("here... wtf");
                 remark_section = true;
                 res.txt = "(remarks follow)";
             }
