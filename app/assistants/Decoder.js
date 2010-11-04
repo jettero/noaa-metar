@@ -6,10 +6,15 @@
 function DecoderAssistant(args) {
     this.METAR = args[0].METAR
     this.code  = args[0].code
+
+    this.SCa = Mojo.Controller.stageController.assistant;
+    this.menuSetup = this.SCa.menuSetup.bind(this);
 }
 
 DecoderAssistant.prototype.setup = function() {
     Mojo.Log.info("DecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
+
+    this.menuSetup();
 
     var attrs = {
         swipeToDelete: true,
