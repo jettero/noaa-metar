@@ -75,7 +75,7 @@ function decode_metar(metar) {
             }
 
             else if( key.match(/^BKN\d+$/) ) {
-                tmp = ,ey.substr(3);
+                tmp = key.substr(3);
                 tmp += "00";
 
                 // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
