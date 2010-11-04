@@ -28,7 +28,7 @@ function decode_metar(metar) {
     var parts; // as needed regex result parts (see wind)
     var tmp,key,res,remark_section=false;
     while(msplit.length) {
-        res = { key: key=msplit.shift(), txt: "unknown" };
+        res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
         ret.push(res);
 
         if( !remark_section ) {
