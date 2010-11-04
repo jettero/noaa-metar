@@ -26,9 +26,17 @@ DecoderAssistant.prototype.setup = function() {
 
     this.decodeModel = {items: decode_metar(this.METAR)};
     this.controller.setupWidget('decode', attrs, this.decodeModel);
-    this.controller.get("code").update(this.code);
 
-    Mojo.Log.info("items: %s", Object.toJSON(this.decodeModel.items));
+    var dat = function(code) {
+        for( var k in location_data )
+            for( var l in location_data[k] )
+                if( location_data[k][l].code === code )
+                    return location_data[k][l].name + "; " + location_data[k][l].city + ", " + location_data[k][l].state;
+
+        return "<div class='unknown-decode'>unknown airport</div>"; // this shouldn't happen, since we clearly know the airport
+    };
+
+    this.decodeModel.items.unshift({ key: this.code, txt: dat(this.code) });
 };
 
 Mojo.Log.info("DecoderAssistant()");
