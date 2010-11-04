@@ -12,3 +12,11 @@
     text-shadow: #ffffff 0px 1px 0px;
     font-weight: bold;
 }
+
+.metar.label {
+    font-size: 9pt !important;
+}
+
+.metar-decode-txt {
+    font-size: 10pt !important;
+}
