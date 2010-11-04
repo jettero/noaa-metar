@@ -22,6 +22,8 @@ DecoderAssistant.prototype.setup = function() {
     this.decodeModel = {items: decode_metar(this.METAR)};
     this.controller.setupWidget('decode', attrs, this.decodeModel);
     this.controller.get("code").update(this.code);
+
+    Mojo.Log.info("items: %s", Object.toJSON(this.decodeModel.items));
 };
 
 Mojo.Log.info("DecoderAssistant()");
