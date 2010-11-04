@@ -158,6 +158,16 @@
                 res.txt = "corrected report";
             }
 
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP)$/) ) {
+            }
+
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(BR|FG|FU|VA|DU|SA|HZ|PY)$/) ) {
+            }
+
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(PO|SQ|FC|SS|DS)$/) ) {
+                // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
+            }
+
             else if( key === "RMK" ) {
                 remark_section = true;
                 res.txt = "(remarks follow)";
