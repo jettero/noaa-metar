@@ -1,5 +1,5 @@
 -----=: app/views/About.html
-   NOAA METAR
+   About NOAA METAR
 
   About
 
@@ -41,7 +41,7 @@ References
    5. http://www.opensource.org/licenses/gpl-3.0.html
 
 -----=: app/views/Help.html
-   NOAA METAR
+   NOAA METAR Help
 
   What is METAR?
 
