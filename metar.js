@@ -85,31 +85,34 @@ function decode_metar(metar) {
                 res.txt = "visibility " + res.visibility;
             }
 
-            else if( key.match(/^FEW\d+$/) ) {
-                tmp = key.substr(3);
-                tmp += "00";
+            else if( parts = key.match(/^(SKC|CLR)/) ) {
+                res.automated = parts[0] === "CLR";
+                res.clear_sky = true;
+                res.txt = "blue skies";
 
-                res.few_clouds = my_parseint(tmp, "feet");
-                res.txt = "few clouds at " + res.few_clouds;
+                if( res.automated )
+                    res.txt += " (automated observation)";
             }
 
-            else if( key.match(/^BKN\d+$/) ) {
-                tmp = key.substr(3);
+            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+)$/) ) {
+                tmp = parts[2] || "";
                 tmp += "00";
 
-                res.broken_clouds = my_parseint(tmp, "feet");
-                res.txt = "broken clouds at " + res.few_clouds;
+                res.layer_altitude = my_parseint( tmp, "feet" );
+                res.layer_type = parts[1];
+
+                res.txt = [{
+
+                    VV:  "indefinite ceiling, vertical visibility to",
+                    FEW: "few clouds at",
+                    SCT: "scattered clouds at",
+                    BKN: "broken clouds at",
+                    OVC: "overcast at"
+
+                }[res.layer_type], res.layer_altitude].join(" ");
             }
 
-            else if( key.match(/^OVC\d+$/) ) {
-                tmp = key.substr(3);
-                tmp += "00";
-
-                res.overcast_clouds = my_parseint(tmp, "feet");
-                res.txt = "overcast at " + res.overcast_clouds;
-            }
-
-            else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
+            else if( parts = key.match(/^(M?\d+)\/?(M?\d+)$/) ) {
                 res.temperature = my_parseint( parts[1], "&deg;C" );
                 res.dewpoint    = my_parseint( parts[2], "&deg;C" );
 
