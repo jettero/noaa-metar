@@ -73,14 +73,14 @@ function decode_metar(metar) {
             tmp = msplit.splice(i,1)[0].substr(3);
             tmp += "00";
 
-            res.cloud_cover.push({few: my_parseint(tmp, "feet")});
+            // res.cloud_cover.push({few: my_parseint(tmp, "feet")});
         }
 
         else if( key.match(/^BKN\d+$/) ) {
             tmp = msplit.splice(i,1)[0].substr(3);
             tmp += "00";
 
-            res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
+            // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
         }
 
         else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
@@ -94,7 +94,7 @@ function decode_metar(metar) {
             tmp = msplit.splice(i,1)[0].substr(3);
             tmp += "00";
 
-            res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
+            // res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
         }
 
         else if( key.match(/^RMK$/) ) {
