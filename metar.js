@@ -1,8 +1,7 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
 
-// function my_parseint(ilike) {{{
-function my_parseint(ilike, units, singular) {
+/* {{{ */ function my_parseint(ilike, units, singular) {
     ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
 
     var ret = [parseInt(ilike, 10), units];
@@ -17,7 +16,25 @@ function my_parseint(ilike, units, singular) {
 
     return ret;
 }
-// }}}
+
+/*}}}*/
+/* {{{ */ function my_parsefloat(flike, units, singular) {
+    flike = flike.replace(/^M/, "-").replace(/[^0-9.-]/g, "").replace(/^0+/, ""); // STFU
+
+    var ret = [parseFloat(flike, 10), units];
+    ret.toString = function() {
+        if( ret[0] === 1 ) {
+            if( singular )
+                return [ret[0], singular].join(" ");
+            return [ret[0], units.replace(/s$/, "")].join(" ");
+        }
+        return ret.join(" ");
+    };
+
+    return ret;
+}
+
+/*}}}*/
 
 // function decode_metar(metar) {{{
 function decode_metar(metar) {
