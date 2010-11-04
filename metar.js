@@ -2,10 +2,20 @@
 */
 
 // function my_parseint(ilike) {{{
-function my_parseint(ilike, units) {
+function my_parseint(ilike, units, singular) {
     ilike = ilike.replace(/[^0-9]/g, "").replace(/^0+/, ""); // STFU
 
-    return [parseInt(ilike, 10), units];
+    var ret = [parseInt(ilike, 10), units];
+    ret.toString = function() {
+        if( ret[0] === 1 ) {
+            if( singular )
+                return [ret[0], singular].join(" ");
+            return [ret[0], units.replace(/s$/, "")].join(" ");
+        }
+        return ret.join(" ");
+    };
+
+    return ret;
 }
 // }}}
 
