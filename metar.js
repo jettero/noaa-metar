@@ -13,95 +13,97 @@ function my_parseint(ilike, units) {
 function decode_metar(metar) {
     var msplit = metar.split(/\s+/);
     var ret = [];
-    var remark_index = -1;
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,key,res,remark_section;
+    var tmp,key,res,remark_section=false;
     while(msplit.length) {
-        res = { key: key=msplit.shift(), value: "unknown" };
+        res = { key: key=msplit.shift(), txt: "unknown" };
         ret.push(res);
 
-        if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
-            var zulu = msplit.splice(i,1)[0];
-            var d = zulu.substr(0,2);
-            var H = zulu.substr(2,2);
-            var M = zulu.substr(4,2);
+        if( !remark_section ) {
+            if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
+                var zulu = msplit.splice(i,1)[0];
+                var d = zulu.substr(0,2);
+                var H = zulu.substr(2,2);
+                var M = zulu.substr(4,2);
 
-            var date_ob = new Date();
+                var date_ob = new Date();
 
-            var m = date_ob.getUTCMonth();
-            if( d < date_ob.getUTCDate() ) {
-                m ++; // if the zulu date is less than the current date, it's probably next month
-                if( m>12 )
-                    m = 1; // also rollover to january
+                var m = date_ob.getUTCMonth();
+                if( d < date_ob.getUTCDate() ) {
+                    m ++; // if the zulu date is less than the current date, it's probably next month
+                    if( m>12 )
+                        m = 1; // also rollover to january
+                }
+
+                date_ob.setUTCDate(d);
+                date_ob.setUTCMonth(m);
+                date_ob.setUTCHours(H);
+                date_ob.setUTCMinutes(M);
+
+                res.date = date_ob.toLocaleString();
             }
 
-            date_ob.setUTCDate(d);
-            date_ob.setUTCMonth(m);
-            date_ob.setUTCHours(H);
-            date_ob.setUTCMinutes(M);
+            else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
+                var wind = msplit.splice(i,1); // not really used, must be spliced
 
-            res.date = date_ob.toLocaleString();
-        }
+                var deg   = parts[1];
+                var gusts = parts[3];
 
-        else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
-            var wind = msplit.splice(i,1); // not really used, must be spliced
+                res.wind = { speed: my_parseint( parts[2], "knots" ) };
 
-            var deg   = parts[1];
-            var gusts = parts[3];
+                if( deg === "VBR" )
+                    res.wind.variable = true;
+                else
+                    res.wind.direction = my_parseint( deg, "degrees" );
 
-            res.wind = { speed: my_parseint( parts[2], "knots" ) };
+                if( gusts )
+                    res.wind.gusts = my_parseint( gusts, "knots" );
 
-            if( deg === "VBR" )
-                res.wind.variable = true;
-            else
-                res.wind.direction = my_parseint( deg, "degrees" );
+                // 26016G22KT is 260deg 16knots and gusts to 22knots
+                // VBR05KT is variable at 5knots
+            }
 
-            if( gusts )
-                res.wind.gusts = my_parseint( gusts, "knots" );
+            else if( key.match(/^\d+SM$/) ) {
+                res.visibility = my_parseint( msplit.splice(i,1)[0], "miles" );
+            }
 
-            // 26016G22KT is 260deg 16knots and gusts to 22knots
-            // VBR05KT is variable at 5knots
-        }
+            else if( key.match(/^FEW\d+$/) ) {
+                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp += "00";
 
-        else if( key.match(/^\d+SM$/) ) {
-            res.visibility = my_parseint( msplit.splice(i,1)[0], "miles" );
-        }
+                // res.cloud_cover.push({few: my_parseint(tmp, "feet")});
+            }
 
-        else if( key.match(/^FEW\d+$/) ) {
-            tmp = msplit.splice(i,1)[0].substr(3);
-            tmp += "00";
+            else if( key.match(/^BKN\d+$/) ) {
+                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp += "00";
 
-            // res.cloud_cover.push({few: my_parseint(tmp, "feet")});
-        }
+                // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
+            }
 
-        else if( key.match(/^BKN\d+$/) ) {
-            tmp = msplit.splice(i,1)[0].substr(3);
-            tmp += "00";
+            else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
+                msplit.splice(i,1);
 
-            // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
-        }
+                res.temperature = my_parseint( parts[1], "C" );
+                res.dewpoint    = my_parseint( parts[2], "C" );
+            }
 
-        else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
-            msplit.splice(i,1);
+            else if( key.match(/^OVC\d+$/) ) {
+                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp += "00";
 
-            res.temperature = my_parseint( parts[1], "C" );
-            res.dewpoint    = my_parseint( parts[2], "C" );
-        }
+                // res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
+            }
 
-        else if( key.match(/^OVC\d+$/) ) {
-            tmp = msplit.splice(i,1)[0].substr(3);
-            tmp += "00";
+            else if( key.match(/^RMK$/) ) {
+                Mojo.Log.info("here... wtf");
+                remark_section = true;
+                res.txt = "(remarks follow)";
+            }
 
-            // res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
-        }
-
-        else if( key.match(/^RMK$/) ) {
-            remark_section = true;
-        }
-
-        else if( remark_section ) {
+        } else {
             if( key.match(/^AO[12]$/) ) {
                 res.txt = "automated weather station";
                 res.automated_weather_station = true;
