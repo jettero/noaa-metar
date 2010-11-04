@@ -36,8 +36,7 @@
 
 /*}}}*/
 
-// function decode_metar(metar) {{{
-function decode_metar(metar) {
+/* {{{ */ function decode_metar(metar) {
     var msplit = metar.split(/\s+/);
     var ret = [];
 
@@ -175,9 +174,9 @@ function decode_metar(metar) {
 
     return ret;
 }
-// }}}
-// function extract_metar(airport, html) {{{
-function extract_metar(airport, html) {
+
+/*}}}*/
+/* {{{ */ function extract_metar(airport, html) {
     html = html.replace(/<[^>]+>/g, ""); // STFU
 
     var metar = "? " + airport + " ?";
@@ -199,4 +198,5 @@ function extract_metar(airport, html) {
 
     return metar;
 }
-// }}}
+
+/*}}}*/
