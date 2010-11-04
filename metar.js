@@ -3,7 +3,7 @@
 
 // function my_parseint(ilike) {{{
 function my_parseint(ilike, units, singular) {
-    ilike = ilike.replace(/[^0-9]/g, "").replace(/^0+/, ""); // STFU
+    ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
 
     var ret = [parseInt(ilike, 10), units];
     ret.toString = function() {
