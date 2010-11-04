@@ -60,47 +60,60 @@ function decode_metar(metar) {
                 var gusts = parts[3];
 
                 res.wind = { speed: my_parseint( parts[2], "knots" ) };
+                res.txt = "wind speed is " + res.wind.speed;
 
-                if( deg === "VBR" )
+                if( deg === "VBR" ) {
                     res.wind.variable = true;
-                else
-                    res.wind.direction = my_parseint( deg, "degrees" );
+                    res.txt += ", direction variable";
 
-                if( gusts )
+                } else {
+                    res.wind.direction = my_parseint( deg, '&deg;' );
+                    res.txt += " at " + res.wind.direction;
+                }
+
+                if( gusts ) {
                     res.wind.gusts = my_parseint( gusts, "knots" );
+                    res.txt += " — gusting to " + res.wind.gusts;
+                }
 
                 // 26016G22KT is 260deg 16knots and gusts to 22knots
                 // VBR05KT is variable at 5knots
             }
 
             else if( key.match(/^\d+SM$/) ) {
-                res.visibility = my_parseint( msplit.splice(i,1)[0], "miles" );
+                res.visibility = my_parseint( key, "statute miles" );
+                res.txt = "visibility " + res.visibility;
             }
 
             else if( key.match(/^FEW\d+$/) ) {
                 tmp = key.substr(3);
                 tmp += "00";
 
-                // res.cloud_cover.push({few: my_parseint(tmp, "feet")});
+                res.few_clouds = my_parseint(tmp, "feet");
+                res.txt = "few clouds at " + res.few_clouds;
             }
 
             else if( key.match(/^BKN\d+$/) ) {
                 tmp = key.substr(3);
                 tmp += "00";
 
-                // res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
-            }
-
-            else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
-                res.temperature = my_parseint( parts[1], "C" );
-                res.dewpoint    = my_parseint( parts[2], "C" );
+                res.broken_clouds = my_parseint(tmp, "feet");
+                res.txt = "broken clouds at " + res.few_clouds;
             }
 
             else if( key.match(/^OVC\d+$/) ) {
-                tmp = msplit.splice(i,1)[0].substr(3);
+                tmp = key.substr(3);
                 tmp += "00";
 
-                // res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
+                res.overcast_clouds = my_parseint(tmp, "feet");
+                res.txt = "overcast at " + res.overcast_clouds;
+            }
+
+            else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
+                res.temperature = my_parseint( parts[1], "&deg;C" );
+                res.dewpoint    = my_parseint( parts[2], "&deg;C" );
+
+                res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
             }
 
             else if( key.match(/^RMK$/) ) {
