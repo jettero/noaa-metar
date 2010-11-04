@@ -43,8 +43,6 @@ function decode_metar(metar) {
             date_ob.setUTCMinutes(M);
 
             res.date = date_ob.toLocaleString();
-
-            break;
         }
 
         else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
@@ -65,13 +63,10 @@ function decode_metar(metar) {
 
             // 26016G22KT is 260deg 16knots and gusts to 22knots
             // VBR05KT is variable at 5knots
-            break;
         }
 
         else if( key.match(/^\d+SM$/) ) {
             res.visibility = my_parseint( msplit.splice(i,1)[0], "miles" );
-
-            break;
         }
 
         else if( key.match(/^FEW\d+$/) ) {
@@ -79,8 +74,6 @@ function decode_metar(metar) {
             tmp += "00";
 
             res.cloud_cover.push({few: my_parseint(tmp, "feet")});
-
-            break;
         }
 
         else if( key.match(/^BKN\d+$/) ) {
@@ -88,8 +81,6 @@ function decode_metar(metar) {
             tmp += "00";
 
             res.cloud_cover.push({broken: my_parseint(tmp, "feet")});
-
-            break;
         }
 
         else if( parts = key.match(/^(\d+)\/(\d+)$/) ) {
@@ -104,14 +95,10 @@ function decode_metar(metar) {
             tmp += "00";
 
             res.cloud_cover.push({overcast: my_parseint(tmp, "feet")});
-
-            break;
         }
 
         else if( key.match(/^RMK$/) ) {
             remark_section = true;
-
-            break;
         }
 
         else if( remark_section ) {
