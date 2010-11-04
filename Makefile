@@ -20,7 +20,7 @@ myinstall: clean
 	scp *.ipk $${INSTHOST:-castle.vhb}:
 	ssh $${INSTHOST:-castle.vhb} /usr/bin/ipkg -o /media/cryptofs/apps install *.ipk
 
-build: locations.js
+build: locations.js README
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
@@ -41,6 +41,7 @@ README: app/views/About.html app/views/Help.html Makefile
 	@ echo                              >> README
 	@ echo -----=: app/views/Help.html  >> README
 	@ elinks -dump app/views/Help.html  >> README
+	@ (git add README && git commit -m "updated README" README; exit 0)
 
 clean:
 	git clean -dfx

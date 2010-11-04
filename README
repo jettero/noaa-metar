@@ -1,0 +1,70 @@
+-----=: app/views/About.html
+   NOAA METAR
+
+  About
+
+   Written by [1]Paul Miller.
+
+   This app is all about METAR. Attempts to process the METAR data are purely
+   for educational and learning purposes. This is only intended for people
+   who wish to learn to read METAR or already know how to do so.
+
+   You may report bugs and request features by using the github issue
+   tracker:
+
+   [2]http://github.com/jettero/noaa-metar/issues
+
+   The entire source for this app can be found on github:
+
+   [3]http://github.com/jettero/noaa-metar
+
+   Some unreleased, release candidate and historical builds can be found on
+   the gh-pages:
+   [4]http://jettero.github.com/noaa-metar
+
+  Copyright
+
+   Copyright 2010 Paul Miller
+
+  License
+
+   This app is licensed under the GNU GPLv3.
+   [5]http://www.opensource.org/licenses/gpl-3.0.html
+
+References
+
+   Visible links
+   1. http://jettero.github.com/
+   2. http://github.com/jettero/noaa-metar/issues
+   3. http://github.com/jettero/noaa-metar
+   4. http://jettero.github.com/noaa-metar
+   5. http://www.opensource.org/licenses/gpl-3.0.html
+
+-----=: app/views/Help.html
+   NOAA METAR
+
+  What is METAR?
+
+   METAR data is a form of weather data that comes in standardized human
+   readable (really!) text. Pilots and meteorologists can glance at a page of
+   METAR data and get an accurate 3D picture of the weather over huge regions
+   and altitudes.
+
+   It does take some effort to learn, but it's worth it.
+
+   Here are some helpful links:
+
+     * [1]METAR on wikipedia
+     * [2]FMH-1 METAR Handbook (html)
+     * [3]Wikihow: METAR
+
+   This is the source of the data for this app.
+   [4]http://weather.noaa.gov/weather/metar.shtml
+
+References
+
+   Visible links
+   1. http://goo.gl/PaBKT
+   2. http://goo.gl/1YqVT
+   3. http://goo.gl/ZQdWl
+   4. http://goo.gl/OInR5
