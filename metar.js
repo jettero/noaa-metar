@@ -158,14 +158,11 @@
                 res.txt = "corrected report";
             }
 
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP)$/) ) {
-            }
-
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(BR|FG|FU|VA|DU|SA|HZ|PY)$/) ) {
-            }
-
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(PO|SQ|FC|SS|DS)$/) ) {
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
+                res.intensity  = parts[1];
+                res.descriptor = parts[2];
+                res.phenomenon = parts[3];
             }
 
             else if( key === "RMK" ) {
