@@ -312,6 +312,10 @@
             } else if( parts = key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+B\d{2,4}(E\d{2,4})?)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
 
+            } else if( key.match(/^\$$/) ) {
+                res.station_maintenence = true;
+                res.txt = "automated station requires maintenence";
+
             } else {
                 res._other_remark = true;
             }
