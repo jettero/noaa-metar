@@ -291,7 +291,24 @@ var PDB = { // Phenomena text DataBase
                 res.sixh_minium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C", "&deg;C", "" );
                 res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
 
-            // } else if( parts = key.match(/^$/) {
+            } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
+                tmp = [parts[2], parts[3]].join(".");
+                tmp = parts[1]==="1" ? '-' + tmp : tmp;
+                res.hourly_temperature = my_parsefloat( tmp, '&deg;C', '&deg;C', '' );
+
+                tmp = [parts[5], parts[6]].join(".");
+                tmp = parts[4]==="1" ? '-' + tmp : tmp;
+                res.hourly_dewpoint = my_parsefloat( tmp, '&deg;C', '&deg;C', '' );
+
+                res.txt = "hourly temperature is " + res.hourly_temperature
+                        + ", hourly dewpoint is "  + res.hourly_dewpoint;
+
+            } else if( parts = key.match(/^P(\d{2}\d{2})$/) ) {
+                res.precipitation = my_parsefloat( [parts[1],parts[2]].join("."), "inches" );
+                res.txt = "hourly precipitation is " + res.precipitation;
+
+            } else if( parts = key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+B\d{2,4}(E\d{2,4})?)+$/) ) {
+                // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
 
             } else {
                 res._other_remark = true;
