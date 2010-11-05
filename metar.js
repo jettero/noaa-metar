@@ -90,6 +90,11 @@
     var parts; // as needed regex result parts (see wind)
     var tmp,key,res,remark_section=false;
     while(msplit.length) {
+
+        // NOTE: sometimes single remarks span several tokens, e.g.: PK WND 28045/15
+        if( msplit._lookahead_skip )
+            continue;
+
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
         ret.push(res);
 
