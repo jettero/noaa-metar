@@ -51,6 +51,9 @@
     if( flike.length === 0 )
         flike = "0";
 
+    if( flike === "." )
+        flike = "0";
+
     if( !sep )
         sep = " ";
 
