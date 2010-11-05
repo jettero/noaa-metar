@@ -266,6 +266,9 @@
                     res.precipiation_detector = true;
                 }
 
+            } else if( parts = key.match(/^SLPNO$/) ) {
+                res.txt = "sea level pressure unavailable";
+
             } else if( parts = key.match(/^SLP(\d+)$/) ) {
                 res.sea_level_pressure = my_parseint( parts[1], "hPa" );
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
