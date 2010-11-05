@@ -1,7 +1,7 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
 
-var PDB = { // Phenomena text DataBase
+/* {{{ */ var PDB = { // Phenomena text DataBase
 
     // descriptor (2)
     MI: "shallow", PR: "partial", BC: "patches of", DR: "low drifting", BL: "blowing", FZ: "freezing",
@@ -18,6 +18,8 @@ var PDB = { // Phenomena text DataBase
     PO: "well-developed dust/sand whirls", SQ: "squalls",
     FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
 };
+
+/*}}}*/
 
 /* {{{ */ function my_parseint(ilike, units, singular, sep) {
     ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
