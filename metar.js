@@ -160,9 +160,44 @@
 
             else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
-                res.intensity  = parts[1];
-                res.descriptor = parts[2];
-                res.phenomenon = parts[3];
+                res.intensity  = parts[1]; // intensity or proximity (1)
+                res.descriptor = parts[2]; // descriptor (2)
+                res.phenomenon = parts[3]; // precipitation (3), obscuration (4), or other (5)
+
+                /* {{{ */ res.txt = { // 3,4,5
+                    // precipitation (3)
+                    DZ: "drizzle",
+                    RA: "rain",
+                    SN: "snow",
+                    SG: "snow grains",
+                    IC: "ice crystals",
+                    PE: "ice pellets",
+                    GR: "hail",
+                    GS: "small hail and/or snow pellets",
+                    UP: "unknown precipitation",
+
+                    // obscuration (4)
+                    BR: "mist",
+                    FG: "fog",
+                    FU: "smoke",
+                    VA: "volcanic ash",
+                    DU: "widespread dust",
+                    SA: "sand",
+                    HZ: "haze",
+                    PY: "spray",
+
+                    // other (5)
+                    PO: "well-developed dust/sand whirls",
+                    SQ: "squalls",
+                    FC: "funnel cloud, tornado, or waterspout",
+                    SS: "sandstorm",
+                    DS: "duststorm"
+
+                }[res.phenomenon];
+
+                /*}}}*/
+
+
             }
 
             else if( key === "RMK" ) {
