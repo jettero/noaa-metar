@@ -265,9 +265,19 @@
                     res.txt += " with precipitation detector";
                     res.precipiation_detector = true;
                 }
+
+            } else {
+                res._other_remark = true;
             }
         }
     }
+
+    var other_remarks = [];
+    for(i=ret.length-1; i>=0; i--)
+        if( ret[i]._other_remark )
+            other_remarks.push( ret.splice(i,1)[0].key );
+
+    ret.push({ key: "other", txt: other_remarks.join(" ") });
 
     return ret;
 }
