@@ -266,6 +266,20 @@
                     res.precipiation_detector = true;
                 }
 
+            } else if( parts = key.match(/^SLP(\d+)$/) ) {
+                res.sea_level_pressure = my_parseint( parts[1], "hPa" );
+                res.txt = "sea level pressure is " + res.sea_level_pressure;
+
+            } else if( parts = key.match(/^1(0|1)(\d{3})$/) ) {
+                res.sixh_maxium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C" );
+                res.txt = "6 hour maximum temperature is " + res.sixh_maximum_temperature;
+
+            } else if( parts = key.match(/^2(0|1)(\d{3})$/) ) {
+                res.sixh_minium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C" );
+                res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
+
+            // } else if( parts = key.match(/^$/) {
+
             } else {
                 res._other_remark = true;
             }
