@@ -269,8 +269,9 @@
             } else if( parts = key.match(/^SLPNO$/) ) {
                 res.txt = "sea level pressure unavailable";
 
-            } else if( parts = key.match(/^SLP(\d+)$/) ) {
-                res.sea_level_pressure = my_parseint( parts[1], "hPa" );
+            } else if( parts = key.match(/^SLP(\d+)(\d)$/) ) {
+                tmp = [ parts[1], parts[2] ].join(".");
+                res.sea_level_pressure = my_parsefloat(tmp.match(/^[6789]/) ? '9'+tmp : '10'+tmp, 'hPa');
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
 
             } else if( parts = key.match(/^1(0|1)(\d{3})$/) ) {
