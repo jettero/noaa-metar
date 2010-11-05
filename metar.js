@@ -156,8 +156,8 @@
             }
 
             else if( parts = key.match(/^(M?\d+)\/?(M?\d+)$/) ) {
-                res.temperature = my_parseint( parts[1], "&deg;C" );
-                res.dewpoint    = my_parseint( parts[2], "&deg;C" );
+                res.temperature = my_parseint( parts[1], "&deg;C", "&deg;C", "");
+                res.dewpoint    = my_parseint( parts[2], "&deg;C", "&deg;C", "");
 
                 res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
             }
@@ -286,11 +286,11 @@
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
 
             } else if( parts = key.match(/^1(0|1)(\d{3})$/) ) {
-                res.sixh_maxium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C" );
+                res.sixh_maxium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C", "&deg;C", "" );
                 res.txt = "6 hour maximum temperature is " + res.sixh_maximum_temperature;
 
             } else if( parts = key.match(/^2(0|1)(\d{3})$/) ) {
-                res.sixh_minium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C" );
+                res.sixh_minium_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C", "&deg;C", "" );
                 res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
 
             // } else if( parts = key.match(/^$/) {
