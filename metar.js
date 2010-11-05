@@ -1,37 +1,48 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
 
-/* {{{ */ function my_parseint(ilike, units, singular) {
+/* {{{ */ function my_parseint(ilike, units, singular, sep) {
     ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
 
     if( ilike.length === 0 )
         ilike = "0";
 
+    if( !sep )
+        sep = " ";
+
     var ret = [parseInt(ilike, 10), units];
     ret.toString = function() {
         if( ret[0] === 1 ) {
             if( singular )
-                return [ret[0], singular].join(" ");
-            return [ret[0], units.replace(/s$/, "")].join(" ");
+                return [ret[0], singular].join(sep);
+
+            return [ret[0], units.replace(/s$/, "")].join(sep);
         }
-        return ret.join(" ");
+        return ret.join(sep);
     };
 
     return ret;
 }
 
 /*}}}*/
-/* {{{ */ function my_parsefloat(flike, units, singular) {
+/* {{{ */ function my_parsefloat(flike, units, singular, sep) {
     flike = flike.replace(/^M/, "-").replace(/[^0-9.-]/g, "").replace(/^0+/, ""); // STFU
+
+    if( flike.length === 0 )
+        flike = "0";
+
+    if( !sep )
+        sep = " ";
 
     var ret = [parseFloat(flike, 10), units];
     ret.toString = function() {
         if( ret[0] === 1 ) {
             if( singular )
-                return [ret[0], singular].join(" ");
-            return [ret[0], units.replace(/s$/, "")].join(" ");
+                return [ret[0], singular].join(sep);
+
+            return [ret[0], units.replace(/s$/, "")].join(sep);
         }
-        return ret.join(" ");
+        return ret.join(sep);
     };
 
     return ret;
