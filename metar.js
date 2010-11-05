@@ -1,6 +1,24 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
 
+var PDB = { // Phenomena text DataBase
+
+    // descriptor (2)
+    MI: "shallow", PR: "partial", BC: "patches of", DR: "low drifting", BL: "blowing", FZ: "freezing",
+
+    // precipitation (3)
+    DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PE: "ice pellets",
+    GR: "hail", GS: "small hail and/or snow pellets", UP: "unknown precipitation",
+
+    // obscuration (4)
+    BR: "mist", FG: "fog", FU: "smoke", VA: "volcanic ash", DU: "widespread dust", SA: "sand",
+    HZ: "haze", PY: "spray",
+
+    // other (5)
+    PO: "well-developed dust/sand whirls", SQ: "squalls",
+    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
+};
+
 /* {{{ */ function my_parseint(ilike, units, singular, sep) {
     ilike = ilike.replace(/^M/, "-").replace(/[^0-9-]/g, "").replace(/^0+/, ""); // STFU
 
@@ -109,7 +127,7 @@
                         res.txt += ", direction variable";
 
                     } else {
-                        res.wind.direction = my_parseint( deg, '&deg;' );
+                        res.wind.direction = my_parseint( deg, '&deg;', '&deg;', '' );
                         res.txt += " at " + res.wind.direction;
                     }
 
@@ -188,20 +206,17 @@
                 res.descriptor = parts[2]; // descriptor (2)
                 res.phenomena  = parts[3].match(/(..)/g) || []; // precipitation type (3)
 
-                var precip = { DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains",
-                    IC: "ice crystals", PE: "ice pellets", GR: "hail", GS: "small hail (or snow pellets)" };
-
                 res.phenomena.toString = function() {
                     if( this.length === 1 )
-                        return precip[this[0]];
+                        return PDB[this[0]];
 
                     var m = this.length-2;
                     var r = "";
 
                     for(var i=0; i<m; i++)
-                        r += precip[this[i]] + ', ';
+                        r += PDB[this[i]] + ', ';
 
-                    return r + precip[this[m]] + " and " + precip[this[m + 1]];
+                    return r + PDB[this[m]] + " and " + PDB[this[m + 1]];
                 };
 
                 if( res.descriptor === "TS" ) {
@@ -226,27 +241,10 @@
                 res.descriptor = parts[2]; // descriptor (2)
                 res.phenomenon = parts[3]; // precipitation (3), obscuration (4), or other (5)
 
-                res.txt = {
-                    // precipitation (3)
-                    DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PE: "ice pellets",
-                    GR: "hail", GS: "small hail and/or snow pellets", UP: "unknown precipitation",
+                res.txt = PDB[res.phenomenon];
 
-                    // obscuration (4)
-                    BR: "mist", FG: "fog", FU: "smoke", VA: "volcanic ash", DU: "widespread dust", SA: "sand",
-                    HZ: "haze", PY: "spray",
-
-                    // other (5)
-                    PO: "well-developed dust/sand whirls", SQ: "squalls",
-                    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
-
-                }[res.phenomenon];
-
-                if( res.descriptor ) {
-                    res.txt = {
-                        MI: "shallow", PR: "partial", BC: "patches of", DR: "low drifting", BL: "blowing", FZ: "freezing"
-
-                    }[res.descriptor] + " " + res.txt;
-                }
+                if( res.descriptor )
+                    res.txt = PDB[res.descriptor] + " " + res.txt;
 
                 if( res.intensity ) {
                     if( res.intensity === "VC" ) {
