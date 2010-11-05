@@ -310,7 +310,8 @@
 
             } else if( parts = key.match(/^P(\d{2}\d{2})$/) ) {
                 res.precipitation = my_parsefloat( [parts[1],parts[2]].join("."), "inches" );
-                res.txt = "hourly precipitation is " + res.precipitation;
+                res.txt = res.precipitation[0]===0
+                        ? "no hourly precipitation" : "hourly precipitation is " + res.precipitation;
 
             } else if( parts = key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+B\d{2,4}(E\d{2,4})?)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
