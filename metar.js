@@ -321,7 +321,8 @@ var PDB = { // Phenomena text DataBase
         if( ret[i]._other_remark )
             other_remarks.push( ret.splice(i,1)[0].key );
 
-    ret.push({ key: "other", txt: other_remarks.join(" ") });
+    if( other_remarks.length )
+        ret.push({ key: "other", txt: other_remarks.join(" ") });
 
     return ret;
 }
