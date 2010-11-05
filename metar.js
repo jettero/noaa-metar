@@ -271,6 +271,8 @@
             }
 
         } else {
+            res.txt = "<div class='unknown-decode'>partially detected, parse failed</div>";
+
             if( key.match(/^AO[12]$/) ) {
                 res.txt = "automated weather station";
                 res.automated_weather_station = true;
