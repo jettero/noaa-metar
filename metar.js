@@ -315,8 +315,14 @@
                 res.txt = res.precipitation[0]===0
                         ? "no hourly precipitation" : "hourly precipitation is " + res.precipitation;
 
-            } else if( parts = key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+B\d{2,4}(E\d{2,4})?)+$/) ) {
+            } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
+                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})/g);
+                for(i=0; i<tmp.length; i++) {
+                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
+                    //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
+                    //SHRAB0107E07,SHRA,RA,B0107,01,07,E07,07,
+                }
 
             } else if( key.match(/^\$$/) ) {
                 res.station_maintenence = true;
