@@ -43,6 +43,15 @@
     var msplit = metar.split(/\s+/);
     var ret = [];
 
+    ret.toString = function() {
+        var _tmp = [];
+
+        for(var i=0; i<this.length; i++)
+            _tmp.push( [this[i].key, this[i].txt].join(": ") );
+
+        return _tmp.join("\n");
+    };
+
     var i;
     var parts; // as needed regex result parts (see wind)
     var tmp,key,res,remark_section=false;
@@ -158,46 +167,88 @@
                 res.txt = "corrected report";
             }
 
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|SH|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)$/) ) {
+            else if( parts = key.match(/^(-|\+|VC)?(TS|SH)((RA|SN|PE|GS|GR)*)$/) ) {
+                // NOTE The TS and SH descriptors are not well behaved.  TS in
+                // particular isn't sure if it's colmun 2 or 3.  TS gets 0 or
+                // more precipitation types, SH gets 1 more more, forgive the
+                // use of *
+
+                res.intensity  = parts[1]; // intensity or proximity (1)
+                res.descriptor = parts[2]; // descriptor (2)
+                res.phenomena  = parts[3].match(/(..)/g) || []; // precipitation type (3)
+
+                var precip = { DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains",
+                    IC: "ice crystals", PE: "ice pellets", GR: "hail", GS: "small hail (or snow pellets)" };
+
+                res.phenomena.toString = function() {
+                    if( this.length === 1 )
+                        return precip[this[0]];
+
+                    var m = this.length-2;
+                    var r = "";
+
+                    for(var i=0; i<m; i++)
+                        r += precip[this[i]] + ', ';
+
+                    return r + precip[this[m]] + " and " + precip[this[m + 1]];
+                };
+
+                if( res.descriptor === "TS" ) {
+                    res.txt = res.phenomena.length ? "thunderstorm with " + res.phenomena : "thunderstorm";
+
+                } else {
+                    res.txt = res.phenomena.length === 1
+                            ? res.phenomena + " showers" : "showers of " + res.phenomena;
+                }
+
+                if( res.intensity ) {
+                    if( res.intensity === "VC" )
+                        res.txt += " in the vicinity";
+
+                    else res.txt = (res.intensity === "+" ? "heavy " : "light ") + res.txt;
+                }
+            }
+
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
                 res.intensity  = parts[1]; // intensity or proximity (1)
                 res.descriptor = parts[2]; // descriptor (2)
                 res.phenomenon = parts[3]; // precipitation (3), obscuration (4), or other (5)
 
-                /* {{{ */ res.txt = { // 3,4,5
+                res.txt = {
                     // precipitation (3)
-                    DZ: "drizzle",
-                    RA: "rain",
-                    SN: "snow",
-                    SG: "snow grains",
-                    IC: "ice crystals",
-                    PE: "ice pellets",
-                    GR: "hail",
-                    GS: "small hail and/or snow pellets",
-                    UP: "unknown precipitation",
+                    DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PE: "ice pellets",
+                    GR: "hail", GS: "small hail and/or snow pellets", UP: "unknown precipitation",
 
                     // obscuration (4)
-                    BR: "mist",
-                    FG: "fog",
-                    FU: "smoke",
-                    VA: "volcanic ash",
-                    DU: "widespread dust",
-                    SA: "sand",
-                    HZ: "haze",
-                    PY: "spray",
+                    BR: "mist", FG: "fog", FU: "smoke", VA: "volcanic ash", DU: "widespread dust", SA: "sand",
+                    HZ: "haze", PY: "spray",
 
                     // other (5)
-                    PO: "well-developed dust/sand whirls",
-                    SQ: "squalls",
-                    FC: "funnel cloud, tornado, or waterspout",
-                    SS: "sandstorm",
-                    DS: "duststorm"
+                    PO: "well-developed dust/sand whirls", SQ: "squalls",
+                    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
 
                 }[res.phenomenon];
 
-                /*}}}*/
+                if( res.descriptor ) {
+                    res.txt = {
+                        MI: "shallow", PR: "partial", BC: "patches of", DR: "low drifting", BL: "blowing", FZ: "freezing"
 
+                    }[res.descriptor] + " " + res.txt;
+                }
 
+                if( res.intensity ) {
+                    if( res.intensity === "VC" ) {
+                        res.txt += " in the vicinity";
+
+                    } else {
+                        if( res.phenomenon === "FC" && res.intensity === "+" )
+                            res.txt = "tornado or waterspout";
+
+                        else
+                            res.txt = (res.intensity === "+" ? "heavy " : "light ") + res.txt;
+                    }
+                }
             }
 
             else if( key === "RMK" ) {
