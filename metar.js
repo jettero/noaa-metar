@@ -86,6 +86,8 @@
         return _tmp.join("\n");
     };
 
+    var date_ob;
+
     var i;
     var parts; // as needed regex result parts (see wind)
     var tmp,tmp2,tmp3,key,res,remark_section=false;
@@ -100,31 +102,35 @@
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
-                var d = key.substr(0,2);
-                var H = key.substr(2,2);
-                var M = key.substr(4,2);
+                tmp = {
+                    d: key.substr(0,2),
+                    H: key.substr(2,2),
+                    M: key.substr(4,2)
+                };
 
-                var date_ob = new Date();
+                date_ob = new Date();
 
-                var m = date_ob.getUTCMonth();
-                if( d < date_ob.getUTCDate() ) {
-                    m ++; // if the zulu date is less than the current date, it's probably next month
-                    if( m>12 )
-                        m = 1; // also rollover to january
+                tmp.m = date_ob.getUTCMonth();
+                if( tmp.d < date_ob.getUTCDate() ) {
+                    tmp.m ++; // if the zulu date is less than the current date, it's probably next month
+                    if( tmp.m>12 )
+                        tmp.m = 1; // also rollover to january
                 }
 
-                date_ob.setUTCDate(d);
-                date_ob.setUTCMonth(m);
-                date_ob.setUTCHours(H);
-                date_ob.setUTCMinutes(M);
+                date_ob.setUTCDate(tmp.d);
+                date_ob.setUTCMonth(tmp.m);
+                date_ob.setUTCHours(tmp.H);
+                date_ob.setUTCMinutes(tmp.M);
 
                 res.date_ob = date_ob;
                 res.txt = date_ob.toLocaleString();
             }
 
             else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
-                var deg   = parts[1];
-                var gusts = parts[3];
+                tmp = {
+                    deg:   parts[1],
+                    gusts: parts[3]
+                };
 
                 res.wind = { speed: my_parseint( parts[2], "knots" ) };
                 if( res.wind.speed[0] === 0 ) {
@@ -132,17 +138,17 @@
 
                 } else {
                     res.txt = "wind speed is " + res.wind.speed;
-                    if( deg === "VBR" ) {
+                    if( tmp.deg === "VBR" ) {
                         res.wind.variable = true;
                         res.txt += ", direction variable";
 
                     } else {
-                        res.wind.direction = my_parseint( deg, '&deg;', '&deg;', '' );
+                        res.wind.direction = my_parseint( tmp.deg, '&deg;', '&deg;', '' );
                         res.txt += " at " + res.wind.direction;
                     }
 
-                    if( gusts ) {
-                        res.wind.gusts = my_parseint( gusts, "knots" );
+                    if( tmp.gusts ) {
+                        res.wind.gusts = my_parseint( tmp.gusts, "knots" );
                         res.txt += " — gusting to " + res.wind.gusts;
                     }
                 }
