@@ -98,7 +98,6 @@
             continue;
 
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
-        ret.push(res);
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
@@ -388,6 +387,12 @@
                 res._other_remark = true;
             }
         }
+
+        // NOTE: sometimes single remarks span several tokens, e.g.: 1 1/2SM
+        if( msplit._lookahead_skip )
+            continue;
+
+        ret.push(res);
     }
 
     var other_remarks = [];
