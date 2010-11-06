@@ -88,7 +88,7 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,key,res,remark_section=false;
+    var tmp,tmp2,tmp3,key,res,remark_section=false;
     while(msplit.length) {
 
         // NOTE: sometimes single remarks span several tokens, e.g.: PK WND 28045/15
@@ -323,10 +323,54 @@
             } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
                 tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})/g);
+                tmp2 = [];
+
+                res.phenomena_begin_end = [];
+
                 for(i=0; i<tmp.length; i++) {
                     parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
                     //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
-                    //SHRAB0107E07,SHRA,RA,B0107,01,07,E07,07,
+                    //SHRAB0107E07,SHRA,RA,B0107,01 ,07,E07,  07,
+                    //SHRAB07E0107,SHRA,RA,B07  ,07 ,  ,E0107,01,07
+                    //SHRAE03,     SHRA,RA,     ,   ,  ,E03,  03,
+                    // 0           1    2  3     4   5  6     7  8
+
+                    res.phenomena_begin_end.push(tmp3 = { phenomena: parts[1].match(/(..)/g) });
+
+                    if( parts[3] ) {
+                        tmp3.begin = {};
+
+                        if( parts[5] ) {
+                            tmp3.begin.hour   = parts[4];
+                            tmp3.begin.minute = parts[5];
+
+                        } else {
+                            tmp3.begin.hour   = /* where does this come from, zulu tag? */ "blarg";
+                            tmp3.begin.minute = parts[4];
+                        }
+                    }
+
+                    if( parts[6] ) {
+                        tmp3.end = {};
+
+                        if( parts[5] ) {
+                            tmp3.end.hour   = parts[7];
+                            tmp3.end.minute = parts[8];
+
+                        } else {
+                            tmp3.begin.hour   = /* where does this come from, zulu tag? */ "blarg";
+                            tmp3.begin.minute = parts[7];
+                        }
+                    }
+
+                    tmp2.push("blarg");
+                }
+
+                if( tmp2.length ) {
+                    tmp = tmp2.pop();
+
+                    res.txt = tmp2.join(", ");
+                    res.txt = res.txt ? [res.txt, tmp].join(" and ") : tmp;
                 }
 
             } else if( key.match(/^\$$/) ) {
