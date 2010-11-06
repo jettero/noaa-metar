@@ -90,14 +90,18 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,tmp2,tmp3,key,res,remark_section=false;
+    var tmp,tmp2,tmp3,key,next_key,last_key,res,remark_section=false;
     while(msplit.length) {
 
         // NOTE: sometimes single remarks span several tokens, e.g.: PK WND 28045/15
         if( msplit._lookahead_skip )
             continue;
 
+        last_key = key || "";
+
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
+
+        next_key = msplit.length ? msplit[0] : "";
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
