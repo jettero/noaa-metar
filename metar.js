@@ -322,7 +322,7 @@
 
             } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
-                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})/g);
+                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+/g);
                 tmp2 = [];
 
                 res.phenomena_begin_end = [];
@@ -335,7 +335,9 @@
                     //SHRAE03,     SHRA,RA,     ,   ,  ,E03,  03,
                     // 0           1    2  3     4   5  6     7  8
 
-                    res.phenomena_begin_end.push(tmp3 = { phenomena: parts[1].match(/(..)/g) });
+                    print(" " + parts.join("\n "));
+
+                    res.phenomena_begin_end.push(tmp3 = { phenomena: decode_metar(parts[1]) });
 
                     if( parts[3] ) {
                         tmp3.begin = {};
@@ -353,23 +355,23 @@
                     if( parts[6] ) {
                         tmp3.end = {};
 
-                        if( parts[5] ) {
+                        if( parts[8] ) {
                             tmp3.end.hour   = parts[7];
                             tmp3.end.minute = parts[8];
 
                         } else {
-                            tmp3.begin.hour   = /* where does this come from, zulu tag? */ "blarg";
-                            tmp3.begin.minute = parts[7];
+                            tmp3.end.hour   = /* where does this come from, zulu tag? */ "blarg";
+                            tmp3.end.minute = parts[7];
                         }
                     }
 
-                    tmp2.push("blarg");
+                    tmp2.push(tmp3.phenomena[0].txt + (tmp3.begin ? " [begin]":"") + (tmp3.end ? " [end]":""));
                 }
 
                 if( tmp2.length ) {
-                    tmp = tmp2.pop();
+                    tmp = tmp2.shift();
 
-                    res.txt = tmp2.join(", ");
+                    res.txt = tmp2.join(tmp2.join(" ").match(/,/) ? "; " : ", ");
                     res.txt = res.txt ? [res.txt, tmp].join(" and ") : tmp;
                 }
 
