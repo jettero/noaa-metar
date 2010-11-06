@@ -14,7 +14,8 @@ for i in {0..23}; do
 
     if [ ! -f $d/$z.metar ]; then
         wget -c -T15 -t100 -O $z ftp://tgftp.nws.noaa.gov/data/observations/metar/cycles/$z.TXT
-        grep '^[A-Z]' $i | sort -u | bzip2 > $d/$z.metar
-        rm $i
+        grep '^[A-Z]' $z | sort -u | bzip2 > $d/$z.metar
+        git add $d/$z.metar
+        rm $z
     fi
 done
