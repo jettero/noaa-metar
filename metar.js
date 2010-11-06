@@ -154,9 +154,26 @@
                 }
             }
 
-            else if( key.match(/^\d+SM$/) ) {
-                res.visibility = my_parseint( key, "statute miles" );
-                res.txt = "visibility " + res.visibility;
+            else if( key.match(/^M?\d+$/) && next_key.match(/\d+SM$/) ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = true;
+            }
+
+            else if( parts = key.match(/^(M)?((\d+) )?((\d+)\/)?(\d+)SM$/) ) {
+                // js> "M1 1/2SM".match(/^(M)?((\d+) )?((\d+)\/)?(\d+)SM$/)
+                // M1 1/2SM,M,1 ,1,1/,1,2
+                // 0        1 2  3 4  5 6
+
+                tmp = parts[6];
+                if( parts[5] )
+                    tmp = parseInt(parts[5],10) / parseInt(tmp,10);
+
+                if( parts[3] )
+                    tmp += parseInt(parts[3],10); // we assume "1 1/4" occurs, but "1 1" does not
+
+                res.visibility = my_parsefloat( tmp+"", "statute miles" );
+                res.less_than  = parts[1] ? true : false;
+                res.txt = "visibility " + (res.less_than ? "less than " : "") + res.visibility;
             }
 
             else if( key === "SKC" ) {
