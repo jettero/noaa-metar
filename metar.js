@@ -123,7 +123,7 @@
                 date_ob.setUTCMinutes(tmp.M);
 
                 res.date_ob = date_ob;
-                res.txt = date_ob.toLocaleString();
+                res.txt = date_ob.toLocaleString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1");
             }
 
             else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
@@ -341,37 +341,36 @@
                     //SHRAE03,     SHRA,RA,     ,   ,  ,E03,  03,
                     // 0           1    2  3     4   5  6     7  8
 
-                    print(" " + parts.join("\n "));
-
                     res.phenomena_begin_end.push(tmp3 = { phenomena: decode_metar(parts[1]) });
 
                     if( parts[3] ) {
-                        tmp3.begin = {};
+                        tmp3.begin = new Date(date_ob);
 
                         if( parts[5] ) {
-                            tmp3.begin.hour   = parts[4];
-                            tmp3.begin.minute = parts[5];
+                            tmp3.begin.setUTCHours(  parts[4]);
+                            tmp3.begin.setUTCMinutes(parts[5]);
 
                         } else {
-                            tmp3.begin.hour   = /* where does this come from, zulu tag? */ "blarg";
-                            tmp3.begin.minute = parts[4];
+                            tmp3.begin.setUTCMinutes(parts[4]);
                         }
                     }
 
                     if( parts[6] ) {
-                        tmp3.end = {};
+                        tmp3.end = new Date(date_ob);
 
                         if( parts[8] ) {
-                            tmp3.end.hour   = parts[7];
-                            tmp3.end.minute = parts[8];
+                            tmp3.end.setUTCHours(  parts[7]);
+                            tmp3.end.setUTCMinutes(parts[8]);
 
                         } else {
-                            tmp3.end.hour   = /* where does this come from, zulu tag? */ "blarg";
-                            tmp3.end.minute = parts[7];
+                            tmp3.end.setUTCMinutes(parts[7]);
                         }
                     }
 
-                    tmp2.push(tmp3.phenomena[0].txt + (tmp3.begin ? " [begin]":"") + (tmp3.end ? " [end]":""));
+                    tmp2.push(tmp3.phenomena[0].txt
+                        + (tmp3.begin ? " began " + tmp3.begin.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1"):"")
+                        + (tmp3.end   ? " ended " +   tmp3.end.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1"):"")
+                    );
                 }
 
                 if( tmp2.length ) {
