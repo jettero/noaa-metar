@@ -74,7 +74,7 @@
 /*}}}*/
 
 /* {{{ */ function decode_metar(metar) {
-    var msplit = metar.split(/\s+/);
+    var msplit = metar.toUpperCase().split(/\s+/);
     var ret = [];
 
     ret.toString = function() {
