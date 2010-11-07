@@ -143,7 +143,7 @@
                         res.txt += ", direction variable";
 
                     } else {
-                        res.wind.direction = my_parseint( tmp.deg, '&deg;', '&deg;', '' );
+                        res.wind.direction = my_parseint( tmp.deg, '⁰', '⁰', '' );
                         res.txt += " at " + res.wind.direction;
                     }
 
@@ -207,8 +207,8 @@
             }
 
             else if( parts = key.match(/^(M?\d+)\/?(M?\d+)$/) ) {
-                res.temperature = my_parseint( parts[1], "&deg;C", "&deg;C", "");
-                res.dewpoint    = my_parseint( parts[2], "&deg;C", "&deg;C", "");
+                res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
+                res.dewpoint    = my_parseint( parts[2], "⁰C", "⁰C", "");
 
                 res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
             }
@@ -319,21 +319,21 @@
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
 
             } else if( parts = key.match(/^1(0|1)(\d{3})$/) ) {
-                res.sixh_maximum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C", "&deg;C", "" );
+                res.sixh_maximum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "⁰C", "⁰C", "" );
                 res.txt = "6 hour maximum temperature is " + res.sixh_maximum_temperature;
 
             } else if( parts = key.match(/^2(0|1)(\d{3})$/) ) {
-                res.sixh_minimum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "&deg;C", "&deg;C", "" );
+                res.sixh_minimum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "⁰C", "⁰C", "" );
                 res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
 
             } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
                 tmp = [parts[2], parts[3]].join(".");
                 tmp = parts[1]==="1" ? '-' + tmp : tmp;
-                res.hourly_temperature = my_parsefloat( tmp, '&deg;C', '&deg;C', '' );
+                res.hourly_temperature = my_parsefloat( tmp, '⁰C', '⁰C', '' );
 
                 tmp = [parts[5], parts[6]].join(".");
                 tmp = parts[4]==="1" ? '-' + tmp : tmp;
-                res.hourly_dewpoint = my_parsefloat( tmp, '&deg;C', '&deg;C', '' );
+                res.hourly_dewpoint = my_parsefloat( tmp, '⁰C', '⁰C', '' );
 
                 res.txt = "hourly temperature is " + res.hourly_temperature
                         + ", hourly dewpoint is "  + res.hourly_dewpoint;
