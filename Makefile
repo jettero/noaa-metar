@@ -31,6 +31,7 @@ build: locations.js README
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
                      --exclude $(name) --exclude contrib --exclude Makefile \
+                     --exclude log-parse.pl --exclude do-metar.pl \
                      --exclude meta --exclude metar --exclude t \
         $(name) && rm $(name)
 
