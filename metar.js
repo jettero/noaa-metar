@@ -318,12 +318,18 @@
                 res.sea_level_pressure = my_parsefloat(tmp.match(/^[6789]/) ? '9'+tmp : '10'+tmp, 'hPa');
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
 
-            } else if( parts = key.match(/^1(0|1)(\d{3})$/) ) {
-                res.sixh_maximum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "⁰C", "⁰C", "" );
+            } else if( parts = key.match(/^1(0|1)(\d{2})(\d)$/) ) {
+                parts.shift();
+                tmp = parts.shift() === 1 ? "-" : "";
+                tmp += parts.join(".");
+                res.sixh_maximum_temperature = my_parsefloat( tmp, "⁰C", "⁰C", "" );
                 res.txt = "6 hour maximum temperature is " + res.sixh_maximum_temperature;
 
-            } else if( parts = key.match(/^2(0|1)(\d{3})$/) ) {
-                res.sixh_minimum_temperature = my_parseint( parts[1]==="1" ? "-" + parts[2] : parts[2], "⁰C", "⁰C", "" );
+            } else if( parts = key.match(/^2(0|1)(\d{2})(\d)$/) ) {
+                parts.shift();
+                tmp = parts.shift() === 1 ? "-" : "";
+                tmp += parts.join(".");
+                res.sixh_minimum_temperature = my_parsefloat( tmp, "⁰C", "⁰C", "" );
                 res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
 
             } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
