@@ -397,6 +397,26 @@
                     res.txt = res.txt ? [res.txt, tmp].join(" and ") : tmp;
                 }
 
+            } else if( parts = key.match(/^(CHI|VIS)NO$/) ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^(PWI|RVR|P|FZRA|TS|CHI|VIS)NO( (.+))?$/) ) {
+                res.sensor_fail = parts[1];
+                res.txt = {
+                    PWI:  "present weather identifier",
+                    RVR:  "runway visual range",
+                    P:    "precipitation",
+                    FZRA: "freezing rain",
+                    TS:   "lightning",
+                    CHI:  "ceiling height",
+                    VIS:  "secondary visibility"
+                }[res.sensor_fail];
+
+                res.txt += " sensor failure";
+                if( parts[2] )
+                    res.txt += " on/at " + parts[2];
+
             } else if( key.match(/^\$$/) ) {
                 res.station_maintenence = true;
                 res.txt = "automated station requires maintenence";
