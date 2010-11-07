@@ -27,7 +27,7 @@
     if( ilike.length === 0 )
         ilike = "0";
 
-    if( !sep )
+    if( sep == null ) // STFU
         sep = " ";
 
     var ret = [parseInt(ilike, 10), units];
@@ -54,7 +54,7 @@
     if( flike === "." )
         flike = "0";
 
-    if( !sep )
+    if( sep == null ) // STFU
         sep = " ";
 
     var ret = [parseFloat(flike, 10), units];
