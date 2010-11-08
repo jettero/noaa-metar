@@ -16,7 +16,18 @@
 
     // other (5)
     PO: "well-developed dust/sand whirls", SQ: "squalls",
-    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
+    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm",
+
+    DIRS: {
+        N:   "north",
+        NE:  "north-east",
+        E:   "east",
+        SE:  "south-east",
+        S:   "south",
+        SW:  "south-west",
+        W:   "west",
+        NW:  "north-west"
+    }
 };
 
 /*}}}*/
