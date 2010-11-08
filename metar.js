@@ -236,6 +236,22 @@
                 res.txt = "visibility " + (res.less_than ? "less than " : "") + res.visibility;
             }
 
+            else if( parts = key.match(/^(\d{4})(N|NE|E|SE|S|SW|W|NW|NDV)?$/) ) {
+                // NOTE: this is not fmh-1, WMO — evidentally they were fed up with statute miles and went to meters
+                res.visibility = my_parseint( parts[1], "meters" );
+                if( parts[2] )
+                    res.direction  = parts[2];
+
+                res.txt = "visibility is " + res.visibility;
+                if( res.direction ) {
+                    if( res.direction === "NDV" )
+                        res.txt += " (sensor not direction capable)";
+
+                    else
+                        res.txt += " to the " + PDB.DIRS[res.direction];
+                }
+            }
+
             else if( key === "SKC" ) {
                 res.automated = false;
                 res.clear_sky = true;
