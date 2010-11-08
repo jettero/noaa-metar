@@ -259,7 +259,10 @@
                 }
             }
 
-            else if( parts = key.match(/^A(\d{2})(\d{2})$/) ) {
+            else if( parts = key.match(/^A(\d{2})(\d{1,2})$/) ) {
+                // NOTE: technically this should always be A\d{2}\d{2}, but occasionally
+                // some automated stations produce (eg) A298 for 29.80
+
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
                 res.txt = "set altimeter to " + res.altimeter_setting;
