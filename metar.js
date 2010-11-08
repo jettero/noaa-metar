@@ -164,6 +164,42 @@
                 _lookahead_skip = true;
             }
 
+            else if( parts = key.match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/) ) {
+                // js> "R15L/4000VP6000FT".match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/)
+                // R15L/4000VP6000FT,15,L, ,4000,VP6000,P,6000
+                // 0                  1 2 3    4      5 6 7
+
+                res.runway = parts[1];
+                tmp = "runway-" + res.runway;
+                if( parts[2] ) {
+                    res.approach_from = parts[2];
+                    tmp += " (" + ( res.approach_from==="C" ? "center" :
+                                    res.approach_from==="L" ? "left" : "right" ) + " approach)";
+                }
+
+                res.visual_range = my_parseint(parts[4], "ft");
+                if( parts[3] )
+                    res.visual_range_mod = parts[3];
+
+                if( parts[5] ) {
+                    res.max_visual_range = my_parseint(parts[7], "ft");
+                    if( parts[6] )
+                        res.max_visual_range_mod = parts[6];
+
+                    res.txt = tmp + " visual range varies between "
+                        + (res.visual_range_mod ? (res.visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.visual_range
+                        + " and "
+                        + (res.max_visual_range_mod ? (res.max_visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.max_visual_range;
+
+                } else {
+                    res.txt = tmp + " visual range is "
+                        + (res.visual_range_mod ? (res.visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.visual_range;
+                }
+            }
+
             else if( parts = key.match(/^(M)?((\d+) )?((\d+)\/)?(\d+)SM$/) ) {
                 // js> "M1 1/2SM".match(/^(M)?((\d+) )?((\d+)\/)?(\d+)SM$/)
                 // M1 1/2SM,M,1 ,1,1/,1,2
