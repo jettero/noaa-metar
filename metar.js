@@ -246,7 +246,7 @@
                 }[res.layer_type], res.layer_altitude].join(" ");
             }
 
-            else if( parts = key.match(/^(M?\d+)\/?(M?\d+)?$/) ) {
+            else if( parts = key.match(/^(M?\d+)\/(M?\d+)?$/) ) {
                 res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
 
                 if( parts[2] ) {
