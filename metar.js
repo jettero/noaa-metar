@@ -126,7 +126,7 @@
                 res.txt = date_ob.toLocaleString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1");
             }
 
-            else if( parts = key.match(/^(VBR|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
+            else if( parts = key.match(/^(VRB|[0-9]{3})([0-9]+)(?:G([0-9]+))?KT$/) ) {
                 tmp = {
                     deg:   parts[1],
                     gusts: parts[3]
