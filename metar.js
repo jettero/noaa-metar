@@ -197,7 +197,7 @@
                 tmp = parts[2] || "";
                 tmp += "00";
 
-                res.layer_altitude = my_parseint( tmp, "feet" );
+                res.layer_altitude = my_parseint( tmp, "ft" );
                 res.layer_type = parts[1];
 
                 res.txt = [{
