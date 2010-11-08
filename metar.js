@@ -154,6 +154,11 @@
                 }
             }
 
+            else if( parts = key.match(/^(\d+)V(\d+)/) ) {
+                res.wind_varies_between = [my_parseint(parts[1], '⁰', '⁰', ''), my_parseint(parts[2], '⁰', '⁰', '')];
+                res.txt = "wind is variable between " + res.wind_varies_between.join(" and ");
+            }
+
             else if( key.match(/^M?\d+$/) && next_key.match(/\d+SM$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
                 _lookahead_skip = true;
@@ -206,11 +211,16 @@
                 }[res.layer_type], res.layer_altitude].join(" ");
             }
 
-            else if( parts = key.match(/^(M?\d+)\/?(M?\d+)$/) ) {
+            else if( parts = key.match(/^(M?\d+)\/?(M?\d+)?$/) ) {
                 res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
-                res.dewpoint    = my_parseint( parts[2], "⁰C", "⁰C", "");
 
-                res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
+                if( parts[2] ) {
+                    res.dewpoint = my_parseint( parts[2], "⁰C", "⁰C", "");
+                    res.txt = "temperature: " + res.temperature + ", dewpoint: " + res.dewpoint;
+
+                } else {
+                    res.txt = "temperature: " + res.temperature + ", dewpoint: unavailable";
+                }
             }
 
             else if( parts = key.match(/^A(\d{2})(\d{2})$/) ) {
