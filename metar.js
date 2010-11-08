@@ -90,15 +90,14 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,tmp2,tmp3,key,next_key,last_key,res,remark_section=false,_lookahead_skip;
+    var tmp,tmp2,tmp3,key,next_key,res,remark_section=false,_lookahead_skip;
+
+    next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
+
     while(msplit.length) {
         _lookahead_skip = false;
 
-        last_key = key || "";
-
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
-
-        next_key = msplit.length ? msplit[0] : "";
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
@@ -159,7 +158,7 @@
                 res.txt = "wind is variable between " + res.wind_varies_between.join(" and ");
             }
 
-            else if( key.match(/^M?\d+$/) && next_key.match(/\d+SM$/) ) {
+            else if( key.match(/^M?\d+$/) && next_key().match(/\d+SM$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
                 _lookahead_skip = true;
             }
