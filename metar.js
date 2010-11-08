@@ -75,6 +75,7 @@
 
 /* {{{ */ function decode_metar(metar) {
     var msplit = metar.toUpperCase().split(/\s+/);
+    var lsplit = [];
     var ret = [];
 
     ret.toString = function() {
@@ -90,14 +91,22 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,tmp2,tmp3,key,next_key,res,remark_section=false,_lookahead_skip;
+    var tmp,tmp2,tmp3,key,next_key,res,remark_section=false,_lookahead_skip=0;
 
     next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
+    last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
 
     while(msplit.length) {
-        _lookahead_skip = false;
+        if( _lookahead_skip > 0 )
+            _lookahead_skip --;
+
+        if( key )
+            lsplit.unshift(key);
 
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
+
+        if( _lookahead_skip>0 )
+            continue;
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
@@ -160,7 +169,7 @@
 
             else if( key.match(/^M?\d+$/) && next_key().match(/\d+SM$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
-                _lookahead_skip = true;
+                _lookahead_skip = 1;
             }
 
             else if( parts = key.match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/) ) {
@@ -481,7 +490,7 @@
         }
 
         // NOTE: sometimes single remarks span several tokens, e.g.: 1 1/2SM
-        if( !_lookahead_skip )
+        if( _lookahead_skip === 0 )
             ret.push(res);
     }
 
