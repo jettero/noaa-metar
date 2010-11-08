@@ -237,8 +237,8 @@
             }
 
             else if( parts = key.match(/^(\d{4})(N|NE|E|SE|S|SW|W|NW|NDV)?$/) ) {
-                // NOTE: this is not fmh-1, WMO — evidentally they were fed up with statute miles and went to meters
-                res.visibility = my_parseint( parts[1], "meters" );
+                // NOTE: this is not FMH-1, WMO — evidentally they were fed up with statute miles and went to meters
+                res.visibility = my_parseint( parts[1], "m" );
                 if( parts[2] )
                     res.direction  = parts[2];
 
@@ -250,6 +250,18 @@
                     else
                         res.txt += " to the " + PDB.DIRS[res.direction];
                 }
+
+                if( parts[1] === "0000" )
+                    res.txt = "visibility less than 50 m";
+
+                if( parts[1] === "9999" )
+                    res.txt = "visibility greater than 10 km";
+            }
+
+            else if( key === "CAVOK" ) {
+                // NOTE: WMO, not FMH-1
+                // three simultaneous conditions: no clouds, no weather, visibility >10km
+                res.txt = "clear skies, visibility perfect, no detectable weather events";
             }
 
             else if( key === "SKC" ) {
