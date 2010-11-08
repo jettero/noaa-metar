@@ -220,13 +220,13 @@
             else if( key === "SKC" ) {
                 res.automated = false;
                 res.clear_sky = true;
-                res.txt = "blue skies";
+                res.txt = "clear skies";
             }
 
             else if( key === "CLR" ) {
                 res.automated = true;
                 res.clear_sky = true;
-                res.txt = "blue skies (automated observation)";
+                res.txt = "clear skies (automated observation)";
             }
 
             else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+)$/) ) {
