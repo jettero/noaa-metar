@@ -102,10 +102,10 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,tmp2,tmp3,key,next_key,res,remark_section=false,_lookahead_skip=0;
+    var tmp,tmp2,tmp3,key,res,remark_section=false,_lookahead_skip=0;
 
-    next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
-    last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
+    var next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
+    var last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
 
     while(msplit.length) {
         if( _lookahead_skip > 0 )
