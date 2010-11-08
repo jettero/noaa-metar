@@ -1,22 +1,51 @@
 package t::test_metar;
-use Encode;
 
 use common::sense;
-use IPC::System::Simple qw(capturex);
 use Tie::IxHash;
+use WWW::Mechanize;
+use Time::HiRes qw(sleep);
+use IO::Socket::INET;
 
 my $js = __FILE__;
    $js =~ s/\.pm$/.js/;
 
-sub process_metar {
-    my @lines = capturex(node=>$js, "@_");
-    chomp @lines;
+my $mech = WWW::Mechanize->new;
+my $kpid;
 
-    s/<[^>]+>//g for @lines;
+END { kill 15, $kpid if $kpid }
+BEGIN {
+    my $ppid = $$;
+
+    if( $kpid = fork ) {
+        # no comment
+        my $sock;
+        while( !($sock = IO::Socket::INET->new("localhost:8152")) ) {
+            sleep 0.1;
+        }
+        close $sock;
+
+    } elsif( not defined $kpid ) {
+        die "fork() failed: $!";
+
+    } else {
+        exec node => "t/MQS.js";
+        kill 15, $ppid;
+        die "exec() failed: $!";
+    }
+}
+
+sub process_metar {
+    $mech->get("http://localhost:8152/?m=" . "@_");
+    my @lines = split m/[\r\n]+/m, $mech->content;
+
+    s/[\r\n]+$//g for @lines;
+    s/<[^>]+>//g  for @lines;
 
     tie my %H, 'Tie::IxHash' or die $!;
 
-    $H{$_->[0]} = decode(utf8=>$_->[1]) for map {[ m/^([^:]+):\s+(.+)/ ]} @lines;
+    $H{$_->[0]} = $_->[1] for map {[ m/^([^:]+):\s+(.+)/ ]} @lines;
 
     return \%H;
 }
+
+1;
