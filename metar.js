@@ -328,6 +328,12 @@
                 res.txt = "set altimeter to " + res.altimeter_setting;
             }
 
+            else if( parts = key.match(/^Q(\d{4})/) ) {
+                // NOTE: WMO METAR manual is fairly non-specific about what this pressure reading is for...
+                res.pressure = my_parsefloat( parts[1], "hPa" );
+                res.txt = "pressure is " + res.pressure;
+            }
+
             else if( key === "AUTO" ) {
                 res.fully_automated = true;
                 res.txt = "fully automated report";
