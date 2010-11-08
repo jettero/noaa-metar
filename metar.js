@@ -237,22 +237,35 @@
                 res.txt = "clear skies (automated observation)";
             }
 
-            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+)$/) ) {
-                tmp = parts[2] || "";
-                tmp += "00";
-
-                res.layer_altitude = my_parseint( tmp, "ft" );
+            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)$/) ) {
                 res.layer_type = parts[1];
 
-                res.txt = [{
+                if( parts[2] === "///" ) {
+                    res.layer_altitude = "below sensor";
 
-                    VV:  "indefinite ceiling, vertical visibility to",
-                    FEW: "few clouds at",
-                    SCT: "scattered clouds at",
-                    BKN: "broken clouds at",
-                    OVC: "overcast at"
+                    res.txt = {
+                        FEW: "few clouds below sensor",
+                        SCT: "scattered clouds below sensor",
+                        BKN: "broken clouds below sensor",
+                        OVC: "overcast below sensor"
+                    }[res.layer_type];
 
-                }[res.layer_type], res.layer_altitude].join(" ");
+                } else {
+                    tmp = parts[2] || "";
+                    tmp += "00";
+
+                    res.layer_altitude = my_parseint( tmp, "ft" );
+
+                    res.txt = [{
+
+                        VV:  "indefinite ceiling, vertical visibility to",
+                        FEW: "few clouds at",
+                        SCT: "scattered clouds at",
+                        BKN: "broken clouds at",
+                        OVC: "overcast at"
+
+                    }[res.layer_type], res.layer_altitude].join(" ");
+                }
             }
 
             else if( parts = key.match(/^(M?\d+)\/(M?\d+)?$/) ) {
