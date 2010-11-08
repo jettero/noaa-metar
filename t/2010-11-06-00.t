@@ -20,9 +20,8 @@ for (@METAR) {
         ok(1);
 
     } else {
-        $decode = dump($decode);
-        warn "\n$metar -> $decode\n";
-        sleep 1;
+        open my $fh, ">>", "problem_metar.log" or die $!;
+        print $fh "@$_\n", dump($decode), "\n\n";
         ok(0);
     }
 }
