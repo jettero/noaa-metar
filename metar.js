@@ -312,6 +312,9 @@
                 res.txt = "clear skies (automated observation)";
             }
 
+            else if( key === "FIRST" ) { res.txt = "first report"; }
+            else if( key === "LAST"  ) { res.txt = "last report"; }
+
             else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)$/) ) {
                 res.layer_type = parts[1];
 
