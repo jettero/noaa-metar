@@ -5,7 +5,7 @@ use IPC::System::Simple qw(capturex);
 use t::test_metar;
 
 my $fname = $0; $fname =~ s/\.t$//; $fname =~ s/-(\d+)$/\/$1Z.metar/; $fname =~ s/^t\//metar\//;
-my @METAR = map {[m/(\S+)\s+(.+)/]} grep {m/^K/} capturex(bzcat => $fname);
+my @METAR = map {[m/(\S+)\s+(.+)/]} grep {chomp; m/^K/ and not m/[^[:print:]]/} capturex(bzcat => $fname);
 
 my %undocumented_bs = (
     120 => 1,
@@ -15,18 +15,17 @@ my %undocumented_bs = (
 );
 
 my %fixes = (
-    A3000PMK => "A3000 RMK",
+    A3000PMK    => "A3000 RMK",
+   'SCT180 B20' => "SCT180 BKN020",
 );
 
 plan tests => scalar @METAR;
 
 for (@METAR) {
     my ($airport, $metar) = @$_;
-
     $metar =~ s/$_/$fixes{$_}/g for keys %fixes;
 
-    my $decode = t::test_metar::process_metar($metar);
-
+    my $decode  = t::test_metar::process_metar($metar);
     my $unknown = grep {$decode->{$_} eq "unknown" and not $undocumented_bs{$_}} keys %$decode;
 
     if( $unknown == 0 ) {
