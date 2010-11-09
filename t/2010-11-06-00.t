@@ -12,6 +12,7 @@ my %undocumented_bs = (
     BLO => 1,
     12  => 1,
     A98 => 1, # this is probably meant to be A2980? whatever... looks hand typed
+    BKN => 1, # with no height, what do they hope this means?
 );
 
 my %fixes = (
