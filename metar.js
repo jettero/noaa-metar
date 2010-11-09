@@ -16,7 +16,18 @@
 
     // other (5)
     PO: "well-developed dust/sand whirls", SQ: "squalls",
-    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm"
+    FC: "funnel cloud", SS: "sandstorm", DS: "duststorm",
+
+    DIRS: {
+        N:   "north",
+        NE:  "north-east",
+        E:   "east",
+        SE:  "south-east",
+        S:   "south",
+        SW:  "south-west",
+        W:   "west",
+        NW:  "north-west"
+    }
 };
 
 /*}}}*/
@@ -75,6 +86,7 @@
 
 /* {{{ */ function decode_metar(metar) {
     var msplit = metar.toUpperCase().split(/\s+/);
+    var lsplit = [];
     var ret = [];
 
     ret.toString = function() {
@@ -90,15 +102,22 @@
 
     var i;
     var parts; // as needed regex result parts (see wind)
-    var tmp,tmp2,tmp3,key,next_key,last_key,res,remark_section=false,_lookahead_skip;
-    while(msplit.length) {
-        _lookahead_skip = false;
+    var tmp,tmp2,tmp3,key,res,remark_section=false,_lookahead_skip=0;
 
-        last_key = key || "";
+    var next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
+    var last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
+
+    while(msplit.length) {
+        if( _lookahead_skip > 0 )
+            _lookahead_skip --;
+
+        if( key )
+            lsplit.unshift(key);
 
         res = { key: key=msplit.shift(), txt: "<div class='unknown-decode'>unknown</div>" };
 
-        next_key = msplit.length ? msplit[0] : "";
+        if( _lookahead_skip>0 )
+            continue;
 
         if( !remark_section ) {
             if( key.match(/^\d+Z$/) ) { // time, do they *always* end in Z?  Who knows.  I hope so.
@@ -159,9 +178,45 @@
                 res.txt = "wind is variable between " + res.wind_varies_between.join(" and ");
             }
 
-            else if( key.match(/^M?\d+$/) && next_key.match(/\d+SM$/) ) {
+            else if( key.match(/^M?\d+$/) && next_key().match(/\d+SM$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
-                _lookahead_skip = true;
+                _lookahead_skip = 1;
+            }
+
+            else if( parts = key.match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/) ) {
+                // js> "R15L/4000VP6000FT".match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/)
+                // R15L/4000VP6000FT,15,L, ,4000,VP6000,P,6000
+                // 0                  1 2 3    4      5 6 7
+
+                res.runway = parts[1];
+                tmp = "runway-" + res.runway;
+                if( parts[2] ) {
+                    res.approach_from = parts[2];
+                    tmp += " (" + ( res.approach_from==="C" ? "center" :
+                                    res.approach_from==="L" ? "left" : "right" ) + " approach)";
+                }
+
+                res.visual_range = my_parseint(parts[4], "ft");
+                if( parts[3] )
+                    res.visual_range_mod = parts[3];
+
+                if( parts[5] ) {
+                    res.max_visual_range = my_parseint(parts[7], "ft");
+                    if( parts[6] )
+                        res.max_visual_range_mod = parts[6];
+
+                    res.txt = tmp + " visual range varies between "
+                        + (res.visual_range_mod ? (res.visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.visual_range
+                        + " and "
+                        + (res.max_visual_range_mod ? (res.max_visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.max_visual_range;
+
+                } else {
+                    res.txt = tmp + " visual range is "
+                        + (res.visual_range_mod ? (res.visual_range_mod==="M" ? "less than ":"more than "):"")
+                        + res.visual_range;
+                }
             }
 
             else if( parts = key.match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/) ) {
@@ -217,37 +272,78 @@
                 res.txt = "visibility " + (res.less_than ? "less than " : "") + res.visibility;
             }
 
+            else if( parts = key.match(/^(\d{4})(N|NE|E|SE|S|SW|W|NW|NDV)?$/) ) {
+                // NOTE: this is not FMH-1, WMO — evidentally they were fed up with statute miles and went to meters
+                res.visibility = my_parseint( parts[1], "m" );
+                if( parts[2] )
+                    res.direction  = parts[2];
+
+                res.txt = "visibility is " + res.visibility;
+                if( res.direction ) {
+                    if( res.direction === "NDV" )
+                        res.txt += " (sensor not direction capable)";
+
+                    else
+                        res.txt += " to the " + PDB.DIRS[res.direction];
+                }
+
+                if( parts[1] === "0000" )
+                    res.txt = "visibility less than 50 m";
+
+                if( parts[1] === "9999" )
+                    res.txt = "visibility greater than 10 km";
+            }
+
+            else if( key === "CAVOK" ) {
+                // NOTE: WMO, not FMH-1
+                // three simultaneous conditions: no clouds, no weather, visibility >10km
+                res.txt = "clear skies, visibility perfect, no detectable weather events";
+            }
+
             else if( key === "SKC" ) {
                 res.automated = false;
                 res.clear_sky = true;
-                res.txt = "blue skies";
+                res.txt = "clear skies";
             }
 
             else if( key === "CLR" ) {
                 res.automated = true;
                 res.clear_sky = true;
-                res.txt = "blue skies (automated observation)";
+                res.txt = "clear skies (automated observation)";
             }
 
-            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+)$/) ) {
-                tmp = parts[2] || "";
-                tmp += "00";
-
-                res.layer_altitude = my_parseint( tmp, "ft" );
+            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)$/) ) {
                 res.layer_type = parts[1];
 
-                res.txt = [{
+                if( parts[2] === "///" ) {
+                    res.layer_altitude = "below sensor";
 
-                    VV:  "indefinite ceiling, vertical visibility to",
-                    FEW: "few clouds at",
-                    SCT: "scattered clouds at",
-                    BKN: "broken clouds at",
-                    OVC: "overcast at"
+                    res.txt = {
+                        FEW: "few clouds below sensor",
+                        SCT: "scattered clouds below sensor",
+                        BKN: "broken clouds below sensor",
+                        OVC: "overcast below sensor"
+                    }[res.layer_type];
 
-                }[res.layer_type], res.layer_altitude].join(" ");
+                } else {
+                    tmp = parts[2] || "";
+                    tmp += "00";
+
+                    res.layer_altitude = my_parseint( tmp, "ft" );
+
+                    res.txt = [{
+
+                        VV:  "indefinite ceiling, vertical visibility to",
+                        FEW: "few clouds at",
+                        SCT: "scattered clouds at",
+                        BKN: "broken clouds at",
+                        OVC: "overcast at"
+
+                    }[res.layer_type], res.layer_altitude].join(" ");
+                }
             }
 
-            else if( parts = key.match(/^(M?\d+)\/?(M?\d+)?$/) ) {
+            else if( parts = key.match(/^(M?\d+)\/(M?\d+)?$/) ) {
                 res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
 
                 if( parts[2] ) {
@@ -266,6 +362,12 @@
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
                 res.txt = "set altimeter to " + res.altimeter_setting;
+            }
+
+            else if( parts = key.match(/^Q(\d{4})/) ) {
+                // NOTE: WMO METAR manual is fairly non-specific about what this pressure reading is for...
+                res.pressure = my_parsefloat( parts[1], "hPa" );
+                res.txt = "pressure is " + res.pressure;
             }
 
             else if( key === "AUTO" ) {
@@ -482,7 +584,7 @@
         }
 
         // NOTE: sometimes single remarks span several tokens, e.g.: 1 1/2SM
-        if( !_lookahead_skip )
+        if( _lookahead_skip === 0 )
             ret.push(res);
     }
 
