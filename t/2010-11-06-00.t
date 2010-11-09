@@ -17,6 +17,7 @@ my %undocumented_bs = (
 my %fixes = (
     A3000PMK    => "A3000 RMK",
    'SCT180 B20' => "SCT180 BKN020",
+   '10 1I06/02' => 'COR', # whatever, it's clearly just a transmission error anyway
 );
 
 plan tests => scalar @METAR;
