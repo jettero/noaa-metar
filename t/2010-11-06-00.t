@@ -34,7 +34,7 @@ for (@METAR) {
 
     } else {
         open my $fh, ">>:utf8", "problem_metar.log" or die $!;
-        print $fh "@$_\n";
+        print $fh __FILE__, "\n@$_\n";
 
         my $keyln = 0;
 
