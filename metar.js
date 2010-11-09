@@ -100,6 +100,19 @@
 
     var date_ob;
 
+    var p2s = function() {
+        if( this.length === 1 )
+            return PDB[this[0]];
+
+        var m = this.length-2;
+        var r = "";
+
+        for(var i=0; i<m; i++)
+            r += PDB[this[i]] + ', ';
+
+        return r + PDB[this[m]] + " and " + PDB[this[m + 1]];
+    };
+
     var i;
     var parts; // as needed regex result parts (see wind)
     var tmp,tmp2,tmp3,key,res,remark_section=false,_lookahead_skip=0;
@@ -392,19 +405,7 @@
                 res.intensity  = parts[1]; // intensity or proximity (1)
                 res.descriptor = parts[2]; // descriptor (2)
                 res.phenomena  = parts[3].match(/(..)/g) || []; // precipitation type (3)
-
-                res.phenomena.toString = function() {
-                    if( this.length === 1 )
-                        return PDB[this[0]];
-
-                    var m = this.length-2;
-                    var r = "";
-
-                    for(var i=0; i<m; i++)
-                        r += PDB[this[i]] + ', ';
-
-                    return r + PDB[this[m]] + " and " + PDB[this[m + 1]];
-                };
+                res.phenomena.toString = p2s;
 
                 if( res.descriptor === "TS" ) {
                     res.txt = res.phenomena.length ? "thunderstorm with " + res.phenomena : "thunderstorm";
@@ -422,24 +423,30 @@
                 }
             }
 
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|TS|FZ)?(DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)$/) ) {
+            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|TS|FZ)?((DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
                 res.intensity  = parts[1]; // intensity or proximity (1)
                 res.descriptor = parts[2]; // descriptor (2)
-                res.phenomenon = parts[3]; // precipitation (3), obscuration (4), or other (5)
-
-                res.txt = PDB[res.phenomenon];
+                res.phenomena  = parts[3].match(/(..)/g); // precipitation (3), obscuration (4), or other (5)
+                res.phenomena.toString = p2s;
+                // '-RASNGS,-,,RASNGS,GS'
 
                 if( res.descriptor )
-                    res.txt = PDB[res.descriptor] + " " + res.txt;
+                    res.txt = PDB[res.descriptor] + " " + res.phenomena;
+
+                else res.txt = res.phenomena.toString();
 
                 if( res.intensity ) {
                     if( res.intensity === "VC" ) {
-                        res.txt += " in the vicinity";
+                        res.txt = res.txt + " in the vicinity";
 
                     } else {
-                        if( res.phenomenon === "FC" && res.intensity === "+" )
+                        if( res.phenomena[0] === "FC" && res.intensity === "+" )
                             res.txt = "tornado or waterspout";
+                            // NOTE: FC is always "funnel cloud", when it's
+                            // intense, it's a tornado this is how fmh-1 says
+                            // to do it.  They also say FC is never coded with
+                            // other phenomena, which is handy, we can just use [0]
 
                         else
                             res.txt = (res.intensity === "+" ? "heavy " : "light ") + res.txt;
@@ -449,6 +456,7 @@
 
             else if( key === "RMK" ) {
                 remark_section = true;
+                res.remarks_follow = true;
                 res.txt = "(remarks follow)";
             }
 
