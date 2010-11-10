@@ -16,6 +16,10 @@ END { kill 15, $kpid if $kpid }
 BEGIN {
     my $ppid = $$;
 
+    while( system(qw(fuser -s -k -n tcp 8152))==0 ) {
+        sleep 0.1;
+    }
+
     if( $kpid = fork ) {
         # no comment
         my $sock;
