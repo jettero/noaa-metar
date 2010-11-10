@@ -13,22 +13,27 @@ my %undocumented_bs = (
     12      => 1,
     A98     => 1, # this is probably meant to be A2980? whatever... looks hand typed
     BKN     => 1, # with no height, what do they hope this means?
+    OVC     => 1, # with no height, what do they hope this means?
     OV      => 1,
     MMMMMKT => 1,
     VRB043T => 'VRB043KT',
+    '28004T'=> '28004KT',
     -VCTSDZ => 1, # this is illegal, you can't mix vc with -
 
     '060456ZUTO/1009KT' => 1, # there's something wrong with the upload on KNLC I think
 );
 
 my %fixes = (
-    A3000PMK    => "A3000 RMK",
-   'SCT180 B20' => "SCT180 BKN020",
-   '10 1I06/02' => 'COR',     # whatever, it's clearly just a transmission error anyway
-   '\bK AO2'    => "RMK AO2", # KNLC is borked
-   'A29O\b'     => "A2900",   # that's not A290, btw, it's A29O
-   '30008K\b'   => "30008KT",
-   '\b220M07\b' => '22/M07',
+   '\bNO SPECI\b' => 'RMK NO SPECI',  # I believe the 11/6 14 report from KTRK to be remarks that there is no speci
+   '\b7 SKC\b'    => '',
+   '\bSKCSM\b'    => '',
+    A3000PMK      => "A3000 RMK",
+   'SCT180 B20'   => "SCT180 BKN020",
+   '10 1I06/02'   => 'COR',     # whatever, it's clearly just a transmission error anyway
+   '\bK AO2'      => "RMK AO2", # KNLC is borked
+   'A29O\b'       => "A2900",   # that's not A290, btw, it's A29O
+   '30008K\b'     => "30008KT",
+   '\b220M07\b'   => '22/M07',
 );
 
 plan tests => scalar @METAR;
