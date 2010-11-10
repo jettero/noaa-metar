@@ -328,7 +328,7 @@
             else if( key === "FIRST" ) { res.txt = "first report"; }
             else if( key === "LAST"  ) { res.txt = "last report"; }
 
-            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)$/) ) {
+            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)(CB|TCU)?$/) ) {
                 res.layer_type = parts[1];
 
                 if( parts[2] === "///" ) {
@@ -356,6 +356,12 @@
                         OVC: "overcast at"
 
                     }[res.layer_type], res.layer_altitude].join(" ");
+                }
+
+                if( parts[3] ) {
+                    tmp = parts[3] === "CB" ? "cumulonimbus" : "towering cumulonimbus";
+                    res[ tmp.replace(/ /, "_") + "_clouds" ] = true;
+                    res.txt = res.txt.replace(/clouds/, tmp).replace(/overcast/, "overcast by" + tmp);
                 }
             }
 
