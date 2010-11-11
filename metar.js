@@ -365,7 +365,7 @@
                 }
             }
 
-            else if( parts = key.match(/^(M?\d+)\/(M?\d+)?$/) ) {
+            else if( parts = key.match(/^([-M]?\d+)\/([-M]?\d+)?$/) ) {
                 res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
 
                 if( parts[2] ) {
@@ -377,9 +377,10 @@
                 }
             }
 
-            else if( parts = key.match(/^A(\d{2})(\d{1,2})$/) ) {
+            else if( parts = key.match(/^A(\d{2})(\d{1,3})$/) ) {
                 // NOTE: technically this should always be A\d{2}\d{2}, but occasionally
                 // some automated stations produce (eg) A298 for 29.80
+                // sometimes we even get 29999 too
 
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
