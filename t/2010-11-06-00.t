@@ -8,17 +8,21 @@ my $fname = $0; $fname =~ s/\.t$//; $fname =~ s/-(\d+)$/\/$1Z.metar/; $fname =~ 
 my @METAR = map {[m/(\S+)\s+(.+)/]} grep {chomp; m/^K/ and not m/[^[:print:]]/} capturex(bzcat => $fname);
 
 my %undocumented_bs = (
-    120     => 1,
-    BLO     => 1,
-    12      => 1,
-    A98     => 1, # this is probably meant to be A2980? whatever... looks hand typed
-    BKN     => 1, # with no height, what do they hope this means?
-    OVC     => 1, # with no height, what do they hope this means?
-    OV      => 1,
-    MMMMMKT => 1,
-    VRB043T => 'VRB043KT',
-    '28004T'=> '28004KT',
-    -VCTSDZ => 1, # this is illegal, you can't mix vc with -
+    120      => 1,
+    BLO      => 1,
+    12       => 1,
+    A98      => 1, # this is probably meant to be A2980? whatever... looks hand typed
+    BKN      => 1, # with no height, what do they hope this means?
+    OVC      => 1, # with no height, what do they hope this means?
+    SCT      => 1, # with no height, what do they hope this means?
+    OV       => 1,
+    MMMMMKT  => 1,
+    VRB043T  => 'VRB043KT',
+    '28004T' => '28004KT',
+    -VCTSDZ  => 1, # this is illegal, you can't mix vc with -
+    BKN200EH => 1,
+    BRFT     => 1, # wtf is FT supposed to be?
+    A29999   => 1, # BOUY?  9999 A29999  ... could be some EU thing, my doc on their METAR sucks
 
     '060456ZUTO/1009KT' => 1, # there's something wrong with the upload on KNLC I think
 );
