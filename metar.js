@@ -377,10 +377,13 @@
                 }
             }
 
-            else if( parts = key.match(/^A(\d{2})(\d{1,3})$/) ) {
+            else if( parts = key.match(/^A(\d{2})(\d{1,3})?$/) ) {
                 // NOTE: technically this should always be A\d{2}\d{2}, but occasionally
                 // some automated stations produce (eg) A298 for 29.80
                 // sometimes we even get 29999 too
+
+                if( !parts[2] )
+                    parts[2] = "0"; // pfft, I see A30 and things from time to time, it's clear to me they mean inHg
 
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
