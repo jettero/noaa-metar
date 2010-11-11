@@ -22,7 +22,6 @@ my %undocumented_bs = (
     -VCTSDZ  => 1, # this is illegal, you can't mix vc with -
     BKN200EH => 1,
     BRFT     => 1, # wtf is FT supposed to be?
-    A29999   => 1, # BOUY?  9999 A29999  ... could be some EU thing, my doc on their METAR sucks
 
     '060456ZUTO/1009KT' => 1, # there's something wrong with the upload on KNLC I think
 );
