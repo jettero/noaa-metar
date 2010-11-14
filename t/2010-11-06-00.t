@@ -10,6 +10,7 @@ my @METAR = map {[m/(\S+)\s+(.+)/]} grep {chomp; m/^K/ and not m/[^[:print:]]/} 
 my %undocumented_bs = (
     120      => 1,
     BLO      => 1,
+    '10FT'   => 1, # is this visibility?  10FT? really? but with no FG?
     12       => 1,
     11       => 1,
     15       => 1,
