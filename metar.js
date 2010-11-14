@@ -336,8 +336,10 @@
             else if( key === "FIRST" ) { res.txt = "first report"; }
             else if( key === "LAST"  ) { res.txt = "last report"; }
 
-            else if( parts = key.match(/^(VV|FEW|SCT|BKN|OVC)(\d+|\/\/\/)(CB|TCU)?$/) ) {
+            else if( parts = key.match(/^(VV|FEW|SC[TK]|BKN|OVC)(\d+|\/\/\/)(CB|TCU)?$/) ) {
                 res.layer_type = parts[1];
+                if( res.layer_type === "SCK" )
+                    res.layer_type = "SCT";
 
                 if( parts[2] === "///" ) {
                     res.layer_altitude = "below sensor";
