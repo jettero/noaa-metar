@@ -5,6 +5,7 @@
 
     // descriptor (2)
     MI: "shallow", PR: "partial", BC: "patches of", DR: "low drifting", BL: "blowing", FZ: "freezing",
+    TS: "thunderstorms", SH: "showers",
 
     // precipitation (3)
     DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PE: "ice pellets",
@@ -406,7 +407,7 @@
                 res.txt = "corrected report";
             }
 
-            else if( parts = key.match(/^(-|\+|VC)?(TS|SH)((RA|SN|PE|GS|GR)*)$/) ) {
+            else if( parts = key.match(/^(-|\+|[+-]?VC)?(TS|SH)((RA|SN|PE|GS|GR)*)$/) ) {
                 // NOTE The TS and SH descriptors are not well behaved.  TS in
                 // particular isn't sure if it's colmun 2 or 3.  TS gets 0 or
                 // more precipitation types, SH gets 1 more more, forgive the
@@ -426,14 +427,20 @@
                 }
 
                 if( res.intensity ) {
-                    if( res.intensity === "VC" )
+                    if( res.intensity === "-VC" )
+                        res.txt += " (light) in the vicinity"; // technically invalid, but we can see what they mean
+
+                    else if ( res.intensity === "+VC" )
+                        res.txt += " (heavy) in the vicinity"; // technically invalid, but we can see what they mean
+
+                    else if ( res.intensity === "VC" )
                         res.txt += " in the vicinity";
 
                     else res.txt = (res.intensity === "+" ? "heavy " : "light ") + res.txt;
                 }
             }
 
-            else if( parts = key.match(/^(-|\+|VC)?(MI|PR|BC|DR|BL|TS|FZ)?((DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+)$/) ) {
+            else if( parts = key.match(/^(-|\+|[+-]?VC)?(MI|PR|BC|DR|BL|TS|FZ)?((DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
                 res.intensity  = parts[1]; // intensity or proximity (1)
                 res.descriptor = parts[2]; // descriptor (2)
@@ -447,8 +454,14 @@
                 else res.txt = res.phenomena.toString();
 
                 if( res.intensity ) {
-                    if( res.intensity === "VC" ) {
-                        res.txt = res.txt + " in the vicinity";
+                    if( res.intensity === "-VC" ) {
+                        res.txt += " (light) in the vicinity"; // technically invalid, but we can see what they mean
+
+                    } else if ( res.intensity === "+VC" ) {
+                        res.txt += " (heavy) in the vicinity"; // technically invalid, but we can see what they mean
+
+                    } else if ( res.intensity === "VC" ) {
+                        res.txt += " in the vicinity";
 
                     } else {
                         if( res.phenomena[0] === "FC" && res.intensity === "+" )
