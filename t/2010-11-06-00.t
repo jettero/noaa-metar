@@ -30,6 +30,8 @@ my %undocumented_bs = (
     FEW001BKN002 => 1, # needs space — if this later turns out to be pretty common, I could code for it.
     FEW001OVC002 => 1, # ""
 
+    -PL => 1, # spray? dust? ice?
+
     '060456ZUTO/1009KT' => 1, # there's something wrong with the upload on KNLC I think
 );
 
@@ -37,6 +39,7 @@ my %fixes = (
    '\b1OSM\b'        => "10SM", # heh, old people
    '\bNO SPECI\b'    => 'RMK NO SPECI',  # I believe the 11/6 14 report from KTRK to be remarks that there is no speci
    '\b7 SKC\b'       => '',
+   '\b04/KM07\b'     => '04/M07',
    '\bSKCSM\b'       => '',
     A3000PMK         => "A3000 RMK",
    'SCT180 B20'      => "SCT180 BKN020",
