@@ -477,7 +477,7 @@
                 }
             }
 
-            else if( key === "RMK" ) {
+            else if( key.match(/^RMKS?$/) ) {
                 remark_section = true;
                 res.remarks_follow = true;
                 res.txt = "(remarks follow)";
