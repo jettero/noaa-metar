@@ -193,7 +193,14 @@
             }
 
             else if( key.match(/^M?\d+$/) && next_key().match(/\d+SM$/) ) {
+                // 1 1/4SM
                 msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = 1;
+            }
+
+            else if( key.match(/^M?\d+$/) && next_key() === "SM" ) {
+                // 10 SM ; technically this is illegal, but we can figure it out...
+                msplit[0] = [key, msplit[0]].join("");
                 _lookahead_skip = 1;
             }
 
