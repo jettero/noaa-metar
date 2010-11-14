@@ -495,6 +495,9 @@
                     res.precipiation_detector = true;
                 }
 
+            else if( key === "FIRST" ) { res.txt = "first report"; }
+            else if( key === "LAST"  ) { res.txt = "last report"; }
+
             } else if( parts = key.match(/^SLPNO$/) ) {
                 res.txt = "sea level pressure unavailable";
 
