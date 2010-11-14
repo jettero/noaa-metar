@@ -57,7 +57,7 @@ for (@METAR) {
     $metar =~ s/$_/$fixes{$_}/g for keys %fixes;
 
     my $decode  = t::test_metar::process_metar($metar);
-    my $unknown = grep {$decode->{$_} eq "unknown" and not $undocumented_bs{$_}} keys %$decode;
+    my $unknown = my @UNK = grep {$decode->{$_} eq "unknown" and not $undocumented_bs{$_}} keys %$decode;
 
     if( $unknown == 0 ) {
         ok(1);
@@ -79,6 +79,7 @@ for (@METAR) {
         }
 
         print $fh "\n";
+        warn " <<UNK: \e[1;33m@UNK\e[m >>\n";
         ok(0);
     }
 }
