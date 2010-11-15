@@ -5,6 +5,7 @@ use Tie::IxHash;
 use WWW::Mechanize;
 use Time::HiRes qw(sleep);
 use IO::Socket::INET;
+use CGI qw(escape);
 
 my $js = __FILE__;
    $js =~ s/\.pm$/.js/;
@@ -39,7 +40,7 @@ BEGIN {
 }
 
 sub process_metar {
-    $mech->get("http://localhost:8152/?m=" . "@_");
+    $mech->get("http://localhost:8152/?m=" . escape("@_"));
     my @lines = split m/[\r\n]+/m, $mech->content;
 
     s/[\r\n]+$//g for @lines;
