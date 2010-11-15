@@ -13,6 +13,11 @@ tie my %metar, 'Tie::IxHash', (
     RASNGS     => qr"rain, snow and small hail",
     VCFC       => "funnel cloud in the vicinity",
     "+VCRA"    => "rain (heavy) in the vicinity", # illegal, but supported
+    HZ         => "haze",
+    DZ         => "drizzle",
+    SQ         => "squalls",
+    DS         => "duststorm",
+
     RMK        => qr/remarks/,
     RAB22      => qr/rain began.*?:22/, # the hours depend on the locale
     RAB1722    => qr/rain began.*?:22/, # the hours still depend on the locale, 17->12 in my case, ymmv
