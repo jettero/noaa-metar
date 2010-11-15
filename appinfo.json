@@ -1,6 +1,6 @@
 {
 	"id": "org.voltar.noaa-metar",
-	"version": "0.5.0",
+	"version": "0.7.0",
 	"vendor": "voltar.org",
 	"type": "web",
 	"main": "index.html",
