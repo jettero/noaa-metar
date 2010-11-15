@@ -19,7 +19,11 @@ my %undocumented_bs = (
     BKN      => 1, # with no height, what do they hope this means?
     OVC      => 1, # with no height, what do they hope this means?
     SCT      => 1, # with no height, what do they hope this means?
+    SCK      => 1,
+    SKC      => 1,
+    AUPO     => 1, # auto?  If it's auto, why the fuck is it typoed?
     OV       => 1,
+    CR       => 1,
     SCRT010  => 1, # they mean SCT ... pfft
     MMMMMKT  => 1,
     VRB043T  => 'VRB043KT',
@@ -37,18 +41,29 @@ my %undocumented_bs = (
 );
 
 my %fixes = (
-   '\b1OSM\b'        => "10SM", # heh, old people
-   '\bNO SPECI\b'    => 'RMK NO SPECI',  # I believe the 11/6 14 report from KTRK to be remarks that there is no speci
-   '\b7 SKC\b'       => '',
-   '\b04/KM07\b'     => '04/M07',
-   '\bSKCSM\b'       => '',
-    A3000PMK         => "A3000 RMK",
-   'SCT180 B20'      => "SCT180 BKN020",
-   '10 1I06/02'      => 'COR',     # whatever, it's clearly just a transmission error anyway
-   '\bK AO2'         => "RMK AO2", # KNLC is borked
-   'A29O\b'          => "A2900",   # that's not A290, btw, it's A29O
-   '\b30008K\b'      => "30008KT",
-   '\b220M07\b'      => '22/M07',
+   '\b1OSM\b'     => "10SM", # heh, old people
+   '\bNO SPECI\b' => 'RMK NO SPECI',  # I believe the 11/6 14 report from KTRK to be remarks that there is no speci
+   '\b7 SKC\b'    => '',
+   '\b04/KM07\b'  => '04/M07',
+   '\bSKCSM\b'    => '',
+   'SCT180 B20'   => "SCT180 BKN020",
+   '10 1I06/02'   => 'COR',     # whatever, it's clearly just a transmission error anyway
+   '\bK AO2'      => "RMK AO2", # KNLC is borked
+   'A29O\b'       => "A2900",   # that's not A290, btw, it's A29O
+   '\b30008K\b'   => "30008KT",
+   '\b220M07\b'   => '22/M07',
+   '\b1`/M04\b'   => '1/M04',
+   '\bCLR`'       => 'CLR ',
+
+   '\bA3004 RAB22\b'            => 'A3004 RMK RAB22',
+   'A3048 NOSPECI FIRST'        => 'A3048 RMK NOSPECI FIRST',
+   '(?<=\bA\d{4})(?:PMK|RMK)\b' => " RMK",
+
+    '\b(?<=\d)/M+\b'         => '/', # this comes up surprisingly often... I think it's M0 maybe?
+    '\b(?<=\d\d)/M+\b'       => '/',
+    '\b(?<=M\d\d)/M+\b'      => '/',
+   '(?<=\d)KT`(?=\d+SM)'     => 'KT ',
+    '\bT(?=M?\d+/M?\d+\b)'   => '',
 );
 
 plan tests => scalar @METAR;

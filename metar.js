@@ -333,10 +333,25 @@
                 res.txt = "clear skies (automated observation)";
             }
 
+            else if( key === "BLO" && next_key().match(/^\d+$/) ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = 1;
+            }
+
+            else if( parts = key.match(/BLO ?(\d+)/) ) {
+                tmp = parts[1];
+                tmp += parts[1].length === 2 ? "000" : "00";
+                // NOTE: sometimes we get BLO 12 (which is below 12,000?) and
+                // sometimes we get BLO 250 (which is almost certainly 25,000?)
+                // these are non-standard, so if I get it wrong, who cares.
+
+                res.txt = "clear below " + my_parseint( tmp, "ft" ) + " (informal)";
+            }
+
             else if( key === "FIRST" ) { res.txt = "first report"; }
             else if( key === "LAST"  ) { res.txt = "last report"; }
 
-            else if( parts = key.match(/^(VV|FEW|SC[TK]|BKN|OVC)(\d+|\/\/\/)(CB|TCU)?$/) ) {
+            else if( parts = key.match(/^(VV|FEW|SC[TK]|BKN|[0O]VC)(\d+|\/\/\/)(CB|TCU)?$/) ) {
                 res.layer_type = parts[1];
                 if( res.layer_type === "SCK" )
                     res.layer_type = "SCT";
@@ -348,7 +363,9 @@
                         FEW: "few clouds below sensor",
                         SCT: "scattered clouds below sensor",
                         BKN: "broken clouds below sensor",
-                        OVC: "overcast below sensor"
+                        OVC: "overcast below sensor",
+                      '0VC': "overcast below sensor"
+
                     }[res.layer_type];
 
                 } else {
@@ -363,7 +380,8 @@
                         FEW: "few clouds at",
                         SCT: "scattered clouds at",
                         BKN: "broken clouds at",
-                        OVC: "overcast at"
+                        OVC: "overcast at",
+                      '0VC': "overcast at"
 
                     }[res.layer_type], res.layer_altitude].join(" ");
                 }
@@ -375,7 +393,7 @@
                 }
             }
 
-            else if( parts = key.match(/^([-M]?\d+)\/([-M]?\d+)?$/) ) {
+            else if( parts = key.match(/^([M-]?\d+)\/([M-]?\d+)?$/) ) {
                 res.temperature = my_parseint( parts[1], "⁰C", "⁰C", "");
 
                 if( parts[2] ) {
@@ -387,13 +405,18 @@
                 }
             }
 
-            else if( parts = key.match(/^A(\d{2})(\d{1,3})?$/) ) {
-                // NOTE: technically this should always be A\d{2}\d{2}, but occasionally
-                // some automated stations produce (eg) A298 for 29.80
-                // sometimes we even get 29999 too
+            else if( parts = key.match(/^A(3|\d{2})(\d{1,3})?$/) ) {
+                // NOTE: technically this should always be A\d{2}\d{2}, but
+                // occasionally some automated stations produce (eg) A298 for
+                // 29.80 sometimes we even get 29999 too I'm even seeing A3
+                // from time to time... A2 would never be this, but A3000 might
+                // turn to A3 on buggy gear, so we allow A3, but not A2.
 
                 if( !parts[2] )
                     parts[2] = "0"; // pfft, I see A30 and things from time to time, it's clear to me they mean inHg
+
+                if( parts[1].length < 2 )
+                    parts[1] += "0";
 
                 parts.shift();
                 res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
