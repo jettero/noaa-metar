@@ -499,7 +499,7 @@
                         if( res.phenomena[0] === "FC" && res.intensity === "+" )
                             res.txt = "tornado or waterspout";
                             // NOTE: FC is always "funnel cloud", when it's
-                            // intense, it's a tornado this is how fmh-1 says
+                            // intense, it's a tornado. This is how fmh-1 says
                             // to do it.  They also say FC is never coded with
                             // other phenomena, which is handy, we can just use [0]
 
