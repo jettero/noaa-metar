@@ -578,7 +578,7 @@
                 res.snow_ground_accumulation = my_parseint( parts[1], "in" );
                 res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation;
 
-            } else if( parts = key.match(/^933(\d{2})(\d{0,1}$/) ) {
+            } else if( parts = key.match(/^933(\d{2})(\d{0,1})$/) ) {
                 res.snow_ground_accumulation_we = my_parsefloat( [parts[1],parts[2]].join("."), "in" );
                 res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation_we + " (water equivalent)";
 
