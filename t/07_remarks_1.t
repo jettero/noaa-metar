@@ -25,6 +25,10 @@ tie my %metar, 'Tie::IxHash', (
     '933004'     => qr/ground accumulation of snow is 0.4/,
 
     T11441161    => qr/hourly temperature is -14.4.*hourly dewpoint is -16.1/,
+
+    '8/001'  => "",
+    '8/07/'  => "",
+    '8/5//'  => "",
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
