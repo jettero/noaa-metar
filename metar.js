@@ -552,6 +552,25 @@
                 res.sixh_minimum_temperature = my_parsefloat( tmp, "⁰C", "⁰C", "" );
                 res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
 
+            } else if( parts = key.match(/^(3|6)([\d\/]{2})([\d\/]{0,2})$/) ) {
+                parts.shift();
+                tmp = parts[2] === "//" ? "unknown" : my_parsefloat([parts[2],parts[3]].join("."), "in");
+
+                if( parts[1] === "3" ) {
+                    // NOTE: FMH-1 is really fuzzy about the 3- hour
+                    // precipitation group... it hints around about 3RRRR, but
+                    // doesn't explicitly state there is a 3RRRR.  See the
+                    // section on 6RRRR.
+
+                    res.threeh_precipitation_amount = tmp;
+                    res.txt = "3-hour precipitation amount is " + tmp;
+
+                } else {
+                    // NOTE: the 6- group is well defined though
+                    res.sixh_precipitation_amount = tmp;
+                    res.txt = "6-hour precipitation amount is " + tmp;
+                }
+
             } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
                 tmp = [parts[2], parts[3]].join(".");
                 tmp = parts[1]==="1" ? '-' + tmp : tmp;
