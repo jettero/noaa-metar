@@ -660,7 +660,7 @@
     var other_remarks = [];
     for(i=ret.length-1; i>=0; i--)
         if( ret[i]._other_remark )
-            other_remarks.push( ret.splice(i,1)[0].key );
+            other_remarks.unshift( ret.splice(i,1)[0].key );
 
     if( other_remarks.length )
         ret.push({ key: "other", txt: other_remarks.join(" ") });
