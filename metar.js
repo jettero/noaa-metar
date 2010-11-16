@@ -538,21 +538,19 @@
                 res.sea_level_pressure = my_parsefloat(tmp.match(/^[6789]/) ? '9'+tmp : '10'+tmp, 'hPa');
                 res.txt = "sea level pressure is " + res.sea_level_pressure;
 
-            } else if( parts = key.match(/^1(0|1)(\d{2})(\d)$/) ) {
-                parts.shift();
-                tmp = parts.shift() === 1 ? "-" : "";
-                tmp += parts.join(".");
-                res.sixh_maximum_temperature = my_parsefloat( tmp, "⁰C", "⁰C", "" );
-                res.txt = "6 hour maximum temperature is " + res.sixh_maximum_temperature;
+            } else if( parts = key.match(/^(1|2)(0|1)(\d{2})(\d{0,1})$/) ) {
+                tmp = my_parsefloat( (parts[2] === "1" ? "-" : "") + [parts[3],parts[4]].join("."), "⁰C", "⁰C", "" );
 
-            } else if( parts = key.match(/^2(0|1)(\d{2})(\d)$/) ) {
-                parts.shift();
-                tmp = parts.shift() === 1 ? "-" : "";
-                tmp += parts.join(".");
-                res.sixh_minimum_temperature = my_parsefloat( tmp, "⁰C", "⁰C", "" );
-                res.txt = "6 hour minimum temperature is " + res.sixh_minimum_temperature;
+                if( parts[1] === "1" ) {
+                    res['6h_maximum_temperature'] = tmp;
+                    res.txt = "6 hour maximum temperature is " + tmp;
 
-            } else if( parts = key.match(/^(3|6)([\d\/]{2})([\d\/]{0,2})$/) ) {
+                } else {
+                    res['6h_minimum_temperature'] = tmp;
+                    res.txt = "6 hour minimum temperature is " + tmp;
+                }
+
+            } else if( parts = key.match(/^(3|6|7)([\d\/]{2})([\d\/]{0,2})$/) ) {
                 parts.shift();
                 tmp = parts[2] === "//" ? "unknown" : my_parsefloat([parts[2],parts[3]].join("."), "in");
 
@@ -562,13 +560,18 @@
                     // doesn't explicitly state there is a 3RRRR.  See the
                     // section on 6RRRR.
 
-                    res.threeh_precipitation_amount = tmp;
+                    res['3h_precipitation_amount'] = tmp;
                     res.txt = "3-hour precipitation amount is " + tmp;
 
-                } else {
+                } else if (parts[1] === "6") {
                     // NOTE: the 6- group is well defined though
-                    res.sixh_precipitation_amount = tmp;
+                    res['6h_precipitation_amount'] = tmp;
                     res.txt = "6-hour precipitation amount is " + tmp;
+
+                } else {
+                    // NOTE: the 7- group has its own section as well
+                    res['24h_precipitation_amount'] = tmp;
+                    res.txt = "24-hour precipitation amount is " + tmp;
                 }
 
             } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
