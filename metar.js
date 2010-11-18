@@ -543,11 +543,11 @@
 
                 if( parts[1] === "1" ) {
                     res['6h_maximum_temperature'] = tmp;
-                    res.txt = "6 hour maximum temperature is " + tmp;
+                    res.txt = "6-hour maximum temperature is " + tmp;
 
                 } else {
                     res['6h_minimum_temperature'] = tmp;
-                    res.txt = "6 hour minimum temperature is " + tmp;
+                    res.txt = "6-hour minimum temperature is " + tmp;
                 }
 
             } else if( parts = key.match(/^(3|6|7)([\d\/]{2})([\d\/]{0,2})$/) ) {
