@@ -582,6 +582,10 @@
 
                 res.txt = "24-hour maximum temperature is " + tmp + " minimum is " + tmp2;
 
+            } else if( parts = key.match(/^4\/(\d{3})$/) ) {
+                res.snow_ground_accumulation = my_parseint( parts[1], "in" );
+                res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation;
+
             } else if( parts = key.match(/^5(\d)(\d{2})(\d{0,1})$/) ) {
                 tmp = {
 
@@ -610,13 +614,13 @@
                 res.pressure_tendency_3h_amount = my_parsefloat( [parts[2],parts[3]].join("."), "hPa" );
                 res.txt = "3-hour pressure tendency is " + tmp + " " + res.pressure_tendency_3h_amount;
 
-            } else if( parts = key.match(/^4\/(\d{3})$/) ) {
-                res.snow_ground_accumulation = my_parseint( parts[1], "in" );
-                res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation;
-
             } else if( parts = key.match(/^933(\d{2})(\d{0,1})$/) ) {
                 res.snow_ground_accumulation_we = my_parsefloat( [parts[1],parts[2]].join("."), "in" );
                 res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation_we + " (water equivalent)";
+
+            } else if( parts = key.match(/^98(\d{3})$/) ) {
+                res.minutes_of_sunshine = my_parseint(parts[1], 'min');
+                res.txt = "the previous day saw sunshine for " + res.minutes_of_sunshine;
 
             } else if( parts = key.match(/^T(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
                 tmp = [parts[2], parts[3]].join(".");
