@@ -573,6 +573,34 @@
                     res.txt = "24-hour precipitation amount is " + tmp;
                 }
 
+            } else if( parts = key.match(/^5(\d)(\d{2})(\d{0,1})$/) ) {
+                tmp = {
+
+                    // FMH-1 Ch12 table 12-7 is utterly baffling, this is
+                    // literally the best I could do, and it's still pretty
+                    // much a guess; e.g., 0 and 5 appear in multiple rows, and
+                    // the trend descriptions seem to be random adjectives
+                    // unioned together with commas and conjunctives.
+                    // In short: translations welcome.
+
+                    0: "higher than 3 hours ago by",
+                    1: "higher than 3 hours ago by",
+                    2: "higher than 3 hours ago by",
+                    3: "higher than 3 hours ago by",
+
+                    4: "same as 3 hours ago Δ",
+
+                    5: "lower than 3 hours ago by",
+                    6: "lower than 3 hours ago by",
+                    7: "lower than 3 hours ago by",
+                    8: "lower than 3 hours ago by",
+
+                }[parts[1]];
+
+                res.pressure_tendency_3h_trend  = parts[1];
+                res.pressure_tendency_3h_amount = my_parsefloat( [parts[2],parts[3]].join("."), "hPa" );
+                res.txt = "3-hour pressure tendency is " + tmp + " " + res.pressure_tendency_3h_amount;
+
             } else if( parts = key.match(/^4\/(\d{3})$/) ) {
                 res.snow_ground_accumulation = my_parseint( parts[1], "in" );
                 res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation;
