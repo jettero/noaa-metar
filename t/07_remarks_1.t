@@ -15,6 +15,8 @@ tie my %metar, 'Tie::IxHash', (
 
     '51021'      => qr/3-hour pressure tendency is higher than.*2.1 hPa/,
 
+    401001015    => qr/24-hour max.*?10.*?min.*?-1\.5/,
+
     '60101'      => qr/6-hour precipitation amount is 1.01 in/,
     '6////'      => qr/6-hour precipitation amount is unknown/,
 

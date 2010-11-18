@@ -573,6 +573,15 @@
                     res.txt = "24-hour precipitation amount is " + tmp;
                 }
 
+            } else if( parts = key.match(/^4(\d)(\d{2})(\d)(\d)(\d{2})(\d)$/) ) {
+                tmp  = my_parsefloat( (parts[1] === "1" ? "-" : "") + [parts[2],parts[3]].join("."), "⁰C", "⁰C", "" );
+                tmp2 = my_parsefloat( (parts[4] === "1" ? "-" : "") + [parts[5],parts[6]].join("."), "⁰C", "⁰C", "" );
+
+                res.maximum_temperature_24h = tmp;
+                res.minimum_temperature_24h = tmp2;
+
+                res.txt = "24-hour maximum temperature is " + tmp + " minimum is " + tmp2;
+
             } else if( parts = key.match(/^5(\d)(\d{2})(\d{0,1})$/) ) {
                 tmp = {
 
