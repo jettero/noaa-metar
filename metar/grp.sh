@@ -5,4 +5,4 @@
         tar -jxOf $i 
     done
 
-) | grep -Er --line-buffered --color=auto -C10 ${1:-KAZO}
+) | grep -Er --line-buffered --color=auto -C10 "${1:-KAZO}"
