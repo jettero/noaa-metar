@@ -551,7 +551,6 @@
                 }
 
             } else if( parts = key.match(/^(3|6|7)([\d\/]{2})([\d\/]{0,2})$/) ) {
-                parts.shift();
                 tmp = parts[2] === "//" ? "unknown" : my_parsefloat([parts[2],parts[3]].join("."), "in");
 
                 if( parts[1] === "3" ) {
