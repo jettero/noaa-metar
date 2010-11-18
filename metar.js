@@ -542,11 +542,11 @@
                 tmp = my_parsefloat( (parts[2] === "1" ? "-" : "") + [parts[3],parts[4]].join("."), "⁰C", "⁰C", "" );
 
                 if( parts[1] === "1" ) {
-                    res['6h_maximum_temperature'] = tmp;
+                    res.maximum_temperature_6h = tmp;
                     res.txt = "6-hour maximum temperature is " + tmp;
 
                 } else {
-                    res['6h_minimum_temperature'] = tmp;
+                    res.minimum_temperature_6h = tmp;
                     res.txt = "6-hour minimum temperature is " + tmp;
                 }
 
@@ -560,17 +560,17 @@
                     // doesn't explicitly state there is a 3RRRR.  See the
                     // section on 6RRRR.
 
-                    res['3h_precipitation_amount'] = tmp;
+                    res.precipitation_amount_3h = tmp;
                     res.txt = "3-hour precipitation amount is " + tmp;
 
                 } else if (parts[1] === "6") {
                     // NOTE: the 6- group is well defined though
-                    res['6h_precipitation_amount'] = tmp;
+                    res.precipitation_amount_6h = tmp;
                     res.txt = "6-hour precipitation amount is " + tmp;
 
                 } else {
                     // NOTE: the 7- group has its own section as well
-                    res['24h_precipitation_amount'] = tmp;
+                    res.precipitation_amount_24h = tmp;
                     res.txt = "24-hour precipitation amount is " + tmp;
                 }
 
