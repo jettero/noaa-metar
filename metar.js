@@ -614,6 +614,10 @@
                 res.pressure_tendency_3h_amount = my_parsefloat( [parts[2],parts[3]].join("."), "hPa" );
                 res.txt = "3-hour pressure tendency is " + tmp + " " + res.pressure_tendency_3h_amount;
 
+            } else if( parts = key.match(/^8\/(\d|\/)(\d|\/)(\d|\/)$/) ) {
+                // this is not listed in FMH-1 anywhere that I can tell...
+                // I got it from some random website: http://www.utexas.edu/depts/grg/kimmel/GRG301K/grg301kmetars.html
+
             } else if( parts = key.match(/^933(\d{2})(\d{0,1})$/) ) {
                 res.snow_ground_accumulation_we = my_parsefloat( [parts[1],parts[2]].join("."), "in" );
                 res.txt = "ground accumulation of snow is " + res.snow_ground_accumulation_we + " (water equivalent)";
