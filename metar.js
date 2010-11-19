@@ -606,7 +606,7 @@
                     5: "lower than 3 hours ago by",
                     6: "lower than 3 hours ago by",
                     7: "lower than 3 hours ago by",
-                    8: "lower than 3 hours ago by",
+                    8: "lower than 3 hours ago by"
 
                 }[parts[1]];
 
@@ -617,6 +617,61 @@
             } else if( parts = key.match(/^8\/(\d|\/)(\d|\/)(\d|\/)$/) ) {
                 // this is not listed in FMH-1 anywhere that I can tell...
                 // I got it from some random website: http://www.utexas.edu/depts/grg/kimmel/GRG301K/grg301kmetars.html
+
+                res.low_clouds = {
+                    '/': 'overcast', // is this possible on the Cl layer?
+
+                    0:   "no clouds",
+                    1:   "cumulus (fair weather)",
+                    2:   "cumulous (towering)",
+                    3:   "cumulonimbus (no anvil)",
+
+                    4:   "stratocumulus (from cumulus)", // what does from cumulus mean here?
+                    5:   "stratocumulus (not from cumulus)",
+                    6:   "stratus (in sheet or layer)",
+
+                    7:   "cumulus fractus",
+                    8:   "cumulus and cirrostratus",
+                    9:   "cumulonimbus (with anvil-head)"
+                }[parts[1]];
+
+                res.middle_clouds = {
+                    '/': 'overcast',
+
+                    0:   "no clouds",
+                    1:   "altostratus (sun visibile)",
+                    2:   "altostratus (thick, no sun visible)",
+                    3:   "altocumulus (semitransparent)",
+
+                    4:   "altocumulus (patchy)",
+                    5:   "altocumulus (thickening)",
+                    6:   "altocumulus (from cumulus or cumulonimbus)",
+
+                    7:   "altocumulus (with altostratus or nibostratus)",
+                    8:   "altocumulus (with turrets)",
+                    9:   "altocumulus (chatoic)"
+                }[parts[2]];
+
+                res.high_clouds = {
+                    '/': 'overcast',
+
+                    0:   "no clouds",
+                    1:   "cirrus (filaments)",
+                    2:   "cirrus (dense)",
+                    3:   "cirrus (often left from cumulonimbus)",
+
+                    4:   "cirrus (filaments thickening)",
+                    5:   "cirrus or cirrostratus (low on horizon)",
+                    6:   "cirrus or cirrostratus (high in sky)",
+
+                    7:   "cirrostratus (covering entire sky)",
+                    8:   "cirrostratus (not covering entire sky)",
+                    9:   "cirrocumulus or cirrus with cirrostratus"
+                }[parts[3]];
+
+                res.txt = "low cloud layer is " + res.low_clouds
+                        + ", middle cloud layer is " + res.middle_clouds
+                        + ", high cloud layer is " + res.high_clouds;
 
             } else if( parts = key.match(/^933(\d{2})(\d{0,1})$/) ) {
                 res.snow_ground_accumulation_we = my_parsefloat( [parts[1],parts[2]].join("."), "in" );

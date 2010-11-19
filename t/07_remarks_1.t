@@ -30,8 +30,8 @@ tie my %metar, 'Tie::IxHash', (
 
     98086 => "the previous day saw sunshine for 86 min",
 
-    '8/903'  => "",
-    '8/6//'  => "",
+    '8/903'  => qr/cumulonimbus.*?no clouds.*?cirrus/,
+    '8/6//'  => qr/stratus.*?overcast.*?overcast/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
