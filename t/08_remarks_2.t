@@ -9,7 +9,30 @@ tie my %metar, 'Tie::IxHash', (
 
     RMK  => qr/remarks/,
 
-    'PK WND 28045/15' => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'PK WND 28045/15'   => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'PK WND 28045/1715' => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'WSHFT 30 FROPA'    => qr/wind shift with frontal passage at.*?\d:30/,
+    'WSHFT 1930 FROPA'  => qr/wind shift with frontal passage at.*?\d:30/,
+    'WSHFT 19'          => qr/wind shift at.*?\d:19/,
+    'TWR VIS 1 1/2'     => qr/tower visibility 1\.5/,
+    'SFC VIS 1 1/2'     => qr/surface visibility 1\.5/,
+    'VIS 1/4V5'         => qr/visibility varies between 0\.25.*?and.*?5/,
+    'VIS NE 1/4'        => qr/northeastern visibilty.*?0\.25/,
+    'VIS 1 1/4 RWY11'   => qr/visibility 1\.25.*?RWY11/,
+
+    # 12.7.1(j)(2)(a) clearly states that overhead shall not illicit a remark,
+    # then presents this as an example.  part of me loves METAR, part of me
+    # wants to write a stern letter about the inconsistences wrt machine
+    # parsing and human code generation.  Oh wells. OHD is used in 12.7.1(j)(1)
+    # before mentioned in 12.7.1(j)(2)(a).  
+
+    # It seems, one day we could get fairly accruate about the distance from
+    # the airport, ... iff the METAR itself is accurate enough.
+
+    'OCNL LTGICCG OHD'  => qr/occasional lightning.*?within clouds.*?between cloud and ground.*?overhead/,
+    'FRQ LTG VC'        => qr/frequent lightning in the vicinity/,
+    'LTG DSNT W'        => qr/distant lightning to the west/,
+    'LTGCCCA'           => qr/lightning.*?cloud to cloud.*?cloud to air/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
