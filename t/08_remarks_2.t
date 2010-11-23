@@ -33,6 +33,11 @@ tie my %metar, 'Tie::IxHash', (
     'FRQ LTG VC'        => qr/frequent lightning in the vicinity/,
     'LTG DSNT W'        => qr/distant lightning to the west/,
     'LTGCCCA'           => qr/lightning.*?cloud to cloud.*?cloud to air/,
+
+    'TS SE'             => qr/thunderstorm to the south-east/,
+    'TS SE MOV NE'      => qr/thunderstorm to the south-east.*?moving north-east/,
+
+    'GS 1 3/4'          => qr/hailstone size 1\.75/, # inches
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
