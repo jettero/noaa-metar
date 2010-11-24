@@ -48,7 +48,7 @@ tie my %metar, 'Tie::IxHash', (
     'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/;
     'SCT V BKN'    => qr/scattered cloud layer varies to broken/;
 
-    # stopping before 12.7.1(s) ... pick it up in remarks_3 — I wanna code some of this stuff
+    # stopping before 12.7.1(s) ... pick it up in remarks_3
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
