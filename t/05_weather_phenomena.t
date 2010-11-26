@@ -17,6 +17,7 @@ tie my %metar, 'Tie::IxHash', (
     DZ         => "drizzle",
     SQ         => "squalls",
     DS         => "duststorm",
+    -PLRA      => "light ice pellets and rain",
 
     RMK        => qr/remarks/,
     RAB22      => qr/rain began.*?:22/, # the hours depend on the locale
