@@ -41,12 +41,12 @@ tie my %metar, 'Tie::IxHash', (
 
     # 12.7.1(o) codes VIRGA direction, but I have no idea what it means
 
-    'CIG 005V010' => qr/variable ceiling between 500.*?1000/;
-    'FG SCT000'   => qr/scattered layer of fog at ground level/;
-    'FU BKN020'   => qr/broken layer of smoke at 2000/; # feet
+    'CIG 005V010' => qr/variable ceiling between 500.*?1000/,
+    'FG SCT000'   => qr/scattered layer of fog at ground level/,
+    'FU BKN020'   => qr/broken layer of smoke at 2000/, # feet
 
-    'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/;
-    'SCT V BKN'    => qr/scattered cloud layer varies to broken/;
+    'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/,
+    'SCT V BKN'    => qr/scattered cloud layer varies to broken/,
 
     # stopping before 12.7.1(s) ... pick it up in remarks_3
 );
