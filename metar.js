@@ -8,7 +8,7 @@
     TS: "thunderstorms", SH: "showers",
 
     // precipitation (3)
-    DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PE: "ice pellets",
+    DZ: "drizzle", RA: "rain", SN: "snow", SG: "snow grains", IC: "ice crystals", PL: "ice pellets",
     GR: "hail", GS: "small hail and/or snow pellets", UP: "unknown precipitation",
 
     // obscuration (4)
@@ -439,7 +439,7 @@
                 res.txt = "corrected report";
             }
 
-            else if( parts = key.match(/^(-|\+|[+-]?VC)?(TS|SH)((RA|SN|PE|GS|GR)*)$/) ) {
+            else if( parts = key.match(/^(-|\+|[+-]?VC)?(TS|SH)((RA|SN|PL|GS|GR)*)$/) ) {
                 // NOTE The TS and SH descriptors are not well behaved.  TS in
                 // particular isn't sure if it's colmun 2 or 3.  TS gets 0 or
                 // more precipitation types, SH gets 1 more more, forgive the
@@ -472,7 +472,7 @@
                 }
             }
 
-            else if( parts = key.match(/^(-|\+|[+-]?VC)?(MI|PR|BC|DR|BL|TS|FZ)?((DZ|RA|SN|SG|IC|PE|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+)$/) ) {
+            else if( parts = key.match(/^(-|\+|[+-]?VC)?(MI|PR|BC|DR|BL|TS|FZ)?((DZ|RA|SN|SG|IC|PL|GR|GS|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+)$/) ) {
                 // NOTE: the html FMH-1 shows SS for duststorm, but they clearly mean DS
                 res.intensity  = parts[1]; // intensity or proximity (1)
                 res.descriptor = parts[2]; // descriptor (2)
@@ -698,16 +698,16 @@
                 res.txt = res.precipitation[0]===0
                         ? "no hourly precipitation" : "hourly precipitation is " + res.precipitation;
 
-            } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
+            } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
-                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+(B\d{2,4}|E\d{2,4})+/g);
+                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+/g);
                 tmp2 = [];
 
                 res.phenomena_begin_end = [];
 
                 for(i=0; i<tmp.length; i++) {
-                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
-                    //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PE|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
+                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
+                    //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
                     //SHRAB0107E07,SHRA,RA,B0107,01 ,07,E07,  07,
                     //SHRAB07E0107,SHRA,RA,B07  ,07 ,  ,E0107,01,07
                     //SHRAE03,     SHRA,RA,     ,   ,  ,E03,  03,
