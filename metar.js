@@ -779,7 +779,9 @@
                     res.txt += " on/at " + parts[2];
 
             } else if( key === "PK" && msplit[0] === "WND" && msplit[1].match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/) ) {
-                msplit[0] = [key, msplit.splice(0,2).join(" ")].join(" ");
+                tmp = msplit.splice(0,2);
+                tmp.unshift(key);
+                msplit.unshift( tmp.join(" ") );
                 _lookahead_skip = true;
 
             } else if( parts = key.match(/^PK WND (\d{3})(\d{2})(\d?)\/(\d{2,4})$/) ) {
