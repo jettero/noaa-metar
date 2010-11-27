@@ -785,6 +785,25 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
+            } else if( key.match(/(TWR|SFC)/) && next_key() === "VIS" && next_key(1).match(/^[\d\/]+$/) ) {
+                tmp2 = 2;
+                if( next_key(2).match(/^[\d\/]+$/) )
+                    tmp2 ++;
+                tmp = msplit.splice(0,tmp2);
+                tmp.unshift(key);
+                msplit.unshift( tmp.join(" ") );
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/(TWR|SFC) VIS ([\d \/]+)$/) ) {
+                if( parts[1] === "TWR" ) {
+                    res.tower_visibility = my_parsefloat(parts[2], "statute miles");
+                    res.txt = "tower visibility is " + res.tower_visibility;
+
+                } else {
+                    res.surface_visibility = my_parsefloat(parts[2], "statute miles");
+                    res.txt = "surface visibility is " + res.surface_visibility;
+                }
+
             } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
                 tmp2 = 1;
                 if( next_key(1).match(/FRO/) )
