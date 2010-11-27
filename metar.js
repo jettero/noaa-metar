@@ -785,24 +785,24 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
-            } else if( key.match(/(TWR|SFC)/) && next_key() === "VIS" && next_key(1).match(/^[\d\/]+$/) ) {
-                tmp2 = 2;
-                if( next_key(2).match(/^[\d\/]+$/) )
-                    tmp2 ++;
+            } else if( key.match(/(TWR|SFC)/) && next_key() === "VIS" ) {
+                _lookahead_skip = true;
+
+            } else if( key === "VIS" ) {
+                tmp2 = 1;
+                tmp3 = 0;
+                while( next_key(tmp3++).match(/[\d V\/]+/) )
+                    tmp2++;
                 tmp = msplit.splice(0,tmp2);
                 tmp.unshift(key);
+                if( last_key().match(/(TWR|SFC)/) )
+                    tmp.unshift(last_key());
+                if( next_key(tmp3).match(/^RWY/) )
+                    tmp.unshift(next_key(tmp3));
                 msplit.unshift( tmp.join(" ") );
                 _lookahead_skip = true;
 
-            } else if( parts = key.match(/(TWR|SFC) VIS ([\d \/]+)$/) ) {
-                if( parts[1] === "TWR" ) {
-                    res.tower_visibility = my_parsefloat(parts[2], "statute miles");
-                    res.txt = "tower visibility is " + res.tower_visibility;
-
-                } else {
-                    res.surface_visibility = my_parsefloat(parts[2], "statute miles");
-                    res.txt = "surface visibility is " + res.surface_visibility;
-                }
+            } else if( parts = key.match(/((TWR|SFC) )?VIS (() )?([\d \/]+)(V([\d \/]+))?( (RWY\d+))?$/) ) {
 
             } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
                 tmp2 = 1;
