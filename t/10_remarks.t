@@ -9,22 +9,24 @@ tie my %metar, 'Tie::IxHash', (
 
     RMK  => qr/remarks/,
 
-    # picking up from remarks_2 on 12.7.1(s)
-    'CB W MOV E'         => qr/cumulonimbus west of station moving east/,
-    'CB DSNT W'          => qr/distant cumulonimbus to the west/,
-    'TCU W'              => qr/towering cumulonimbus to the west/,
-    'ACC NW'             => qr/altocumulus to the north-west/,
-    'APRNT ROTOR CLD NE' => qr/apparent rotor cloud to the north-east/,
-    'CCSL S'             => qr/cirrocumulus clouds to the south/,
+    # 12.7.1(j)(2)(a) clearly states that overhead shall not illicit a remark,
+    # then presents this as an example.  part of me loves METAR, part of me
+    # wants to write a stern letter about the inconsistences wrt machine
+    # parsing and human code generation.  Oh wells. OHD is used in 12.7.1(j)(1)
+    # before mentioned in 12.7.1(j)(2)(a).
 
-    'CIG 002RWY11' => qr/ceiling.*?RWY11.*?200/, # ceiling at secondary location
+    # It seems, one day we could get fairly accruate about the distance from
+    # the airport, ... iff the METAR itself is accurate enough.
 
-    PRESRR => qr/pressure rising rapidly/,
-    PRESFR => qr/pressure falling rapidly/,
+    'OCNL LTGICCG OHD'  => qr/occasional lightning.*?within clouds.*?between cloud and ground.*?overhead/,
+    'FRQ LTG VC'        => qr/frequent lightning in the vicinity/,
+    'LTG DSNT W'        => qr/distant lightning to the west/,
+    'LTGCCCA'           => qr/lightning.*?cloud to cloud.*?cloud to air/,
 
-    'ACFT MSHP' => qr/aircraft mishap/,
+    'TS SE'             => qr/thunderstorm to the south-east/,
+    'TS SE MOV NE'      => qr/thunderstorm to the south-east.*?moving north-east/,
 
-    'SNINCR 2/10' => qr/snow increasing rapidly.*?last hour.*?2.*?on ground.*?10/, # 2in in last hour, 10in total depth
+    'GS 1 3/4'          => qr/hailstone size 1\.75/, # inches
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);

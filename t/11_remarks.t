@@ -9,11 +9,12 @@ tie my %metar, 'Tie::IxHash', (
 
     RMK  => qr/remarks/,
 
-    'TWR VIS 1 1/2'      => qr/tower visibility 1\.5/,
-    'SFC VIS 1 1/2'      => qr/surface visibility 1\.5/,
-    'VIS 1/4V5'          => qr/visibility varies between 0\.25.*?and.*?5/,
-    'VIS NE 1/4'         => qr/northeastern visibilty.*?0\.25/,
-    'VIS 1 1/4 RWY11'    => qr/visibility 1\.25.*?RWY11/,
+    'CIG 005V010' => qr/variable ceiling between 500.*?1000/,
+    'FG SCT000'   => qr/scattered layer of fog at ground level/,
+    'FU BKN020'   => qr/broken layer of smoke at 2000/, # feet
+
+    'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/,
+    'SCT V BKN'    => qr/scattered cloud layer varies to broken/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
