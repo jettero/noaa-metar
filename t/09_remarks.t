@@ -12,8 +12,8 @@ tie my %metar, 'Tie::IxHash', (
     'TWR VIS 1 1/2'      => qr/tower visibility is 1\.5/,
     'SFC VIS 1 1/2'      => qr/surface visibility is 1\.5/,
     'VIS 1/4V5'          => qr/visibility varies between 0\.25.*?and.*?5/,
-    'VIS NE 1/4'         => qr/northeastern visibilty.*?0\.25/,
-    'VIS 1 1/4 RWY11'    => qr/visibility 1\.25.*?RWY11/,
+    'VIS NE 1/4'         => qr/visibility.*?0\.25.*?north-east/,
+    'VIS 1 1/4 RWY11'    => qr/visibility.*?1\.25.*?RWY11/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);

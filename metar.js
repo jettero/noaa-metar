@@ -812,6 +812,39 @@
                 _lookahead_skip = true;
 
             } else if( parts = key.match(/^((TWR|SFC) )?VIS ((N|NE|E|SE|S|SW|W|NW) )?([\d \/]+)(V([\d \/]+))?( (RWY\d+))?$/) ) {
+                //                         12               34                       5         6 7           8 9
+
+                res.visibility = my_parsefloat(parts[5], "statute miles");
+                
+                res.txt = "visibility";
+
+                if( parts[1] ) {
+                    res.visibility_type = {
+                        TWR: "tower",
+                        SFC: "surface",
+                    }[parts[2]];
+
+                    res.txt = [res.visibility_type, res.txt].join(" ");
+                }
+
+                if( parts[6] ) {
+                    res.visibility_varies_to = my_parsefloat(parts[7], "statute miles");
+                    res.txt += " varies between " + ("" + res.visibility).replace(/ statute.*/, "")
+                        + " and " + res.visibility_varies_to;
+
+                } else {
+                    res.txt += " is " + res.visibility;
+                }
+
+                if( parts[3] ) {
+                    res.direction = PDB.DIRS[parts[4]];
+                    res.txt += " to the " + res.direction;
+                }
+
+                if( parts[8] ) {
+                    res.sensor_location = parts[9];
+                    res.txt += " at " + res.sensor_location;
+                }
 
             } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
                 tmp2 = 1;
