@@ -114,6 +114,25 @@
         return r + PDB[this[m]] + " and " + PDB[this[m + 1]];
     };
 
+    var my_parse_hhmm = function(a1,a2) {
+        var my_date = new Date(date_ob);
+        var parts;
+
+        if( a1 && a2 ) {
+            my_date.setUTCHours( a1 );
+            my_date.setUTCMinutes( a2 );
+
+        } else if( parts = a1.match(/(\d{2})(\d{2})/) ) {
+            my_date.setUTCHours( parts[1] );
+            my_date.setUTCMinutes( parts[2] );
+
+        } else {
+            my_date.setUTCMinutes( a1 );
+        }
+
+        return my_date;
+    };
+
     var i;
     var parts; // as needed regex result parts (see wind)
     var tmp,tmp2,tmp3,key,res,remark_section=false,_lookahead_skip=0;
@@ -715,29 +734,11 @@
 
                     res.phenomena_begin_end.push(tmp3 = { phenomena: decode_metar(parts[1]) });
 
-                    if( parts[3] ) {
-                        tmp3.begin = new Date(date_ob);
+                    if( parts[3] )
+                        tmp3.begin = my_parse_hhmm(parts[4], parts[5]);
 
-                        if( parts[5] ) {
-                            tmp3.begin.setUTCHours(  parts[4]);
-                            tmp3.begin.setUTCMinutes(parts[5]);
-
-                        } else {
-                            tmp3.begin.setUTCMinutes(parts[4]);
-                        }
-                    }
-
-                    if( parts[6] ) {
-                        tmp3.end = new Date(date_ob);
-
-                        if( parts[8] ) {
-                            tmp3.end.setUTCHours(  parts[7]);
-                            tmp3.end.setUTCMinutes(parts[8]);
-
-                        } else {
-                            tmp3.end.setUTCMinutes(parts[7]);
-                        }
-                    }
+                    if( parts[6] )
+                        tmp3.end = my_parse_hhmm(parts[7], parts[8]);
 
                     tmp2.push(tmp3.phenomena[0].txt
                         + (tmp3.begin ? " began " + tmp3.begin.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1"):"")
