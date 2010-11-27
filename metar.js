@@ -778,7 +778,21 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
-            } else if( key === "PK" && msplit[0] === "WND" && msplit[1].match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/) ) {
+            } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
+                tmp2 = 1;
+                if( next_key(1).match(/FRO/) )
+                    tmp2 ++;
+                tmp = msplit.splice(0,tmp2);
+                tmp.unshift(key);
+                msplit.unshift( tmp.join(" ") );
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^WSHFT (\d+)( FROPA)?$/) ) {
+                res.wind_shift = true;
+                res.wind_shift_time = my_parse_hhmm(parts[1]);
+                res.txt = (parts[2] ? "wind shift due to frontal passage circa " : "wind shift circa ") + res.wind_shift_time;
+
+            } else if( key === "PK" && next_key() === "WND" && next_key(1).match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/) ) {
                 tmp = msplit.splice(0,2);
                 tmp.unshift(key);
                 msplit.unshift( tmp.join(" ") );

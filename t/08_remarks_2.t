@@ -12,9 +12,9 @@ tie my %metar, 'Tie::IxHash', (
     'PK WND 28045/15'    => qr/peak wind was 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
     'PK WND 28045/1715'  => qr/peak wind was 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
     'PK WND 280453/1715' => qr/peak wind was 45.3 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
-    'WSHFT 30 FROPA'     => qr/wind shift with frontal passage at.*?\d:30/,
-    'WSHFT 1930 FROPA'   => qr/wind shift with frontal passage at.*?\d:30/,
-    'WSHFT 19'           => qr/wind shift at.*?\d:19/,
+    'WSHFT 30 FROPA'     => qr/wind shift due to frontal passage.*?\d:30/,
+    'WSHFT 1930 FROPA'   => qr/wind shift due to frontal passage.*?\d:30/,
+    'WSHFT 19'           => qr/wind shift.*?\d:19/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
