@@ -18,10 +18,11 @@ tie my %metar, 'Tie::IxHash', (
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);
-
-plan tests => (keys %metar) + 0;
+plan tests => (keys %metar) + 1;
 
 for( keys %metar ) {
     warn " $_ was undefined\n" unless defined $decode->{$_};
     ok( $decode->{$_}, $metar{$_} )
 }
+
+ok( $decode->{other}, undef );
