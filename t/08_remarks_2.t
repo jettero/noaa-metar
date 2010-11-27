@@ -9,16 +9,17 @@ tie my %metar, 'Tie::IxHash', (
 
     RMK  => qr/remarks/,
 
-    'PK WND 28045/15'   => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
-    'PK WND 28045/1715' => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
-    'WSHFT 30 FROPA'    => qr/wind shift with frontal passage at.*?\d:30/,
-    'WSHFT 1930 FROPA'  => qr/wind shift with frontal passage at.*?\d:30/,
-    'WSHFT 19'          => qr/wind shift at.*?\d:19/,
-    'TWR VIS 1 1/2'     => qr/tower visibility 1\.5/,
-    'SFC VIS 1 1/2'     => qr/surface visibility 1\.5/,
-    'VIS 1/4V5'         => qr/visibility varies between 0\.25.*?and.*?5/,
-    'VIS NE 1/4'        => qr/northeastern visibilty.*?0\.25/,
-    'VIS 1 1/4 RWY11'   => qr/visibility 1\.25.*?RWY11/,
+    'PK WND 28045/15'    => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'PK WND 28045/1715'  => qr/peak wind of 45 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'PK WND 280453/1715' => qr/peak wind of 45.3 knots at 280.*?\d:15/, # the hour depends on the locale, any digit will do
+    'WSHFT 30 FROPA'     => qr/wind shift with frontal passage at.*?\d:30/,
+    'WSHFT 1930 FROPA'   => qr/wind shift with frontal passage at.*?\d:30/,
+    'WSHFT 19'           => qr/wind shift at.*?\d:19/,
+    'TWR VIS 1 1/2'      => qr/tower visibility 1\.5/,
+    'SFC VIS 1 1/2'      => qr/surface visibility 1\.5/,
+    'VIS 1/4V5'          => qr/visibility varies between 0\.25.*?and.*?5/,
+    'VIS NE 1/4'         => qr/northeastern visibilty.*?0\.25/,
+    'VIS 1 1/4 RWY11'    => qr/visibility 1\.25.*?RWY11/,
 
     # 12.7.1(j)(2)(a) clearly states that overhead shall not illicit a remark,
     # then presents this as an example.  part of me loves METAR, part of me
