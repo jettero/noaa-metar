@@ -778,9 +778,11 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
-            } else if( key === "PK" && msplit[0] === "WND" && (parts = msplit[1].match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/)) ) {
-                msplit.splice(0,2); // strip off [0] and [1], we're using them here
+            } else if( key === "PK" && msplit[0] === "WND" && msplit[1].match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/) ) {
+                msplit[0] = [key, msplit.splice(0,2).join(" ")].join(" ");
+                _lookahead_skip = true;
 
+            } else if( parts = key.match(/^PK WND (\d{3})(\d{2})(\d?)\/(\d{2,4})$/) ) {
                 res.peak_wind = {
                     speed:     my_parsefloat( [parts[2], (parts[3]||"0")].join("."), "knots" ),
                     direction: my_parseint(   parts[1], '⁰', '⁰', '' )
