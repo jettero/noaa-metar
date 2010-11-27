@@ -753,7 +753,7 @@
                     res.txt = res.txt ? [res.txt, tmp].join(" and ") : tmp;
                 }
 
-            } else if( parts = key.match(/^(CHI|VIS)NO$/) ) {
+            } else if( key.match(/^(CHI|VIS)NO$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
                 _lookahead_skip = true;
 
