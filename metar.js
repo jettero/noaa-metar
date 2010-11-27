@@ -130,6 +130,10 @@
             my_date.setUTCMinutes( a1 );
         }
 
+        my_date.toString = function() {
+            return this.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1");
+        };
+
         return my_date;
     };
 
@@ -740,9 +744,10 @@
                     if( parts[6] )
                         tmp3.end = my_parse_hhmm(parts[7], parts[8]);
 
-                    tmp2.push(tmp3.phenomena[0].txt
-                        + (tmp3.begin ? " began " + tmp3.begin.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1"):"")
-                        + (tmp3.end   ? " ended " +   tmp3.end.toLocaleTimeString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1"):"")
+                    tmp2.push(
+                        tmp3.phenomena[0].txt
+                            + (tmp3.begin ? " began " + tmp3.begin : "")
+                            + (tmp3.end   ? " ended " +   tmp3.end : "")
                     );
                 }
 
