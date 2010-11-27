@@ -778,6 +778,18 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
+            } else if( key === "PK" && msplit[0] === "WND" && (parts = msplit[1].match(/(\d{3})(\d{2})(\d?)\/(\d{2,4})/)) ) {
+                msplit.splice(0,2); // strip off [0] and [1], we're using them here
+
+                res.peak_wind = {
+                    speed:     my_parsefloat( [parts[2], (parts[3]||"0")].join("."), "knots" ),
+                    direction: my_parseint(   parts[1], '⁰', '⁰', '' )
+                };
+
+                res.peak_wind_time = my_parse_hhmm(parts[4]);
+                res.txt = "peak wind was " + res.peak_wind.speed + " at " + res.peak_wind.direction
+                    + " circa " + res.peak_wind_time;
+
             } else if( key.match(/^\$$/) ) {
                 res.station_maintenence = true;
                 res.txt = "automated station requires maintenence";
