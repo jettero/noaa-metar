@@ -793,7 +793,7 @@
                 tmp3 = 0;
 
                 if( next_key().match(/^(N|NE|E|SE|S|SW|W|NW)$/) ) {
-                    tmp2++; tmp3++
+                    tmp2++; tmp3++;
                 }
 
                 while( next_key(tmp3++).match(/^[\d V\/]+$/) )
@@ -815,16 +815,12 @@
                 //                         12               34                       5         6 7           8 9
 
                 res.visibility = my_parsefloat(parts[5], "statute miles");
-                
+
                 res.txt = "visibility";
 
                 if( parts[1] ) {
-                    res.visibility_type = {
-                        TWR: "tower",
-                        SFC: "surface",
-                    }[parts[2]];
-
-                    res.txt = [res.visibility_type, res.txt].join(" ");
+                    res.visibility_type = parts[2];
+                    res.txt = [ { TWR: "tower", SFC: "surface" }[res.visibility_type], res.txt].join(" ");
                 }
 
                 if( parts[6] ) {
@@ -837,8 +833,8 @@
                 }
 
                 if( parts[3] ) {
-                    res.direction = PDB.DIRS[parts[4]];
-                    res.txt += " to the " + res.direction;
+                    res.direction = parts[4];
+                    res.txt += " to the " + PDB.DIRS[res.direction];
                 }
 
                 if( parts[8] ) {
