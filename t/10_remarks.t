@@ -20,8 +20,8 @@ tie my %metar, 'Tie::IxHash', (
 
     'OCNL LTGICCG OHD'  => qr/occasional lightning.*?within clouds.*?between cloud and ground.*?overhead/,
     'FRQ LTG VC'        => qr/frequent lightning in the vicinity/,
-    'LTG DSNT W'        => qr/distant lightning to the west/,
-    'LTGCCCA'           => qr/lightning.*?cloud to cloud.*?cloud to air/,
+    'LTG DSNT W'        => qr/lightning.*?distance.*to the west/,
+    'LTGCCCA'           => qr/lightning.*?cloud to cloud.*?cloud and air/,
 
     'TS SE'             => qr/thunderstorm to the south-east/,
     'TS SE MOV NE'      => qr/thunderstorm to the south-east.*?moving north-east/,

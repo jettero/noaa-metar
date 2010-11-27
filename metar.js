@@ -842,6 +842,85 @@
                     res.txt += " at " + res.sensor_location;
                 }
 
+            } else if( key.match(/^(OCNL|FRQ|CONS)$/) && next_key().match(/^LTG/) ) {
+                tmp = "FREQ_TOKEN";
+                _lookahead_skip = true;
+
+            } else if( key.match(/^LTG(CG|IC|CC|CA)*$/) && (tmp3 === "FREQ_TOKEN" || next_key().match(/^(OHD|VC|DSNT|N|E|S|W|NE|NW|SE|SW)$/)) ) {
+                tmp2 = 0;
+                tmp3 = 0;
+
+                while( next_key(tmp3++).match(/^(OHD|VC|DSNT|N|E|S|W|NE|NW|SE|SW)$/) )
+                    tmp2++;
+
+                if( tmp2 ) {
+                    tmp3 = msplit.splice(0, tmp2);
+                    tmp3.unshift(key);
+
+                } else {
+                    tmp3 = [ key ];
+                }
+
+                if( tmp === "FREQ_TOKEN" ) {
+                    tmp3.unshift(last_key());
+                    tmp = false;
+                }
+
+                msplit.unshift( tmp3.join(" ") );
+
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^((OCNL|FRQ|CONS) )?(LTG((CG|IC|CC|CA)*))( (OHD|VC|DSNT))?( (N|E|S|W|NE|SE|NW|SW))?$/) ) {
+                //                         12                 3   45               6 7              8 9
+
+                if( parts[1] )
+                    res.frequency = parts[2];
+
+                if( parts[4] )
+                    res.lightning_types = parts[4].match(/(..)/g);
+
+                if( parts[7] )
+                    res.range = parts[7];
+
+                if( parts[9] )
+                    res.direction = parts[9];
+
+                res.txt = (res.frequency ? {OCNL:"occasional",FRQ:"frequent",CONS:"constant"}[res.frequency]:"") + " lightning";
+
+                if( res.lightning_types ) {
+                    tmp = [];
+                    tmp3 = {
+                        CG: "between cloud and ground",
+                        IC: "within clouds",
+                        CC: "from cloud to cloud",
+                        CA: "between cloud and air" // this can happen? huh.
+                    };
+
+                    for(tmp2=0; tmp2<res.lightning_types.length; tmp2++)
+                        tmp.push( tmp3[res.lightning_types[tmp2]] );
+
+                    tmp.toString = function() {
+                        if( this.length === 1 )
+                            return this[0];
+
+                        var m = this.length-2;
+                        var r = "";
+
+                        for(var i=0; i<m; i++)
+                            r += this[i] + ', ';
+
+                        return r + this[m] + " and " + this[m + 1];
+                    };
+
+                    res.txt += " " + "(" + tmp + ")";
+                }
+
+                if( res.range )
+                    res.txt += { OHD: " overhead", VC: " in the vicinity", DSNT: " in the distance" }[res.range];
+
+                if( res.direction )
+                    res.txt += " to the " + PDB.DIRS[res.direction];
+
             } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
                 tmp2 = 1;
                 if( next_key(1).match(/FRO/) )
