@@ -7,7 +7,10 @@ use t::test_metar;
 tie my %metar, 'Tie::IxHash', (
     '150053Z'   => qr/(2010.*14|14.*2010)/, # this is hard to test since it varies from locale to locale
     '18008KT'   => qr/8 knots.*180⁰/,
-    '10SM'      => qr/10 statute/,
+    '10SM'      => qr/visibility is 10 statute miles/,
+    'M10SM'     => qr/less than.*?10/,
+    'M1 1/4SM'  => qr/less than.*?1\.25/,
+    '1 1/4SM'   => qr/visibility is 1\.25 statute/,
     FEW003      => qr/few.*300 ft/,
     SCT005      => qr/scattered.*500 ft/,
     BKN009      => qr/broken.*900 ft/,

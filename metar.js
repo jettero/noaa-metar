@@ -248,7 +248,7 @@
             else if( parts = key.match(/^(M)?([\d \/]+)SM$/) ) {
                 res.visibility = my_parsefloat(parts[2], "statute miles" );
                 res.less_than  = parts[1] ? true : false;
-                res.txt = "visibility " + (res.less_than ? "less than " : "") + res.visibility;
+                res.txt = "visibility is " + (res.less_than ? "less than " : "") + res.visibility;
             }
 
             else if( parts = key.match(/R(\d+)(L|R|C)?\/(M|P)?(\d+)(V(M|P)?(\d+))?FT/) ) {
