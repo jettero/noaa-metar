@@ -785,24 +785,33 @@
                 if( parts[2] )
                     res.txt += " on/at " + parts[2];
 
-            } else if( key.match(/(TWR|SFC)/) && next_key() === "VIS" ) {
+            } else if( key.match(/^(TWR|SFC)$/) && next_key() === "VIS" ) {
                 _lookahead_skip = true;
 
             } else if( key === "VIS" ) {
-                tmp2 = 1;
+                tmp2 = 0;
                 tmp3 = 0;
-                while( next_key(tmp3++).match(/[\d V\/]+/) )
+
+                if( next_key().match(/^(N|NE|E|SE|S|SW|W|NW)$/) ) {
+                    tmp2++; tmp3++
+                }
+
+                while( next_key(tmp3++).match(/^[\d V\/]+$/) )
                     tmp2++;
+
                 tmp = msplit.splice(0,tmp2);
                 tmp.unshift(key);
-                if( last_key().match(/(TWR|SFC)/) )
+
+                if( last_key().match(/^(TWR|SFC)$/) )
                     tmp.unshift(last_key());
-                if( next_key(tmp3).match(/^RWY/) )
-                    tmp.unshift(next_key(tmp3));
+
+                if( next_key().match(/^RWY/) )
+                    tmp.push(msplit.shift());
+
                 msplit.unshift( tmp.join(" ") );
                 _lookahead_skip = true;
 
-            } else if( parts = key.match(/((TWR|SFC) )?VIS (() )?([\d \/]+)(V([\d \/]+))?( (RWY\d+))?$/) ) {
+            } else if( parts = key.match(/^((TWR|SFC) )?VIS ((N|NE|E|SE|S|SW|W|NW) )?([\d \/]+)(V([\d \/]+))?( (RWY\d+))?$/) ) {
 
             } else if( key === "WSHFT" && next_key().match(/\d+/) ) {
                 tmp2 = 1;
