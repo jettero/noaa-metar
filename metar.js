@@ -27,7 +27,27 @@
         S:   "south",
         SW:  "south-west",
         W:   "west",
-        NW:  "north-west"
+        NW:  "north-west",
+
+        'N-NE': "north by north-east",
+        'NE-N': "north by north-east",
+        'N-NW': "north by north-west",
+        'NW-N': "north by north-west",
+
+        'E-NE': "east by north-east",
+        'NE-E': "east by north-east",
+        'E-SE': "east by south-east",
+        'SE-E': "east by south-east",
+
+        'S-SE': "south by south-east",
+        'SE-S': "south by south-east",
+        'S-SW': "south by south-west",
+        'NW-S': "south by south-west",
+
+        'W-NW': "west by north-west",
+        'NW-W': "west by north-west",
+        'W-SW': "west by south-west",
+        'SW-W': "west by south-west"
     }
 };
 
