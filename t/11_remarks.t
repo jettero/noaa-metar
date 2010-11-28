@@ -10,8 +10,8 @@ tie my %metar, 'Tie::IxHash', (
     RMK  => qr/remarks/,
 
     'CIG 005V010' => qr/ceiling varies between 500.*?1000/,
-    'FG SCT000'   => qr/scattered layer of fog at ground level/,
-    'FU BKN020'   => qr/broken layer of smoke at 2000/, # feet
+    'FG SCT000'   => qr/fog covering 3.*?4.*?at ground level/, # 3/8-4/8
+    'FU BKN020'   => qr/smoke covering 5.*?7.*?at 2000/, # 5/8-7/8 coverage at 2000 feet
 
     'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/,
     'SCT V BKN'    => qr/scattered cloud layer varies to broken/,

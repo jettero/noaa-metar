@@ -864,7 +864,7 @@
                 res.txt = "hailstone maximal diameter is " + res.hailstone_size;
 
             } else if( key === "CIG" && next_key().match(/^[\dV]*$/) ) {
-                msplit[0] = [key,msplit[0]].join(" ");
+                msplit[0] = [key, msplit[0]].join(" ");
                 _lookahead_skip = true;
 
             } else if( parts = key.match(/^CIG (\d+)V(\d+)$/) ) {
@@ -874,6 +874,26 @@
 
                 res.txt = "ceiling varies between " + (res.variable_ceiling.min.toString().replace(/ feet$/,""))
                     + " and " + res.variable_ceiling.max;
+
+            } else if( key.match(/^(BR|FG|FU|VA|DU|SA|HZ|PY)$/) && next_key().match(/^(FEW|SCT|BKN|OVC)\d+$/) ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^(BR|FG|FU|VA|DU|SA|HZ|PY) (FEW|SCT|BKN|OVC)(\d+)$/) ) {
+                res.obscuration  = parts[1];
+                res.sky_cover    = parts[2];
+                res.cover_height = my_parseint(parts[3]+"00", "feet");
+
+                res.txt = PDB[res.obscuration];
+
+                res.txt += {
+                    FEW: " covering 1/8-2/8 of the sky",
+                    SCT: " covering 3/8-4/8 of the sky",
+                    BKN: " covering 5/8-7/8 of the sky",
+                    OVC: " covering most of the sky"
+                }[res.sky_cover];
+
+                res.txt += " at " + res.cover_height.toString().replace(/^0 feet/, "ground level");
 
             } else if( key === "TS" ) {
                 tmp = /^(N|S|E|W|NE|NW|SE|SW|MOV)$/;
