@@ -13,8 +13,8 @@ tie my %metar, 'Tie::IxHash', (
     'FG SCT000'   => qr/fog covering 3.*?4.*?at ground level/, # 3/8-4/8
     'FU BKN020'   => qr/smoke covering 5.*?7.*?at 2000/, # 5/8-7/8 coverage at 2000 feet
 
-    'BKN014 V OVC' => qr/cloud layer at 1400.*?varies to overcast/,
-    'SCT V BKN'    => qr/scattered cloud layer varies to broken/,
+    'BKN014 V OVC' => qr/broken cloud layer at 1400.*?varies to.*?overcast/,
+    'SCT V BKN'    => qr/scattered cloud layer varies to.*?broken/,
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);

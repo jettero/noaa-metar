@@ -875,6 +875,33 @@
                 res.txt = "ceiling varies between " + (res.variable_ceiling.min.toString().replace(/ feet$/,""))
                     + " and " + res.variable_ceiling.max;
 
+            } else if( key.match(/^(FEW|SCT|BKN|OVC)\d*$/) && next_key() === "V" && next_key(1).match(/^(FEW|SCT|BKN|OVC)$/) ) {
+                tmp = msplit.splice(0,2);
+                tmp.unshift(key);
+                msplit.unshift( tmp.join(" ") );
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/(FEW|SCT|BKN|OVC)(\d*) V (FEW|SCT|BKN|OVC)$/) ) {
+                res.changing_sky_condition = {
+                    from: parts[1], to: parts[3]
+                };
+
+                tmp = {
+                    FEW: "layer of few clouds",
+                    SCT: "scattered cloud layer",
+                    BKN: "broken cloud layer",
+                    OVC: "overcast cloud layer"
+                };
+
+                if( parts[2] ) {
+                    res.changing_sky_condition.from_height = my_parseint(parts[2]+"00", "feet");
+                    res.txt = "the " + tmp[res.changing_sky_condition.from] + " at " + res.changing_sky_condition.from_height
+                            + " varies to a " + tmp[res.changing_sky_condition.to];
+
+                } else {
+                    res.txt = "the " + tmp[res.changing_sky_condition.from] + " varies to a " + tmp[res.changing_sky_condition.to];
+                }
+
             } else if( key.match(/^(BR|FG|FU|VA|DU|SA|HZ|PY)$/) && next_key().match(/^(FEW|SCT|BKN|OVC)\d+$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
                 _lookahead_skip = true;
