@@ -3,7 +3,9 @@ function AboutAssistant() {
 }
 
 AboutAssistant.prototype.setup = function() {
-    this.controller.get("build-date").update(this.buildDate.toLocaleString());
+    this.controller.get("build-date").update(
+        "This instance was built on " + this.buildDate.toLocaleString() + "."
+    );
 };
 
 Mojo.Log.info("About()");
