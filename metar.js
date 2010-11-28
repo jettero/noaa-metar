@@ -942,8 +942,7 @@
 
                 res.txt += " at " + res.cover_height.toString().replace(/^0 feet/, "ground level");
 
-            } else if( key === "TS" ) {
-                tmp = /^(N|S|E|W|NE|NW|SE|SW|MOV)$/;
+            } else if( key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL)$/) && next_key().match( tmp = /^([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}|MOV|DSNT)$/ ) ) {
                 tmp2 = 0; tmp3 = 0;
                 while( next_key(tmp3++).match(tmp) )
                     tmp2++;
@@ -955,7 +954,7 @@
 
                 _lookahead_skip = true;
 
-            } else if( parts = key.match(/^TS( (N|S|E|W|NE|NW|SE|SW))?( MOV (N|S|E|W|NE|NW|SE|SW))?$/) ) {
+            } else if( parts = key.match(/^TS( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/) ) {
                 //                   1 2                      3     4
 
                 if( parts[1] )
