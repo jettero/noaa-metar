@@ -863,6 +863,18 @@
                 res.hailstone_size = my_parsefloat(parts[1], "inches");
                 res.txt = "hailstone maximal diameter is " + res.hailstone_size;
 
+            } else if( key === "CIG" && next_key().match(/^[\dV]*$/) ) {
+                msplit[0] = [key,msplit[0]].join(" ");
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^CIG (\d+)V(\d+)$/) ) {
+                res.variable_ceiling = {
+                    min: my_parseint(parts[1]+"00", "feet"), max: my_parseint(parts[2]+"00", "feet")
+                };
+
+                res.txt = "ceiling varies between " + (res.variable_ceiling.min.toString().replace(/ feet$/,""))
+                    + " and " + res.variable_ceiling.max;
+
             } else if( key === "TS" ) {
                 tmp = /^(N|S|E|W|NE|NW|SE|SW|MOV)$/;
                 tmp2 = 0; tmp3 = 0;

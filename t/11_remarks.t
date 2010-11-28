@@ -9,7 +9,7 @@ tie my %metar, 'Tie::IxHash', (
 
     RMK  => qr/remarks/,
 
-    'CIG 005V010' => qr/variable ceiling between 500.*?1000/,
+    'CIG 005V010' => qr/ceiling varies between 500.*?1000/,
     'FG SCT000'   => qr/scattered layer of fog at ground level/,
     'FU BKN020'   => qr/broken layer of smoke at 2000/, # feet
 
