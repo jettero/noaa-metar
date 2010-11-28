@@ -26,7 +26,7 @@ tie my %metar, 'Tie::IxHash', (
     'TS SE'             => qr/thunderstorm to the south-east/,
     'TS SE MOV NE'      => qr/thunderstorm to the south-east.*?moving north-east/,
 
-    'GS 1 3/4'          => qr/hailstone size 1\.75/, # inches
+    'GS 1 3/4'          => qr/hailstone maximal diameter is 1\.75/, # inches
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);

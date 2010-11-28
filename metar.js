@@ -846,6 +846,23 @@
                 tmp = "FREQ_TOKEN";
                 _lookahead_skip = true;
 
+            } else if( key === "GS" ) {
+                tmp = /^[\d \/]+$/;
+                tmp2 = 0; tmp3 = 0;
+                while( next_key(tmp3++).match(tmp) )
+                    tmp2++;
+
+                tmp = msplit.splice(0,tmp2);
+                tmp.unshift(key);
+
+                msplit.unshift(tmp.join(" "));
+
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^GS ([\d \/]+)$/) ) {
+                res.hailstone_size = my_parsefloat(parts[1], "inches");
+                res.txt = "hailstone maximal diameter is " + res.hailstone_size;
+
             } else if( key === "TS" ) {
                 tmp = /^(N|S|E|W|NE|NW|SE|SW|MOV)$/;
                 tmp2 = 0; tmp3 = 0;
