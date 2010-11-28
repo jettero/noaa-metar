@@ -26,7 +26,10 @@ myinstall: clean
 	scp *.ipk $${INSTHOST:-castle.vhb}:
 	ssh $${INSTHOST:-castle.vhb} /usr/bin/ipkg -o /media/cryptofs/apps install *.ipk
 
-build: locations.js README
+build_date:
+	@ echo "\"$$(date)\"" > build_date.json
+
+build: locations.js README build_date
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
