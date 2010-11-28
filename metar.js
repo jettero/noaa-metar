@@ -846,6 +846,38 @@
                 tmp = "FREQ_TOKEN";
                 _lookahead_skip = true;
 
+            } else if( key === "TS" ) {
+                tmp = /^(N|S|E|W|NE|NW|SE|SW|MOV)$/;
+                tmp2 = 0; tmp3 = 0;
+                while( next_key(tmp3++).match(tmp) )
+                    tmp2++;
+
+                tmp = msplit.splice(0,tmp2);
+                tmp.unshift(key);
+
+                msplit.unshift(tmp.join(" "));
+
+                _lookahead_skip = true;
+
+            } else if( parts = key.match(/^TS( (N|S|E|W|NE|NW|SE|SW))?( MOV (N|S|E|W|NE|NW|SE|SW))?$/) ) {
+                //                   1 2                      3     4
+
+                if( parts[1] )
+                    res.thunderstorm_location = parts[2];
+
+                if( parts[3] )
+                    res.thunderstorm_movement = parts[4];
+
+                if( res.thunderstorm_location && res.thunderstorm_movement )
+                    res.txt = "thunderstorm to the " + PDB.DIRS[res.thunderstorm_location]
+                            + " moving "             + PDB.DIRS[res.thunderstorm_movement];
+
+                else if( res.thunderstorm_location )
+                    res.txt = "thunderstorm to the " + PDB.DIRS[res.thunderstorm_location];
+
+                else if( res.thunderstorm_movement )
+                    res.txt = "thunderstorm in the area moving " + PDB.DIRS[res.thunderstorm_movement];
+
             } else if( key.match(/^LTG(CG|IC|CC|CA)*$/) && (tmp3 === "FREQ_TOKEN" || next_key().match(/^(OHD|VC|DSNT|N|E|S|W|NE|NW|SE|SW)$/)) ) {
                 tmp2 = 0;
                 tmp3 = 0;
