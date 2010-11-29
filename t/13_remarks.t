@@ -14,7 +14,7 @@ tie my %metar, 'Tie::IxHash', (
 
     'ACFT MSHP' => qr/aircraft mishap/,
 
-    'SNINCR 2/10' => qr/snow increasing rapidly.*?last hour.*?2.*?on ground.*?10/, # 2in in last hour, 10in total depth
+    'SNINCR 2/10' => qr/snow increasing rapidly.*?2.*?last hou.*?10.*?on ground/, # 2in in last hour, 10in total depth
 );
 
 my $decode  = t::test_metar::process_metar(keys %metar);

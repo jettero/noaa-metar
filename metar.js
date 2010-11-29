@@ -886,7 +886,7 @@
                 res.aircraft_mishap = true;
                 res.txt = "aircraft mishap";
 
-            } else if( key === "GS" ) {
+            } else if( key === "GS" || key === "SNINCR" ) {
                 tmp = /^[\d \/]+$/;
                 tmp2 = 0; tmp3 = 0;
                 while( next_key(tmp3++).match(tmp) )
@@ -902,6 +902,13 @@
             } else if( parts = key.match(/^GS ([\d \/]+)$/) ) {
                 res.hailstone_size = my_parsefloat(parts[1], "inches");
                 res.txt = "hailstone maximal diameter is " + res.hailstone_size;
+
+            } else if( parts = key.match(/^SNINCR (\d+)\/(\d+)$/) ) {
+                res.snow_increasing_rapidly = true; 
+                res.inches_last_hour = my_parseint(parts[1], "inches");
+                res.depth_on_ground  = my_parseint(parts[2], "inches");
+                res.txt = "snow increasing rapidly, " + res.inches_last_hour + " in last hour, "
+                        + res.depth_on_ground + " on ground";
 
             } else if( key === "CIG" && next_key().match(/^(\d+V\d+|\d{3}.+)$/) ) {
                 msplit[0] = [key, msplit[0]].join(" ");
