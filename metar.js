@@ -954,7 +954,7 @@
 
                 _lookahead_skip = true;
 
-            } else if( parts = key.match(/^TS( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/) ) {
+            } else if( key.match(/\S\s+\S/) && (parts = key.match(/^TS( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/)) ) {
                 //                   1 2                      3     4
 
                 if( parts[1] )
