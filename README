@@ -6,21 +6,28 @@
    Written by [1]Paul Miller.
 
    This app is all about METAR. Attempts to process the METAR data are purely
-   for educational and learning purposes. This is only intended for people
-   who wish to learn to read METAR or already know how to do so.
+   for educational and learning purposes. This app is only intended for
+   people who wish to learn to read METAR or already know how to do so.
 
    You may report bugs and request features by using the github issue
    tracker:
 
    [2]http://github.com/jettero/noaa-metar/issues
 
+   If it is easier, you may also email support, bug, and feature requests to
+   [3]noaa-metar-feedback@voltar.org
+
+   Problems with METAR decoding should be reported using the form built into
+   the decode page. If you think there's a problem with a particular decode,
+   select “Report Metar Decode” from the app menu on the Decode card.
+
    The entire source for this app can be found on github:
 
-   [3]http://github.com/jettero/noaa-metar
+   [4]http://github.com/jettero/noaa-metar
 
    Some unreleased, release candidate and historical builds can be found on
    the gh-pages:
-   [4]http://jettero.github.com/noaa-metar
+   [5]http://jettero.github.com/noaa-metar
 
   Copyright
 
@@ -29,16 +36,17 @@
   License
 
    This app is licensed under the GNU GPLv3.
-   [5]http://www.opensource.org/licenses/gpl-3.0.html
+   [6]http://www.opensource.org/licenses/gpl-3.0.html
 
 References
 
    Visible links
    1. http://jettero.github.com/
    2. http://github.com/jettero/noaa-metar/issues
-   3. http://github.com/jettero/noaa-metar
-   4. http://jettero.github.com/noaa-metar
-   5. http://www.opensource.org/licenses/gpl-3.0.html
+   3. mailto:noaa-metar-feedback@voltar.org
+   4. http://github.com/jettero/noaa-metar
+   5. http://jettero.github.com/noaa-metar
+   6. http://www.opensource.org/licenses/gpl-3.0.html
 
 -----=: app/views/Help.html
    NOAA METAR Help
