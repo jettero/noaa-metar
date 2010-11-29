@@ -84,7 +84,8 @@ StageAssistant.prototype.menuSetup = function() {
         visible: true,
         items: [
             { label: "Help",  command: 'myshow-Help'  },
-            { label: "About", command: 'myshow-About' }
+            { label: "About", command: 'myshow-About' },
+            { label: "Report Metar Decode", command: 'report-metar', disabled: true }
         ]
     };
 
