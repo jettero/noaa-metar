@@ -1,7 +1,9 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo Ajax extract_metar Template
+/*global Mojo Ajax extract_metar Template setTimeout clearTimeout
 */
+
+var _REQ_DB = {};
 
 // function my_error(text, calback) {{{
 function my_error(text, callback) {
@@ -22,7 +24,17 @@ function get_metar(req, callback) {
     req.worked = false;
     Mojo.Log.info("get_metar() fetching: " + req.code);
 
-    var request = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
+    if( _REQ_DB[req.code] ) {
+        try {
+            Mojo.Log.info("get_metar() aborting running request");
+            _REQ_DB[req.code].transport.abort();
+
+        } catch(e) {
+            my_error("problem aborting previous request: " + e);
+        }
+    }
+
+    _REQ_DB[req.code] = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
         method: 'get', parameters: { cccc: req.code }, 
 
         onSuccess: function(transport) {
@@ -38,7 +50,9 @@ function get_metar(req, callback) {
                     function() { callback(req); });
             }
 
-        }.bind(this),
+            _REQ_DB[req.code] = false;
+
+        },
 
         onFailure: function(transport) {
             var t = new Template("Ajax Error: #{status}");
@@ -47,8 +61,64 @@ function get_metar(req, callback) {
 
             Mojo.Controller.errorDialog(e.join("... "));
             my_error(e.join("... "), function() { callback(req); });
+            _REQ_DB[req.code] = false;
 
-        }.bind(this)
+        }
     });
 }
 // }}}
+
+/* {{{ runtime setup */ (function(){
+    var callInProgress = function(xmlhttp) {
+        switch (xmlhttp.readyState) {
+            case 1:
+            case 2:
+            case 3:
+                return true;
+
+            // Case 4 and 0
+            default:
+                return false;
+        }
+    };
+
+    var now = function() {
+        var d = new Date();
+        var t = d.getTime();
+        var n = Math.round( t/1000.0 );
+
+        return n;
+    };
+
+    var ajaxTimeout = 10e3;
+
+    Ajax.Responders.register({
+        onCreate: function(request) {
+            var f;
+
+            request.before = now();
+            request.timeoutId = setTimeout(
+                f = function() {
+                    if (callInProgress(request.transport)) {
+                        Mojo.Log.info("AJAX-ext Timeout fired dt=%d", now() - request.before);
+                        my_error("AJAX Request Timeout");
+                        request.transport.abort();
+
+                    } else {
+                        Mojo.Log.info("AJAX-ext Timeout fired dt=%d — but no call was in progress", now() - request.before);
+                    }
+                },
+
+                ajaxTimeout
+            );
+        },
+
+        onComplete: function(request) {
+            Mojo.Log.info("AJAX-ext Timeout cleared normally dt=%d", now() - request.before);
+            clearTimeout(request.timeoutId);
+        }
+    });
+
+}());
+
+/*}}}*/
