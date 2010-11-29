@@ -14,7 +14,7 @@ tie my %metar, 'Tie::IxHash', (
     'TCU W'              => qr/towering cumulus to the west/,
     'ACC NW'             => qr/altocumulus castellanus to the north-west/,
     'APRNT ROTOR CLD NE' => qr/apparent rotor cloud to the north-east/,
-    'CCSL S'             => qr/cirrocumulus clouds to the south/,
+    'CCSL S'             => qr/cirrocumulus to the south/,
 
     'CIG 002RWY11' => qr/ceiling.*?RWY11.*?200/, # ceiling at secondary location
 );

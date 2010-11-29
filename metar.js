@@ -966,8 +966,8 @@
 
                 _lookahead_skip = true;
 
-            } else if( key.match(/\S\s+\S/) && (parts = key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL|(APRNT )?ROTOR( CLD)?)( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/)) ) {
-                //                                                  1                                   2             3       4 5                                                      6     7
+            } else if( key.match(/\S\s+\S/) && (parts = key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL|(APRNT )?ROTOR( CLD)?)( DSNT)?( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/)) ) {
+                //                                                  1                                   2             3       4       5 6                                                      7     8
 
                 res.weather_type = parts[1];
                 res.txt = {
@@ -986,11 +986,17 @@
 
                 }[res.weather_type];
 
-                if( parts[4] )
-                    res.weather_location = parts[5];
+                if( parts[5] )
+                    res.weather_location = parts[6];
 
-                if( parts[6] )
-                    res.weather_movement = parts[7];
+                if( parts[7] )
+                    res.weather_movement = parts[8];
+
+                if( parts[4] )
+                    res.weather_location_distant = true;
+
+                if( res.weather_location_distant )
+                    res.txt = "distant " + res.txt;
 
                 if( res.weather_location && res.weather_movement )
                     res.txt += " to the " + PDB.DIRS[res.weather_location]
