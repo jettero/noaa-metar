@@ -41,4 +41,35 @@ DecoderAssistant.prototype.setup = function() {
     this.decodeModel.items.unshift({ key: this.code, txt: dat(this.code) });
 };
 
+DecoderAssistant.prototype.handleCommand = function(event) {
+    Mojo.Log.info("DecoderAssistant::handleCommand()");
+
+    if (event.type === Mojo.Event.command) {
+        var s_a = event.command.split(/\s*(?:@@)\s*/);
+
+        switch (s_a[0]) {
+            case 'report-metar':
+                Mojo.Log.info("Sending user to reporting page for metar: %s", this.METAR);
+                this.controller.serviceRequest("palm://com.palm.applicationManager", {
+                    method: "open",
+                    parameters:  {
+                       id: 'com.palm.app.browser',
+                       params: {
+                           target: "https://spreadsheets.google.com/viewform?formkey=dGhXLWY4a0NtNXJVSTdVUTR3ZEdiMkE6MQ&entry_6="
+                           + escape(this.METAR)
+                       }
+                    }
+                });    
+                break;
+
+            default:
+                Mojo.Log.info("Tasks::handleCommand(unknown command: %s)", Object.toJSON(s_a));
+                break;
+        }
+    }
+
+};
+
+/*}}}*/
+
 Mojo.Log.info("DecoderAssistant()");
