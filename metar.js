@@ -942,7 +942,19 @@
 
                 res.txt += " at " + res.cover_height.toString().replace(/^0 feet/, "ground level");
 
-            } else if( key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL)$/) && next_key().match( tmp = /^([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}|MOV|DSNT)$/ ) ) {
+            } else if( key === "ROTOR" && next_key() === "CLD" ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = true;
+
+            } else if( key === "APRNT" && next_key() === "ROTOR" ) {
+                tmp = msplit.splice(0,2);
+                if( next_key() === "CLD" )
+                    tmp.push(msplit.shift());
+                tmp.unshift(key);
+                msplit.unshift( tmp.join(" ") );
+                _lookahead_skip = true;
+
+            } else if( key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL|(APRNT )?ROTOR( CLD)?)$/) && next_key().match( tmp = /^([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}|MOV|DSNT)$/ ) ) {
                 tmp2 = 0; tmp3 = 0;
                 while( next_key(tmp3++).match(tmp) )
                     tmp2++;
@@ -954,24 +966,41 @@
 
                 _lookahead_skip = true;
 
-            } else if( key.match(/\S\s+\S/) && (parts = key.match(/^TS( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/)) ) {
-                //                   1 2                      3     4
+            } else if( key.match(/\S\s+\S/) && (parts = key.match(/^(TS|CB|CBMAM|TCU|ACC|SCSL|ACSL|CCSL|(APRNT )?ROTOR( CLD)?)( ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?( MOV ([NEWS]{1,2}|[NEWS]{1}-[NEWS]{2}|[NEWS]{2}-[NEWS]{1}))?$/)) ) {
+                //                                                  1                                   2             3       4 5                                                      6     7
 
-                if( parts[1] )
-                    res.thunderstorm_location = parts[2];
+                res.weather_type = parts[1];
+                res.txt = {
+                    TS:    "thunderstorm",
+                    CB:    "cumulonimbus",
+                    CBMAM: "cumulonimbus mammatus",
+                    TCU:   "towering cumulus",
+                    ACC:   "altocumulus castellanus",
+                    SCSL:  "stratocumulus",
+                    ACSL:  "altocumulus",
+                    CCSL:  "cirrocumulus",
+                    ROTOR: "rotor cloud",
+                    'ROTOR CLD': "rotor cloud",
+                    'APRNT ROTOR': "apparent rotor cloud",
+                    'APRNT ROTOR CLD': "apparent rotor cloud"
 
-                if( parts[3] )
-                    res.thunderstorm_movement = parts[4];
+                }[res.weather_type];
 
-                if( res.thunderstorm_location && res.thunderstorm_movement )
-                    res.txt = "thunderstorm to the " + PDB.DIRS[res.thunderstorm_location]
-                            + " moving "             + PDB.DIRS[res.thunderstorm_movement];
+                if( parts[4] )
+                    res.weather_location = parts[5];
 
-                else if( res.thunderstorm_location )
-                    res.txt = "thunderstorm to the " + PDB.DIRS[res.thunderstorm_location];
+                if( parts[6] )
+                    res.weather_movement = parts[7];
 
-                else if( res.thunderstorm_movement )
-                    res.txt = "thunderstorm in the area moving " + PDB.DIRS[res.thunderstorm_movement];
+                if( res.weather_location && res.weather_movement )
+                    res.txt += " to the " + PDB.DIRS[res.weather_location]
+                            +  " moving " + PDB.DIRS[res.weather_movement];
+
+                else if( res.weather_location )
+                    res.txt += " to the " + PDB.DIRS[res.weather_location];
+
+                else if( res.weather_movement )
+                    res.txt += " in the area moving " + PDB.DIRS[res.weather_movement];
 
             } else if( key.match(/^LTG(CG|IC|CC|CA)*$/) && (tmp3 === "FREQ_TOKEN" || next_key().match(/^(OHD|VC|DSNT|N|E|S|W|NE|NW|SE|SW)$/)) ) {
                 tmp2 = 0;
