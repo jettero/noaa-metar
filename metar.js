@@ -866,6 +866,26 @@
                 tmp = "FREQ_TOKEN";
                 _lookahead_skip = true;
 
+            } else if( key === "PRESRR" ) {
+                res.pressure_rising_rapidly = true;
+                res.txt = "pressure rising rapidly";
+
+            } else if( key === "PRESFR" ) {
+                res.pressure_falling_rapidly = true;
+                res.txt = "pressure falling rapidly";
+
+            } else if( key === "PRESFR" ) {
+                res.pressure_falling_rapidly = true;
+                res.txt = "pressure falling rapidly";
+
+            } else if( key === "ACFT" && next_key() === "MSHP" ) {
+                msplit[0] = [key, msplit[0]].join(" ");
+                _lookahead_skip = true;
+
+            } else if( key === "ACFT MSHP" ) {
+                res.aircraft_mishap = true;
+                res.txt = "aircraft mishap";
+
             } else if( key === "GS" ) {
                 tmp = /^[\d \/]+$/;
                 tmp2 = 0; tmp3 = 0;
