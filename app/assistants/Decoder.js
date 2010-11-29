@@ -15,6 +15,8 @@ DecoderAssistant.prototype.setup = function() {
     Mojo.Log.info("DecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
 
     this.menuSetup();
+    this.appMenuModel.items[2].disabled = false;
+    this.controller.modelChanged(this.appMenuModel);
 
     var attrs = {
         swipeToDelete: false,
