@@ -1175,6 +1175,7 @@
 }
 
 /*}}}*/
+
 /* {{{ */ function extract_metar(airport, html) {
     html = html.replace(/<[^>]+>/g, ""); // STFU
 
