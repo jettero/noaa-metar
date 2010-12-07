@@ -3,7 +3,7 @@
 /*global Mojo $A decode_metar
 */
 
-function DecoderAssistant(args) {
+function METARDecoderAssistant(args) {
     this.METAR = args[0].METAR
     this.code  = args[0].code
 
@@ -11,8 +11,8 @@ function DecoderAssistant(args) {
     this.menuSetup = this.SCa.menuSetup.bind(this);
 }
 
-DecoderAssistant.prototype.setup = function() {
-    Mojo.Log.info("DecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
+METARDecoderAssistant.prototype.setup = function() {
+    Mojo.Log.info("METARDecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
 
     this.menuSetup();
     this.appMenuModel.items[2].disabled = false;
@@ -41,8 +41,8 @@ DecoderAssistant.prototype.setup = function() {
     this.decodeModel.items.unshift({ key: this.code, txt: dat(this.code) });
 };
 
-DecoderAssistant.prototype.handleCommand = function(event) {
-    Mojo.Log.info("DecoderAssistant::handleCommand()");
+METARDecoderAssistant.prototype.handleCommand = function(event) {
+    Mojo.Log.info("METARDecoderAssistant::handleCommand()");
 
     if (event.type === Mojo.Event.command) {
         var s_a = event.command.split(/\s*(?:@@)\s*/);
@@ -72,4 +72,4 @@ DecoderAssistant.prototype.handleCommand = function(event) {
 
 /*}}}*/
 
-Mojo.Log.info("DecoderAssistant()");
+Mojo.Log.info("METARDecoderAssistant()");

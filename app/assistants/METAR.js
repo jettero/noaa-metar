@@ -105,7 +105,7 @@ function METARAssistant() {
 /*}}}*/
 /* {{{ */ METARAssistant.prototype.decode = function(event) {
     Mojo.Log.info("METAR::decode(%s)", event.item.code);
-    this.controller.stageController.assistant.showScene('Decoder', [event.item]);
+    this.controller.stageController.assistant.showScene('METARDecoder', [event.item]);
 };
 
 /*}}}*/
