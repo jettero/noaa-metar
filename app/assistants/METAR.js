@@ -113,7 +113,8 @@ function METARAssistant() {
 /* {{{ */ METARAssistant.prototype.saveLocations = function(skipModelChanged) {
     Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));
 
-    this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail); // skip MTS
+    this.dbo.simpleAdd("METARModelItems", // skip MTS
+        this.METARModel.items, this.dbSent, this.dbFail);
 
     if( skipModelChanged )
         return;
@@ -150,10 +151,12 @@ function METARAssistant() {
         this.saveLocations();
 
         if( !res.cached ) {
-            var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select("div.metar-text")[0];
-
             Mojo.Log.info("trying to set success-color on list item.");
+
             try {
+                var node = this.controller.get("noaa_metar").mojo.getNodeByIndex(res.index).select(
+                    "div.metar-text")[0]; // skip MTS
+
                 node.style.color = "#009900";
                 setTimeout(function(){ node.style.color = "#007700"; }, 1000);
                 setTimeout(function(){ node.style.color = "#005500"; }, 1100);

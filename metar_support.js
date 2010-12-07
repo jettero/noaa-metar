@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo Ajax extract_metar Template setTimeout clearTimeout
+/*global Mojo Ajax extract_taf extract_metar Template setTimeout clearTimeout
 */
 
 var _REQ_DB = {};

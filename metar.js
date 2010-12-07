@@ -128,6 +128,9 @@
     var lsplit = [];
     var ret = [];
 
+    if( metar.match(/No METAR.*our system/) )
+        return [{key: metar, txt: "(this is not a METAR report)"}]
+
     ret.toString = function() {
         var _tmp = [];
 
@@ -904,7 +907,7 @@
                 res.txt = "hailstone maximal diameter is " + res.hailstone_size;
 
             } else if( parts = key.match(/^SNINCR (\d+)\/(\d+)$/) ) {
-                res.snow_increasing_rapidly = true; 
+                res.snow_increasing_rapidly = true;
                 res.inches_last_hour = my_parseint(parts[1], "inches");
                 res.depth_on_ground  = my_parseint(parts[2], "inches");
                 res.txt = "snow increasing rapidly, " + res.inches_last_hour + " in last hour, "
@@ -1175,6 +1178,10 @@
 /* {{{ */ function extract_metar(airport, html) {
     html = html.replace(/<[^>]+>/g, ""); // STFU
 
+    var m;
+    if( m = html.match(/(No METAR observation from .+? is available in our system.)/) )
+        return m[1];
+
     var metar = "? " + airport + " ?";
 
     var lines = html.split("\n");
@@ -1197,24 +1204,18 @@
 
 /*}}}*/
 /* {{{ */ function extract_taf(airport, html) {
-    html = html.replace(/<[^>]+>/g, ""); // STFU
+    html = html.replace(/[\r\n]/g, " ").replace(/ {2,}/g, " ");
 
     var taf = "? " + airport + " ?";
+    var m;
 
-    var lines = html.split("\n");
-    var potential;
-    for(var i=0; i<lines.length; i++) {
-        if( lines[i].substr(0, airport.length) === airport ) {
+    if( m = html.match(/(No TAF from .+? is available in our system.)/) )
+        return m[1];
 
-            // Everything but the airport code and the space
-            potential = lines[i].substr(airport.length + 1);
+    var re = new RegExp("<pre>.*?TAF\\s+" + airport + "\\s+(.+?)</pre>");
 
-            if( potential.match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
-                taf = potential;
-                break;
-            }
-        }
-    }
+    if( m = html.match(re) )
+        taf = m[1].replace(/^TAF\s+/);
 
     return taf;
 }
