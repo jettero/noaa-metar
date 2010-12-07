@@ -5,6 +5,13 @@
 
 var _REQ_DB = {};
 
+function abort_all() {
+    for(var k in _REQ_DB) {
+        try { _REQ_DB[k].transport.abort(); } catch(e) {} 
+        delete _REQ_DB[k];
+    }
+}
+
 // function my_error(text, calback) {{{
 function my_error(text, callback) {
     Mojo.Log.info("my_error(): " + text);

@@ -1,6 +1,6 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
-/*global Mojo OPT get_metar $H $A setTimeout setInterval clearInterval
+/*global Mojo OPT get_metar $H $A setTimeout setInterval clearInterval abort_all
 */
 
 function METARAssistant() {
@@ -32,8 +32,9 @@ function METARAssistant() {
 
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
-    this.refreshModel = { label: "Reload",  icon: 'refresh', command: 'refresh' };
-    this.addModel     = { label: "Add",     icon: 'new',     command: 'add'     };
+    this.refreshModel = { label: "Reload", icon: 'refresh',       command: 'refresh' };
+    this.stopModel    = { label: 'Stop',   icon: 'load-progress', command: 'stop'    };
+    this.addModel     = { label: "Add",    icon: 'new',           command: 'add'     };
     this.commandMenuModel = {
         label: 'Command Menu',
         items: [ this.addModel, this.refreshModel ]
@@ -165,7 +166,7 @@ function METARAssistant() {
         }
     }
 
-    this._running = false;
+    this.stopped();
     this.updateTimer();
 };
 
@@ -187,7 +188,7 @@ function METARAssistant() {
         var o = (now - j.fetched) > 3000;
 
         if( (!j.fetched || o) && j.fails < 3 ) {
-            this._running = true;
+            this.started();
             get_metar({code: j.code, index: i}, this.receiveMETARData);
             return;
         }
@@ -245,6 +246,12 @@ function METARAssistant() {
                 this.updateTimer();
                 break;
 
+            case 'stop':
+                Mojo.Log.info("aborting updates");
+                abort_all();
+                this.stopped();
+                break;
+
             case 'add':
                 Mojo.Log.info("add-code");
                 this.controller.stageController.assistant.showScene('AddCode');
@@ -259,5 +266,22 @@ function METARAssistant() {
 };
 
 /*}}}*/
+
+METARAssistant.prototype.started = function() {
+    this.commandMenuModel.items.pop(this.refreshModel);
+    this.commandMenuModel.items.push(this.stopModel);
+    this.controller.modelChanged(this.commandMenuModel);
+
+    this.currLoadProgressImage = 0;
+    this.currentLoadPercent    = 0;
+    this._running = true;
+};
+
+METARAssistant.prototype.stopped = function() {
+    this.commandMenuModel.items.pop(this.stopModel);
+    this.commandMenuModel.items.push(this.refreshModel);
+    this.controller.modelChanged(this.commandMenuModel);
+    this._running = false;
+};
 
 Mojo.Log.info("METAR()");
