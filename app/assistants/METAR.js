@@ -15,7 +15,7 @@ function METARAssistant() {
     this.dbFail = this.dbFail.bind(this);
 
     var options = {
-        name:    "noaametar_locations",
+        name:    "noaametar_locations", // skip MTS
         version: 1,
         replace: false // opening existing if possible
     };
@@ -90,7 +90,11 @@ function METARAssistant() {
 /* {{{ */ METARAssistant.prototype.addCode = function(code) {
     Mojo.Log.info("METAR::addCode(%s)", code);
 
-    this.METARModel.items.push({ code: code, fetched: 0, fails: 0, METAR: code });
+    this.METARModel.items.push({ code: code,
+        fetched_metar: 0, metar_fails: 0, // skip MTS
+          fetched_taf: 0,   taf_fails: 0, // skip MTS
+        TAF: code, METAR: code });        // skip MTS
+
     this.saveLocations();
     this.updateTimer();
 };
@@ -106,7 +110,7 @@ function METARAssistant() {
 /* {{{ */ METARAssistant.prototype.saveLocations = function(skipModelChanged) {
     Mojo.Log.info("METAR::saveLocations() items=%s", Object.toJSON(this.METARModel.items));
 
-    this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail);
+    this.dbo.simpleAdd("METARModelItems", this.METARModel.items, this.dbSent, this.dbFail); // skip MTS
 
     if( skipModelChanged )
         return;
@@ -118,7 +122,7 @@ function METARAssistant() {
 /* {{{ */ METARAssistant.prototype.loadLocations = function() {
     Mojo.Log.info("METAR::loadLocations()");
 
-    this.dbo.simpleGet("METARModelItems", this.dbRecv, this.dbFail);
+    this.dbo.simpleGet("METARModelItems", this.dbRecv, this.dbFail); // skip MTS
 };
 
 /*}}}*/
@@ -138,8 +142,8 @@ function METARAssistant() {
 
     if( res.worked ) {
         this.METARModel.items[res.index].METAR = res.METAR;
-        this.METARModel.items[res.index].fetched = this.now();
-        this.METARModel.items[res.index].fails = 0;
+        this.METARModel.items[res.index].fetched_metar = this.now();
+        this.METARModel.items[res.index].metar_fails = 0;
         this.saveLocations();
 
         if( !res.cached ) {
@@ -158,9 +162,9 @@ function METARAssistant() {
         }
 
     } else {
-        this.METARModel.items[res.index].fails ++;
+        this.METARModel.items[res.index].metar_fails ++;
 
-        if( this.METARModel.items[res.index].fails >= 3 ) {
+        if( this.METARModel.items[res.index].metar_fails >= 3 ) {
             Mojo.Controller.errorDialog("failed at " + res.code + " 3 times already, giving up on it.");
             this.METARModel.items[res.index].METAR = res.code + " :(";
         }
@@ -186,9 +190,9 @@ function METARAssistant() {
 
     for(var i=0; i<this.METARModel.items.length; i++) {
         var j = this.METARModel.items[i];
-        var o = (now - j.fetched) > 3000;
+        var o = (now - j.fetched_metar) > 3000;
 
-        if( (!j.fetched || o) ) {
+        if( (!j.fetched_metar || o) ) {
 
             if( i === 0 )
                 this.started();
@@ -250,7 +254,7 @@ function METARAssistant() {
         switch (s_a[0]) {
             case 'refresh':
                 Mojo.Log.info("forcing updates");
-                this.METARModel.items.each(function(i){ i.fetched = 0; });
+                this.METARModel.items.each(function(i){ i.fetched_metar = 0; });
                 this.updateTimer();
                 break;
 

@@ -54,11 +54,14 @@ README: app/views/About.html app/views/Help.html Makefile
 	@ elinks -dump app/views/Help.html  >> README
 	@ (git add README && git commit -m "updated README" README; exit 0)
 
-app/views/TAF.html: app/views/METAR.html
-	@ sed -e s/METAR/TAF/g -e s/_metar/_taf/g < $< > $@
+# ssed is "super sed", not a typo. It's a debian thing and gives us the -R mode.
+metartaf_subst = ssed -R -e 's/METAR(?!.*skip MTS)/TAF/g' -e 's/_metar(?!.*skip MTS)/_taf/g' -e 's/metar_(?!.*skip MTS)/taf_/g'
 
-app/assistants/TAF.js: app/assistants/METAR.js
-	@ sed -e s/METAR/TAF/g -e s/_metar/_taf/g < $< > $@
+app/views/TAF.html: app/views/METAR.html Makefile
+	@ $(metartaf_subst) < $< > $@
+
+app/assistants/TAF.js: app/assistants/METAR.js Makefile
+	@ $(metartaf_subst) < $< > $@
 
 clean:
 	git clean -dfx
