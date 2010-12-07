@@ -9,3 +9,5 @@ envvars
 newenvvars
 problem_metar.log
 build_date.json
+app/views/TAF.html
+app/assistants/TAF.js

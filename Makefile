@@ -29,7 +29,7 @@ myinstall: clean
 build_date:
 	@ echo "\"$$(date)\"" > build_date.json
 
-build: locations.js README build_date
+build: locations.js README build_date app/assistants/TAF.js app/views/TAF.html
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
@@ -53,6 +53,12 @@ README: app/views/About.html app/views/Help.html Makefile
 	@ echo -----=: app/views/Help.html  >> README
 	@ elinks -dump app/views/Help.html  >> README
 	@ (git add README && git commit -m "updated README" README; exit 0)
+
+app/views/TAF.html: app/views/METAR.html
+	@ sed -e s/METAR/TAF/g -e s/_metar/_taf/g < $< > $@
+
+app/assistants/TAF.js: app/assistants/METAR.js
+	@ sed -e s/METAR/TAF/g -e s/_metar/_taf/g < $< > $@
 
 clean:
 	git clean -dfx
