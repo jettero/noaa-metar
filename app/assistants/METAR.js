@@ -256,7 +256,6 @@ function METARAssistant() {
 
             case 'stop':
                 Mojo.Log.info("aborting updates");
-                abort_all();
                 this.stopped();
                 break;
 
@@ -289,6 +288,8 @@ function METARAssistant() {
     this.commandMenuModel.items.pop(this.stopModel);
     this.commandMenuModel.items.push(this.refreshModel);
     this.controller.modelChanged(this.commandMenuModel);
+    this._running = false;
+    abort_all();
 };
 
 /*}}}*/
