@@ -166,7 +166,8 @@ function METARAssistant() {
         }
     }
 
-    this.stopped();
+    this._running = false;
+    this.progress();
     this.updateTimer();
 };
 
@@ -187,12 +188,19 @@ function METARAssistant() {
         var j = this.METARModel.items[i];
         var o = (now - j.fetched) > 3000;
 
-        if( (!j.fetched || o) && j.fails < 3 ) {
-            this.started();
+        if( (!j.fetched || o) ) {
+
+            if( i === 0 )
+                this.started();
+
+            this._updating_index = [ i, this.METARModel.items.length ];
+            this._running = true;
             get_metar({code: j.code, index: i}, this.receiveMETARData);
             return;
         }
     }
+
+    this.stopped();
 };
 
 /*}}}*/
@@ -267,21 +275,69 @@ function METARAssistant() {
 
 /*}}}*/
 
-METARAssistant.prototype.started = function() {
+/* {{{ */ METARAssistant.prototype.started = function() {
     this.commandMenuModel.items.pop(this.refreshModel);
     this.commandMenuModel.items.push(this.stopModel);
     this.controller.modelChanged(this.commandMenuModel);
 
     this.currLoadProgressImage = 0;
     this.currentLoadPercent    = 0;
-    this._running = true;
 };
 
-METARAssistant.prototype.stopped = function() {
+/*}}}*/
+/* {{{ */ METARAssistant.prototype.stopped = function() {
     this.commandMenuModel.items.pop(this.stopModel);
     this.commandMenuModel.items.push(this.refreshModel);
     this.controller.modelChanged(this.commandMenuModel);
-    this._running = false;
 };
+
+/*}}}*/
+/* {{{ */ METARAssistant.prototype.progress = function() {
+    try {
+        var percent = parseInt(( (this._updating_index[0]+1) / this._updating_index[1])*100, 10);
+
+        Mojo.Log.info("[metar progress computer] percent: (%d/%d)*100=%d",
+            this._updating_index[0]+1, this._updating_index[1], percent);
+
+        if (percent > 100) {
+            percent = 100;
+
+        } else if (percent < 0) {
+            percent = 0;
+        }
+
+        if( percent < this.currentLoadPercent )
+            return;
+
+        this.currentLoadPercent = percent;
+
+        // Convert the percentage complete to an image number
+        // Image must be from 0 to 23 (24 images available)
+        var image = Math.round(percent / 3.9);
+        if (image > 26)
+            image = 26;
+
+        Mojo.Log.info("[metar progress computer] percent: %d; image: %d", percent, image);
+
+        if (image < this.currLoadProgressImage)
+            return;
+
+        // Has the progress changed?
+        if (this.currLoadProgressImage != image) {
+            var icon = this.controller.select('div.load-progress')[0];
+
+            if( icon )
+                icon.setStyle({'background-position': "0px -" + (image * 48) + "px"});
+
+            this.currLoadProgressImage = image;
+        }
+
+    } catch (e) {
+        Mojo.Log.logException(e, e.description);
+    }
+
+};
+
+/*}}}*/
 
 Mojo.Log.info("METAR()");
