@@ -1196,3 +1196,27 @@
 }
 
 /*}}}*/
+/* {{{ */ function extract_taf(airport, html) {
+    html = html.replace(/<[^>]+>/g, ""); // STFU
+
+    var taf = "? " + airport + " ?";
+
+    var lines = html.split("\n");
+    var potential;
+    for(var i=0; i<lines.length; i++) {
+        if( lines[i].substr(0, airport.length) === airport ) {
+
+            // Everything but the airport code and the space
+            potential = lines[i].substr(airport.length + 1);
+
+            if( potential.match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
+                taf = potential;
+                break;
+            }
+        }
+    }
+
+    return taf;
+}
+
+/*}}}*/

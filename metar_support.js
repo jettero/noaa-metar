@@ -7,7 +7,7 @@ var _REQ_DB = {};
 
 function abort_all() {
     for(var k in _REQ_DB) {
-        try { _REQ_DB[k].transport.abort(); } catch(e) {} 
+        try { _REQ_DB[k].transport.abort(); } catch(e) {}
         delete _REQ_DB[k];
     }
 }
@@ -21,7 +21,7 @@ function my_error(text, callback) {
         title: "Error",
         message: text,
         choices:[
-             {label: "OK", value: "OK", type: 'dismiss'}    
+             {label: "OK", value: "OK", type: 'dismiss'}
         ]
     });
 }
@@ -42,7 +42,7 @@ function get_metar(req, callback) {
     }
 
     _REQ_DB[req.code] = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
-        method: 'get', parameters: { cccc: req.code }, 
+        method: 'get', parameters: { cccc: req.code },
 
         onSuccess: function(transport) {
             if( transport.status === 200 ) {
@@ -50,6 +50,54 @@ function get_metar(req, callback) {
                 req.METAR  = extract_metar(req.code, transport.responseText);
 
                 Mojo.Log.info("fetched fresh METAR(" + req.code + "): ", req.METAR);
+                callback(req);
+
+            } else {
+                my_error("Transport error: " + transport.statusText + " (" + transport.status + ")",
+                    function() { callback(req); });
+            }
+
+            _REQ_DB[req.code] = false;
+
+        },
+
+        onFailure: function(transport) {
+            var t = new Template("Ajax Error: #{status}");
+            var m = t.evaluate(transport);
+            var e = [m];
+
+            Mojo.Controller.errorDialog(e.join("... "));
+            my_error(e.join("... "), function() { callback(req); });
+            _REQ_DB[req.code] = false;
+
+        }
+    });
+}
+// }}}
+// function get_taf(req, callback) {{{
+function get_taf(req, callback) {
+    req.worked = false;
+    Mojo.Log.info("get_taf() fetching: " + req.code);
+
+    if( _REQ_DB[req.code] ) {
+        try {
+            Mojo.Log.info("get_taf() aborting running request");
+            _REQ_DB[req.code].transport.abort();
+
+        } catch(e) {
+            my_error("problem aborting previous request: " + e);
+        }
+    }
+
+    _REQ_DB[req.code] = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgettaf.pl', {
+        method: 'get', parameters: { cccc: req.code },
+
+        onSuccess: function(transport) {
+            if( transport.status === 200 ) {
+                req.worked = true;
+                req.TAF  = extract_taf(req.code, transport.responseText);
+
+                Mojo.Log.info("fetched fresh TAF(" + req.code + "): ", req.TAF);
                 callback(req);
 
             } else {
