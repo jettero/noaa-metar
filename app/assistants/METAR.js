@@ -14,6 +14,8 @@ function METARAssistant() {
     this.dbSent = this.dbSent.bind(this);
     this.dbFail = this.dbFail.bind(this);
 
+    this.IamMETAR = true;
+
     var options = {
         name:    "noaametar_locations", // skip MTS
         version: 1,
@@ -33,11 +35,12 @@ function METARAssistant() {
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
 
     this.refreshModel = { label: "Reload", icon: 'refresh',       command: 'refresh' };
+    this.swapModel    = { label: "Reload", icon: 'sync',          command: 'swap'    };
     this.stopModel    = { label: 'Stop',   icon: 'load-progress', command: 'stop'    };
     this.addModel     = { label: "Add",    icon: 'new',           command: 'add'     };
     this.commandMenuModel = {
         label: 'Command Menu',
-        items: [ this.addModel, this.refreshModel ]
+        items: [ {items:[this.addModel, this.swapModel]}, this.refreshModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
 
@@ -252,6 +255,18 @@ function METARAssistant() {
             Mojo.Log.info("METAR::handleCommand(%s)", s_a[0]);
 
         switch (s_a[0]) {
+            case 'swap':
+                Mojo.Log.info("swaping METAR/TAF "); // skip MTS
+
+                this.stopped(); // abort all and reset the refresh button
+                Mojo.Controller.stageController.popScene();
+
+                if( this.IamMETAR ) // skip MTS
+                     this.controller.stageController.assistant.showScene('TAF');
+                else this.controller.stageController.assistant.showScene('METAR'); // skip MTS
+
+                break;
+
             case 'refresh':
                 Mojo.Log.info("forcing updates");
                 this.METARModel.items.each(function(i){ i.fetched_metar = 0; });
