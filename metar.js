@@ -1210,14 +1210,23 @@
     var m;
 
     if( m = html.match(/(No TAF from .+? is available in our system.)/) )
-        return m[1];
+        return {TAF: m[1]};
 
-    var re = new RegExp("<pre>.*?TAF\\s+" + airport + "\\s+(.+?)</pre>");
+    var amd = false;
 
-    if( m = html.match(re) )
-        taf = m[1].replace(/^TAF\s+/);
+    if( m = html.match( new RegExp("<pre>.*?(TAF\\s+(?:\\s*AMD\\s+)?" + airport + "\\s+.+?)</pre>") ) ) {
 
-    return taf;
+        taf = m[1].replace(/^TAF\s+/, "")
+
+        if( taf.match(/^AMD\s+/) ) {
+            taf = taf.replace(/^AMD\s+/, "");
+            amd = true;
+        }
+
+        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "");
+    }
+
+    return {TAF: taf, AMD: amd};
 }
 
 /*}}}*/

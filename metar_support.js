@@ -95,8 +95,11 @@ function get_taf(req, callback) {
 
         onSuccess: function(transport) {
             if( transport.status === 200 ) {
+                var tmp = extract_taf(req.code, transport.responseText);
+
+                req.TAF    = tmp.TAF;
+                req.preTAF = tmp.AMD ? "AMD" : "";
                 req.worked = true;
-                req.TAF  = extract_taf(req.code, transport.responseText);
 
                 Mojo.Log.info("fetched fresh TAF(" + req.code + "): ", req.TAF);
                 callback(req);
