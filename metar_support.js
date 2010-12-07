@@ -29,7 +29,7 @@ function my_error(text, callback) {
 // function get_metar(req, callback) {{{
 function get_metar(req, callback) {
     req.worked = false;
-    Mojo.Log.info("get_metar() fetching: " + req.code);
+    Mojo.Log.info("get_metar() checking for runing reqeusts: " + req.code);
 
     if( _REQ_DB[req.code] ) {
         try {
@@ -41,6 +41,7 @@ function get_metar(req, callback) {
         }
     }
 
+    Mojo.Log.info("get_metar() fetching: " + req.code);
     _REQ_DB[req.code] = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgetmetar.pl', {
         method: 'get', parameters: { cccc: req.code },
 
@@ -66,9 +67,8 @@ function get_metar(req, callback) {
             var m = t.evaluate(transport);
             var e = [m];
 
-            Mojo.Controller.errorDialog(e.join("... "));
             my_error(e.join("... "), function() { callback(req); });
-            _REQ_DB[req.code] = false;
+            delete _REQ_DB[req.code];
 
         }
     });
@@ -77,7 +77,7 @@ function get_metar(req, callback) {
 // function get_taf(req, callback) {{{
 function get_taf(req, callback) {
     req.worked = false;
-    Mojo.Log.info("get_taf() fetching: " + req.code);
+    Mojo.Log.info("get_taf() checking for runing reqeusts: " + req.code);
 
     if( _REQ_DB[req.code] ) {
         try {
@@ -89,6 +89,7 @@ function get_taf(req, callback) {
         }
     }
 
+    Mojo.Log.info("get_taf() fetching: " + req.code);
     _REQ_DB[req.code] = new Ajax.Request('http://weather.noaa.gov/cgi-bin/mgettaf.pl', {
         method: 'get', parameters: { cccc: req.code },
 
@@ -114,9 +115,8 @@ function get_taf(req, callback) {
             var m = t.evaluate(transport);
             var e = [m];
 
-            Mojo.Controller.errorDialog(e.join("... "));
             my_error(e.join("... "), function() { callback(req); });
-            _REQ_DB[req.code] = false;
+            delete _REQ_DB[req.code];
 
         }
     });
