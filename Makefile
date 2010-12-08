@@ -3,7 +3,7 @@ ssh=ssh -p 2222 -l root localhost
 
 default: test
 
-releasebuild:
+buildrelease releasebuild:
 	+ env -i make --no-print-directory build
 
 release: releasebuild clean
