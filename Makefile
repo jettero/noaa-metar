@@ -3,8 +3,10 @@ ssh=ssh -p 2222 -l root localhost
 
 default: test
 
-release: clean
+releasebuild:
 	+ env -i make --no-print-directory build
+
+release: releasebuild clean
 	git fetch github gh-pages:gh-pages
 	x=$$(ls -1 *.ipk); mv -v $$x /tmp; git checkout gh-pages; mv -v /tmp/$$x .; git add *.ipk; git clean -dfx
 
