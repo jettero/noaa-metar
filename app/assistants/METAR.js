@@ -40,7 +40,7 @@ function METARAssistant() {
     this.addModel     = { label: "Add",    icon: 'new',           command: 'add'     };
     this.commandMenuModel = {
         label: 'Command Menu',
-        items: [ {items:[this.addModel, this.swapModel]}, this.refreshModel ]
+        items: [ (OPT.showTAF ? {items:[this.addModel, this.swapModel]} : this.addModel), this.refreshModel ]
     };
 	this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'no-fade'}, this.commandMenuModel);
 
