@@ -19,7 +19,7 @@
 
    Problems with METAR decoding should be reported using the form built into
    the decode page. If you think there's a problem with a particular decode,
-   select ***Report Metar Decode*** from the app menu on the Decode card.
+   select “Report Metar Decode” from the app menu on the Decode card.
 
    The entire source for this app can be found on github:
 
@@ -62,12 +62,28 @@ References
 
    Here are some helpful links:
 
-     * [1]METAR on wikipedia
-     * [2]FMH-1 METAR Handbook (html)
-     * [3]Wikihow: METAR
+     * [1]METAR on Wikipedia
+     * [2]FMH-1 METAR Handbook (html)
+     * [3]Wikihow: METAR
 
    This is the source of the data for this app.
    [4]http://weather.noaa.gov/weather/metar.shtml
+
+  What about TAF?
+
+   [Author's Note: I'm getting a lot of requests for TAF support. I'm having
+   a hard time finding good information on decoding it, but I am working on
+   it. FMH-1, for example, enumerated everything from what the definitions
+   mean, to how to measure them. Where is the equivelent document for TAF? If
+   you have information on this [5]let me know. ]
+
+     * [6]TAF on Wikipedia
+     * [7]WMU Documents on GDPS
+     * [8]Space Archive (tutorial)
+
+   There is no decoder yet, but if you'd like to turn on TAF download
+   capability, create a file on your USB drive (/media/internal/) called TAF
+   with some text in it. Any text will do.
 
 References
 
@@ -76,3 +92,7 @@ References
    2. http://goo.gl/1YqVT
    3. http://goo.gl/ZQdWl
    4. http://goo.gl/OInR5
+   5. mailto:noaa-metar-feedback@voltar.org
+   6. http://goo.gl/lISJD
+   7. http://goo.gl/rg5nP
+   8. http://goo.gl/suGOJ
