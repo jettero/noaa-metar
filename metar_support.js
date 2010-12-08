@@ -35,6 +35,7 @@ function get_metar(req, callback) {
         try {
             Mojo.Log.info("get_metar() aborting running request");
             _REQ_DB[req.code].transport.abort();
+            delete _REQ_DB[req.code];
 
         } catch(e) {
             my_error("problem aborting previous request: " + e);
@@ -83,6 +84,7 @@ function get_taf(req, callback) {
         try {
             Mojo.Log.info("get_taf() aborting running request");
             _REQ_DB[req.code].transport.abort();
+            delete _REQ_DB[req.code];
 
         } catch(e) {
             my_error("problem aborting previous request: " + e);
@@ -109,7 +111,7 @@ function get_taf(req, callback) {
                     function() { callback(req); });
             }
 
-            _REQ_DB[req.code] = false;
+            delete _REQ_DB[req.code];
 
         },
 
