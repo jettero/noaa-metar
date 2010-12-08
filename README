@@ -41,7 +41,7 @@
 References
 
    Visible links
-   1. http://www.google.com/profiles/jettero
+   1. http://twitter.com/spottedkangaroo
    2. http://github.com/jettero/noaa-metar/issues
    3. mailto:noaa-metar-feedback@voltar.org
    4. http://github.com/jettero/noaa-metar
@@ -73,9 +73,9 @@ References
 
    [Author's Note: I'm getting a lot of requests for TAF support. I'm having
    a hard time finding good information on decoding it, but I am working on
-   it. FMH-1, for example, enumerated everything from what the definitions
-   mean, to how to measure them. Where is the equivelent document for TAF? If
-   you have information on this [5]let me know. ]
+   it. The FMH-1 METAR document, for example, enumerated everything from what
+   the definitions mean, to how to measure them. Where is the equivalent
+   document for TAF? If you have information on this [5]let me know. ]
 
      * [6]TAF on Wikipedia
      * [7]WMU Documents on GDPS
