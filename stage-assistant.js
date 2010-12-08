@@ -10,6 +10,14 @@ function StageAssistant() {
 
     OPT = Mojo.loadJSONFile(Mojo.appPath + "runtime_options.json");
 
+    try {
+        if( palmGetResource("/media/internal/TAF") )
+            OPT.showTAF = true;
+
+    } catch(e) {
+        Mojo.Log.error("error looking for /m/i/taf: %s", e)
+    }
+
     var pc = new Mojo.Model.Cookie("OPT.prefs");
 
     OPT.loadPrefs = function() {
