@@ -19,7 +19,7 @@
 
    Problems with METAR decoding should be reported using the form built into
    the decode page. If you think there's a problem with a particular decode,
-   select “Report Metar Decode” from the app menu on the Decode card.
+   select ***Report Metar Decode*** from the app menu on the Decode card.
 
    The entire source for this app can be found on github:
 
@@ -62,9 +62,9 @@ References
 
    Here are some helpful links:
 
-     * [1]METAR on wikipedia
-     * [2]FMH-1 METAR Handbook (html)
-     * [3]Wikihow: METAR
+     * [1]METAR on wikipedia
+     * [2]FMH-1 METAR Handbook (html)
+     * [3]Wikihow: METAR
 
    This is the source of the data for this app.
    [4]http://weather.noaa.gov/weather/metar.shtml
