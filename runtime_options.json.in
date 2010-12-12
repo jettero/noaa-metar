@@ -1,3 +1,4 @@
 {
-    "showTAF": %SHOW_TAF,false%
+    "showTAF":      %SHOW_TAF,false%,
+    "debugDecoder": %DEBUG_DECODER,false%
 }

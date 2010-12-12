@@ -186,6 +186,9 @@
     var last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
 
     while(msplit.length) {
+        if( OPT.debugDecoder )
+            Mojo.Log.info("parsing %s; msplit.length=%d", msplit[0], msplit.length);
+
         if( _lookahead_skip > 0 )
             _lookahead_skip --;
 
