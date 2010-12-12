@@ -157,7 +157,9 @@ sprintf = function () {
 // }}}
 
 var OPT = {
+    debugDecoder: process.env.NM_DEBUG_DECODER
 };
+
 var Mojo = {Log:{}};
 Mojo.Log.info = function() {
     if( !arguments.length ) arguments.push("");
