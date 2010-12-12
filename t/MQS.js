@@ -156,6 +156,8 @@ sprintf = function () {
 
 // }}}
 
+var OPT = {
+};
 var Mojo = {Log:{}};
 Mojo.Log.info = function() {
     if( !arguments.length ) arguments.push("");
