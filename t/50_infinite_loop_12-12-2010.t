@@ -4,20 +4,13 @@ my @metar = qw(121551Z 35026G33KT 1 1/2SM -SN BLSN BR BKN018 BKN023 M03/M06
 
 use common::sense;
 use Test;
-use Tie::IxHash;
 use t::test_metar;
 
+plan tests => 1;
+
 alarm 30;
-$SIG{ALRM} = sub { die "timeout while trying to test METAR" };
+$SIG{ALRM} = sub { ok(0); exit 0 };
 
-tie my %metar, 'Tie::IxHash', ( map {$_ => qr(.)} @metar);
+my $decode  = t::test_metar::process_metar(@metar);
 
-my $decode  = t::test_metar::process_metar(keys %metar);
-plan tests => (keys %metar) + 1;
-
-for( keys %metar ) {
-    warn " $_ was undefined\n" unless defined $decode->{$_};
-    ok( $decode->{$_}, $metar{$_} )
-}
-
-ok( $decode->{other}, undef );
+ok( $decode->{-SN}, qr/light snow/ );
