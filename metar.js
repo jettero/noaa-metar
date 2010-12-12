@@ -826,6 +826,11 @@
             } else if( key.match(/^(TWR|SFC)$/) && next_key() === "VIS" ) {
                 _lookahead_skip = true;
 
+            } else if( key === "INFINITELOOPBOMB" ) {
+                _lookahead_skip = true;
+                // no stopping case, so we just keep coming back here
+                msplit.unshift( key );
+
             } else if( key === "VIS" ) {
                 tmp2 = 0;
                 tmp3 = 0;
@@ -846,8 +851,12 @@
                 if( next_key().match(/^RWY/) )
                     tmp.push(msplit.shift());
 
-                msplit.unshift( tmp.join(" ") );
-                _lookahead_skip = true;
+                tmp = tmp.join(" ");
+                if( tmp !== "VIS" ) {
+                    // avoid infinite loop 12-12-2010
+                    msplit.unshift( tmp );
+                    _lookahead_skip = true;
+                }
 
             } else if( parts = key.match(/^((TWR|SFC) )?VIS ((N|NE|E|SE|S|SW|W|NW) )?([\d \/]+)(V([\d \/]+))?( (RWY\d+))?$/) ) {
                 //                         12               34                       5         6 7           8 9
