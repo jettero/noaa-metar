@@ -185,6 +185,14 @@
     var next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
     var last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
 
+    for(i=0; i<msplit.length; i++) {
+        // lexical hack section
+
+        // 12-12-2010: VIS S-W 6 was just too hard to deal with
+        if( msplit[i].match(/^[NEWS]-[NEWS]$/) )
+            msplit[i] = msplit[i].replace(/-/g, "");
+    }
+
     max_loop = 1000;
     while(msplit.length) {
         max_loop --;
