@@ -185,7 +185,19 @@
     var next_key = function(x) { if( !x ) x=0; return msplit[x] || ""; };
     var last_key = function(x) { if( !x ) x=0; return lsplit[x] || ""; };
 
+    max_loop = 1000;
     while(msplit.length) {
+        max_loop --;
+
+        if( (--max_loop) < 1 ) {
+            Mojo.Log.error("!!!!!! parser max_loop-ed !!!!!!!");
+            ret.push({
+                key: msplit.join(" "),
+                txt: "(internal parser error, infinite loop averted — please report this)"
+            });
+            break;
+        }
+
         if( OPT.debugDecoder )
             Mojo.Log.info("parsing %s; msplit.length=%d", msplit[0], msplit.length);
 
