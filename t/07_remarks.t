@@ -8,6 +8,7 @@ tie my %metar, 'Tie::IxHash', (
     RMK  => qr/remarks/,
 
     P0016 => qr/hourly precipitation.*0\.16/,
+    P0009 => qr/hourly precipitation.*0\.09/,
 
     11106        => qr/6-hour maximum temperature is -10.6/,
     21150        => qr/6-hour minimum temperature is -15/,
