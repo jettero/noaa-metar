@@ -769,7 +769,7 @@
                 res.txt = "hourly temperature is " + res.hourly_temperature
                         + ", hourly dewpoint is "  + res.hourly_dewpoint;
 
-            } else if( parts = key.match(/^P(\d{2}\d{2})$/) ) {
+            } else if( parts = key.match(/^P(\d{2})(\d{2})$/) ) {
                 res.precipitation = my_parsefloat( [parts[1],parts[2]].join("."), "inches" );
                 res.txt = res.precipitation[0]===0
                         ? "no hourly precipitation" : "hourly precipitation is " + res.precipitation;
