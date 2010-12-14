@@ -42,11 +42,15 @@ build: locations.js README build_date app/assistants/TAF.js app/views/TAF.html f
                      --exclude prove --exclude t-real-metar --exclude t \
         $(name) && rm $(name)
 
-contrib/locations.html:
-	wget -O contrib/locations.html http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_K
-	git add contrib/locations.html
+contrib/locations-K.html:
+	wget -O $@ http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_K
+	git add $@
 
-locations.js: contrib/process_locations.pl contrib/locations.html
+contrib/locations-P.html:
+	wget -O $@ http://en.wikipedia.org/wiki/List_of_airports_by_ICAO_code:_P
+	git add $@
+
+locations.js: contrib/process_locations.pl contrib/locations-K.html contrib/locations-P.html
 	./contrib/process_locations.pl
 
 README: app/views/About.html app/views/Help.html Makefile
