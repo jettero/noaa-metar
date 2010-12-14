@@ -1659,6 +1659,110 @@ var location_data = {
          "code" : "KPIA"
       }
    },
+   "Hawaii, United States" : {
+      "PHHN: Hana Airport" : {
+         "city" : "Hana",
+         "name" : "Hana Airport",
+         "state" : "Hawaii",
+         "code" : "PHHN"
+      },
+      "PHHI: Wheeler Army Airfield" : {
+         "city" : "Wahiawa",
+         "name" : "Wheeler Army Airfield",
+         "state" : "Hawaii",
+         "code" : "PHHI"
+      },
+      "PHMK: Molokai Airport" : {
+         "city" : "Kaunakakai",
+         "name" : "Molokai Airport",
+         "state" : "Hawaii",
+         "code" : "PHMK"
+      },
+      "PHJH: Kapalua Airport" : {
+         "city" : "Lahaina",
+         "name" : "Kapalua Airport",
+         "state" : "Hawaii",
+         "code" : "PHJH"
+      },
+      "PHKO: Kona International Airport" : {
+         "city" : "Kailua-Kona",
+         "name" : "Kona International Airport",
+         "state" : "Hawaii",
+         "code" : "PHKO"
+      },
+      "PHLI: Lihu'e Airport" : {
+         "city" : "Lihue",
+         "name" : "Lihu'e Airport",
+         "state" : "Hawaii",
+         "code" : "PHLI"
+      },
+      "PHDH: Dillingham Airfield" : {
+         "city" : "Waialua",
+         "name" : "Dillingham Airfield",
+         "state" : "Hawaii",
+         "code" : "PHDH"
+      },
+      "PHIK: Hickam AFB" : {
+         "city" : "Honolulu",
+         "name" : "Hickam AFB",
+         "state" : "Hawaii",
+         "code" : "PHIK"
+      },
+      "PHUP: Upolu Airport" : {
+         "city" : "Hawi",
+         "name" : "Upolu Airport",
+         "state" : "Hawaii",
+         "code" : "PHUP"
+      },
+      "PHOG: Kahului Airport" : {
+         "city" : "Kahului",
+         "name" : "Kahului Airport",
+         "state" : "Hawaii",
+         "code" : "PHOG"
+      },
+      "PHTO: Hilo International Airport" : {
+         "city" : "Hilo",
+         "name" : "Hilo International Airport",
+         "state" : "Hawaii",
+         "code" : "PHTO"
+      },
+      "PHLU: Kalaupapa Airport" : {
+         "city" : "Kalaupapa",
+         "name" : "Kalaupapa Airport",
+         "state" : "Hawaii",
+         "code" : "PHLU"
+      },
+      "PHMU: Waimea-Kohala Airport" : {
+         "city" : "Kamuela",
+         "name" : "Waimea-Kohala Airport",
+         "state" : "Hawaii",
+         "code" : "PHMU"
+      },
+      "PHNL: Honolulu International Airport" : {
+         "city" : "Honolulu",
+         "name" : "Honolulu International Airport",
+         "state" : "Hawaii",
+         "code" : "PHNL"
+      },
+      "PHJR: Kalaeloa Airport" : {
+         "city" : "Kapolei",
+         "name" : "Kalaeloa Airport",
+         "state" : "Hawaii",
+         "code" : "PHJR"
+      },
+      "PHHF: French Frigate Shoals Airport" : {
+         "city" : "French Frigate Shoals",
+         "name" : "French Frigate Shoals Airport",
+         "state" : "Hawaii",
+         "code" : "PHHF"
+      },
+      "PHNY: Lanai Airport" : {
+         "city" : "Lanai City",
+         "name" : "Lanai Airport",
+         "state" : "Hawaii",
+         "code" : "PHNY"
+      }
+   },
    "United Arab Emirates" : {
       "KQGX: Al Dhafra Air Base" : {
          "city" : "Al Dhafra AB",
@@ -5127,6 +5231,1346 @@ var location_data = {
          "name" : "Naples",
          "state" : "Italy",
          "code" : "KQNN"
+      }
+   },
+   "Alaska, United States" : {
+      "PAUO: Willow Airport" : {
+         "city" : "Willow",
+         "name" : "Willow Airport",
+         "state" : "Alaska",
+         "code" : "PAUO"
+      },
+      "PAHN: Haines Airport" : {
+         "city" : "Haines",
+         "name" : "Haines Airport",
+         "state" : "Alaska",
+         "code" : "PAHN"
+      },
+      "PAED: Elmendorf Air Force Base" : {
+         "city" : "Anchorage",
+         "name" : "Elmendorf Air Force Base",
+         "state" : "Alaska",
+         "code" : "PAED"
+      },
+      "PAHP: Hooper Bay Airport" : {
+         "city" : "Hooper Bay",
+         "name" : "Hooper Bay Airport",
+         "state" : "Alaska",
+         "code" : "PAHP"
+      },
+      "PAFS: Nikolai Airport" : {
+         "city" : "Nikolai",
+         "name" : "Nikolai Airport",
+         "state" : "Alaska",
+         "code" : "PAFS"
+      },
+      "PFKW: Kwethluk Airport" : {
+         "city" : "Kwethluk",
+         "name" : "Kwethluk Airport",
+         "state" : "Alaska",
+         "code" : "PFKW"
+      },
+      "PAUM: Umiat Airport" : {
+         "city" : "Umiat",
+         "name" : "Umiat Airport",
+         "state" : "Alaska",
+         "code" : "PAUM"
+      },
+      "PANW: New Stuyahok Airport" : {
+         "city" : "New Stuyahok",
+         "name" : "New Stuyahok Airport",
+         "state" : "Alaska",
+         "code" : "PANW"
+      },
+      "PACH: Chuathbaluk Airport" : {
+         "city" : "Chuathbaluk",
+         "name" : "Chuathbaluk Airport",
+         "state" : "Alaska",
+         "code" : "PACH"
+      },
+      "PFNO: Robert (Bob) Curtis Memorial Airport" : {
+         "city" : "Noorvik",
+         "name" : "Robert (Bob) Curtis Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PFNO"
+      },
+      "PAQH: Quinhagak Airport" : {
+         "city" : "Quinhagak",
+         "name" : "Quinhagak Airport",
+         "state" : "Alaska",
+         "code" : "PAQH"
+      },
+      "PATK: Talkeetna Airport" : {
+         "city" : "Talkeetna",
+         "name" : "Talkeetna Airport",
+         "state" : "Alaska",
+         "code" : "PATK"
+      },
+      "PATE: Teller Airport" : {
+         "city" : "Teller",
+         "name" : "Teller Airport",
+         "state" : "Alaska",
+         "code" : "PATE"
+      },
+      "PAPG: Petersburg James A. Johnson Airport" : {
+         "city" : "Petersburg",
+         "name" : "Petersburg James A. Johnson Airport",
+         "state" : "Alaska",
+         "code" : "PAPG"
+      },
+      "PACE: Central Airport" : {
+         "city" : "Central",
+         "name" : "Central Airport",
+         "state" : "Alaska",
+         "code" : "PACE"
+      },
+      "PABI: Allen Army Airfield" : {
+         "city" : "Delta Junction",
+         "name" : "Allen Army Airfield",
+         "state" : "Alaska",
+         "code" : "PABI"
+      },
+      "PFEL: Elim Airport" : {
+         "city" : "Elim",
+         "name" : "Elim Airport",
+         "state" : "Alaska",
+         "code" : "PFEL"
+      },
+      "PAGY: Skagway Airport" : {
+         "city" : "Skagway",
+         "name" : "Skagway Airport",
+         "state" : "Alaska",
+         "code" : "PAGY"
+      },
+      "PAHL: Huslia Airport" : {
+         "city" : "Huslia",
+         "name" : "Huslia Airport",
+         "state" : "Alaska",
+         "code" : "PAHL"
+      },
+      "PAFB: Ladd Army Airfield" : {
+         "city" : "Fairbanks",
+         "name" : "Ladd Army Airfield",
+         "state" : "Alaska",
+         "code" : "PAFB"
+      },
+      "PAEH: Cape Newenham LRRS Airport" : {
+         "city" : "Cape Newenham",
+         "name" : "Cape Newenham LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PAEH"
+      },
+      "PAAN: Gold King Creek Airport" : {
+         "city" : "Fairbanks",
+         "name" : "Gold King Creek Airport",
+         "state" : "Alaska",
+         "code" : "PAAN"
+      },
+      "PAFW: Farewell Airport" : {
+         "city" : "Farewell",
+         "name" : "Farewell Airport",
+         "state" : "Alaska",
+         "code" : "PAFW"
+      },
+      "PAIN: McKinley National Park Airport" : {
+         "city" : "McKinley Park",
+         "name" : "McKinley National Park Airport",
+         "state" : "Alaska",
+         "code" : "PAIN"
+      },
+      "PANI: Aniak Airport" : {
+         "city" : "Aniak",
+         "name" : "Aniak Airport",
+         "state" : "Alaska",
+         "code" : "PANI"
+      },
+      "PAKU: Ugnu-Kuparuk Airport" : {
+         "city" : "Kuparuk",
+         "name" : "Ugnu-Kuparuk Airport",
+         "state" : "Alaska",
+         "code" : "PAKU"
+      },
+      "PAIW: Wales Airport (Alaska)" : {
+         "city" : "Wales",
+         "name" : "Wales Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PAIW"
+      },
+      "PASY: Eareckson Air Station" : {
+         "city" : "– Eareckson Air Station – Shemya Island",
+         "name" : "Eareckson Air Station",
+         "state" : "Alaska",
+         "code" : "PASY"
+      },
+      "PFKO: Kotlik Airport" : {
+         "city" : "Kotlik",
+         "name" : "Kotlik Airport",
+         "state" : "Alaska",
+         "code" : "PFKO"
+      },
+      "PATA: Ralph M. Calhoun Memorial Airport" : {
+         "city" : "Tanana",
+         "name" : "Ralph M. Calhoun Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PATA"
+      },
+      "PAGK: Gulkana Airport" : {
+         "city" : "Gulkana",
+         "name" : "Gulkana Airport",
+         "state" : "Alaska",
+         "code" : "PAGK"
+      },
+      "PAII: Egegik Airport" : {
+         "city" : "Egegik",
+         "name" : "Egegik Airport",
+         "state" : "Alaska",
+         "code" : "PAII"
+      },
+      "PASI: Sitka Rocky Gutierrez Airport" : {
+         "city" : "Sitka",
+         "name" : "Sitka Rocky Gutierrez Airport",
+         "state" : "Alaska",
+         "code" : "PASI"
+      },
+      "PAKW: Klawock Airport" : {
+         "city" : "Klawock",
+         "name" : "Klawock Airport",
+         "state" : "Alaska",
+         "code" : "PAKW"
+      },
+      "PAAL: Port Moller Air Force Station" : {
+         "city" : "Cold Bay",
+         "name" : "Port Moller Air Force Station",
+         "state" : "Alaska",
+         "code" : "PAAL"
+      },
+      "PATC: Tin City LRRS Airport" : {
+         "city" : "Tin City",
+         "name" : "Tin City LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PATC"
+      },
+      "PFCL: Clarks Point Airport" : {
+         "city" : "Clarks Point",
+         "name" : "Clarks Point Airport",
+         "state" : "Alaska",
+         "code" : "PFCL"
+      },
+      "PAAM: Driftwood Bay Air Force Station" : {
+         "city" : "Dutch Harbor",
+         "name" : "Driftwood Bay Air Force Station",
+         "state" : "Alaska",
+         "code" : "PAAM"
+      },
+      "PADL: Dillingham Airport" : {
+         "city" : "Dillingham",
+         "name" : "Dillingham Airport",
+         "state" : "Alaska",
+         "code" : "PADL"
+      },
+      "PANN: Nenana Municipal Airport" : {
+         "city" : "Nenana",
+         "name" : "Nenana Municipal Airport",
+         "state" : "Alaska",
+         "code" : "PANN"
+      },
+      "PAKI: Kipnuk Airport" : {
+         "city" : "Kipnuk",
+         "name" : "Kipnuk Airport",
+         "state" : "Alaska",
+         "code" : "PAKI"
+      },
+      "PAVE: Venetie Airport" : {
+         "city" : "Venetie",
+         "name" : "Venetie Airport",
+         "state" : "Alaska",
+         "code" : "PAVE"
+      },
+      "PFSH: Shaktoolik Airport" : {
+         "city" : "Shaktoolik",
+         "name" : "Shaktoolik Airport",
+         "state" : "Alaska",
+         "code" : "PFSH"
+      },
+      "PASA: Savoonga Airport" : {
+         "city" : "Savoonga",
+         "name" : "Savoonga Airport",
+         "state" : "Alaska",
+         "code" : "PASA"
+      },
+      "PANV: Anvik Airport" : {
+         "city" : "Anvik",
+         "name" : "Anvik Airport",
+         "state" : "Alaska",
+         "code" : "PANV"
+      },
+      "PAKN: King Salmon Airport" : {
+         "city" : "King Salmon",
+         "name" : "King Salmon Airport",
+         "state" : "Alaska",
+         "code" : "PAKN"
+      },
+      "POLI: Oliktok LRRS Airport" : {
+         "city" : "Oliktok Point",
+         "name" : "Oliktok LRRS Airport",
+         "state" : "Alaska",
+         "code" : "POLI"
+      },
+      "PADE: Deering Airport" : {
+         "city" : "Deering",
+         "name" : "Deering Airport",
+         "state" : "Alaska",
+         "code" : "PADE"
+      },
+      "PAPB: St. George Airport (Alaska)" : {
+         "city" : "St. George",
+         "name" : "St. George Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PAPB"
+      },
+      "PABG: Beluga Airport" : {
+         "city" : "Beluga",
+         "name" : "Beluga Airport",
+         "state" : "Alaska",
+         "code" : "PABG"
+      },
+      "PALP: Alpine Airstrip" : {
+         "city" : "Deadhorse",
+         "name" : "Alpine Airstrip",
+         "state" : "Alaska",
+         "code" : "PALP"
+      },
+      "PAKO: Nikolski Air Station" : {
+         "city" : "Nikolski",
+         "name" : "Nikolski Air Station",
+         "state" : "Alaska",
+         "code" : "PAKO"
+      },
+      "PABE: Bethel Airport" : {
+         "city" : "Bethel",
+         "name" : "Bethel Airport",
+         "state" : "Alaska",
+         "code" : "PABE"
+      },
+      "PAFE: Kake Airport" : {
+         "city" : "Kake",
+         "name" : "Kake Airport",
+         "state" : "Alaska",
+         "code" : "PAFE"
+      },
+      "PATQ: Atqasuk Edward Burnell Sr. Memorial Airport" : {
+         "city" : "Atqasuk",
+         "name" : "Atqasuk Edward Burnell Sr. Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PATQ"
+      },
+      "PABN: Devils Mountain Lodge Airport" : {
+         "city" : "Nabesna",
+         "name" : "Devils Mountain Lodge Airport",
+         "state" : "Alaska",
+         "code" : "PABN"
+      },
+      "PATJ: Tok Airport" : {
+         "city" : "Tok",
+         "name" : "Tok Airport",
+         "state" : "Alaska",
+         "code" : "PATJ"
+      },
+      "PAEI: Eielson Air Force Base" : {
+         "city" : "Fairbanks",
+         "name" : "Eielson Air Force Base",
+         "state" : "Alaska",
+         "code" : "PAEI"
+      },
+      "PANR: Funter Bay Seaplane Base" : {
+         "city" : "– Funter Bay Seaplane Base – Funter Bay",
+         "name" : "Funter Bay Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PANR"
+      },
+      "PAMX: McCarthy Airport" : {
+         "city" : "McCarthy",
+         "name" : "McCarthy Airport",
+         "state" : "Alaska",
+         "code" : "PAMX"
+      },
+      "PALN: Lonely Air Station" : {
+         "city" : "Lonely",
+         "name" : "Lonely Air Station",
+         "state" : "Alaska",
+         "code" : "PALN"
+      },
+      "PAJZ: Koliganek Airport" : {
+         "city" : "Koliganek",
+         "name" : "Koliganek Airport",
+         "state" : "Alaska",
+         "code" : "PAJZ"
+      },
+      "PACL: Clear Airport" : {
+         "city" : "Clear",
+         "name" : "Clear Airport",
+         "state" : "Alaska",
+         "code" : "PACL"
+      },
+      "PALU: Cape Lisburne LRRS Airport" : {
+         "city" : "Cape Lisburne",
+         "name" : "Cape Lisburne LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PALU"
+      },
+      "PAIK: Bob Baker Memorial Airport" : {
+         "city" : "Kiana",
+         "name" : "Bob Baker Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PAIK"
+      },
+      "PAEW: Newtok Airport" : {
+         "city" : "Newtok",
+         "name" : "Newtok Airport",
+         "state" : "Alaska",
+         "code" : "PAEW"
+      },
+      "PAQT: Nuiqsut Airport" : {
+         "city" : "Nuiqsut",
+         "name" : "Nuiqsut Airport",
+         "state" : "Alaska",
+         "code" : "PAQT"
+      },
+      "PASX: Soldotna Airport" : {
+         "city" : "Soldotna",
+         "name" : "Soldotna Airport",
+         "state" : "Alaska",
+         "code" : "PASX"
+      },
+      "PACV: Merle K. (Mudhole) Smith Airport" : {
+         "city" : "Cordova",
+         "name" : "Merle K. (Mudhole) Smith Airport",
+         "state" : "Alaska",
+         "code" : "PACV"
+      },
+      "PAPK: Napaskiak Airport" : {
+         "city" : "Napaskiak",
+         "name" : "Napaskiak Airport",
+         "state" : "Alaska",
+         "code" : "PAPK"
+      },
+      "PFKA: Kasigluk Airport" : {
+         "city" : "Kasigluk",
+         "name" : "Kasigluk Airport",
+         "state" : "Alaska",
+         "code" : "PFKA"
+      },
+      "PADG: Red Dog Airport" : {
+         "city" : "Red Dog Mine",
+         "name" : "Red Dog Airport",
+         "state" : "Alaska",
+         "code" : "PADG"
+      },
+      "PAVD: Valdez Airport" : {
+         "city" : "Valdez",
+         "name" : "Valdez Airport",
+         "state" : "Alaska",
+         "code" : "PAVD"
+      },
+      "PAWR: Whittier Airport" : {
+         "city" : "Whittier",
+         "name" : "Whittier Airport",
+         "state" : "Alaska",
+         "code" : "PAWR"
+      },
+      "PADM: Marshall Don Hunter Sr. Airport" : {
+         "city" : "Marshall",
+         "name" : "Marshall Don Hunter Sr. Airport",
+         "state" : "Alaska",
+         "code" : "PADM"
+      },
+      "PAOT: Ralph Wien Memorial Airport" : {
+         "city" : "Kotzebue",
+         "name" : "Ralph Wien Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PAOT"
+      },
+      "PAMB: Manokotak Airport" : {
+         "city" : "Manokotak",
+         "name" : "Manokotak Airport",
+         "state" : "Alaska",
+         "code" : "PAMB"
+      },
+      "PAFR: Bryant Army Heliport - Fort Richardson" : {
+         "city" : "Anchorage",
+         "name" : "Bryant Army Heliport - Fort Richardson",
+         "state" : "Alaska",
+         "code" : "PAFR"
+      },
+      "PAHU: Hughes Airport (Alaska)" : {
+         "city" : "Hughes",
+         "name" : "Hughes Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PAHU"
+      },
+      "PADU: Unalaska Airport" : {
+         "city" : "Unalaska",
+         "name" : "Unalaska Airport",
+         "state" : "Alaska",
+         "code" : "PADU"
+      },
+      "PADQ: Kodiak Airport" : {
+         "city" : "Kodiak",
+         "name" : "Kodiak Airport",
+         "state" : "Alaska",
+         "code" : "PADQ"
+      },
+      "PACR: Circle City Airport" : {
+         "city" : "Circle",
+         "name" : "Circle City Airport",
+         "state" : "Alaska",
+         "code" : "PACR"
+      },
+      "PATW: Cantwell Airport" : {
+         "city" : "Cantwell",
+         "name" : "Cantwell Airport",
+         "state" : "Alaska",
+         "code" : "PATW"
+      },
+      "PAIL: Iliamna Airport" : {
+         "city" : "Iliamna",
+         "name" : "Iliamna Airport",
+         "state" : "Alaska",
+         "code" : "PAIL"
+      },
+      "PACI: Chalkyitsik Airport" : {
+         "city" : "Chalkyitsik",
+         "name" : "Chalkyitsik Airport",
+         "state" : "Alaska",
+         "code" : "PACI"
+      },
+      "PAGA: Edward G. Pitka Sr. Airport" : {
+         "city" : "Galena",
+         "name" : "Edward G. Pitka Sr. Airport",
+         "state" : "Alaska",
+         "code" : "PAGA"
+      },
+      "PAFA: Fairbanks International Airport" : {
+         "city" : "Fairbanks",
+         "name" : "Fairbanks International Airport",
+         "state" : "Alaska",
+         "code" : "PAFA"
+      },
+      "PALJ: Port Alsworth Airport" : {
+         "city" : "Port Alsworth",
+         "name" : "Port Alsworth Airport",
+         "state" : "Alaska",
+         "code" : "PALJ"
+      },
+      "PAAP: Port Alexander Seaplane Base" : {
+         "city" : "Port Alexander",
+         "name" : "Port Alexander Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAAP"
+      },
+      "PANC: Ted Stevens Anchorage International Airport" : {
+         "city" : "Anchorage",
+         "name" : "Ted Stevens Anchorage International Airport",
+         "state" : "Alaska",
+         "code" : "PANC"
+      },
+      "PAVL: Kivalina Airport" : {
+         "city" : "Kivalina",
+         "name" : "Kivalina Airport",
+         "state" : "Alaska",
+         "code" : "PAVL"
+      },
+      "PAOU: Nelson Lagoon Airport" : {
+         "city" : "Nelson Lagoon",
+         "name" : "Nelson Lagoon Airport",
+         "state" : "Alaska",
+         "code" : "PAOU"
+      },
+      "PAJO: Johnstone Point Airport" : {
+         "city" : "Hinchinbrook",
+         "name" : "Johnstone Point Airport",
+         "state" : "Alaska",
+         "code" : "PAJO"
+      },
+      "PABU: Bullen Point Air Force Station" : {
+         "city" : "Kaktovik",
+         "name" : "Bullen Point Air Force Station",
+         "state" : "Alaska",
+         "code" : "PABU"
+      },
+      "PAHY: Hydaburg Seaplane Base" : {
+         "city" : "Hydaburg",
+         "name" : "Hydaburg Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAHY"
+      },
+      "PAGN: Angoon Seaplane Base" : {
+         "city" : "Angoon",
+         "name" : "Angoon Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAGN"
+      },
+      "PAVC: King Cove Airport" : {
+         "city" : "King Cove",
+         "name" : "King Cove Airport",
+         "state" : "Alaska",
+         "code" : "PAVC"
+      },
+      "PASM: St. Mary's Airport (Alaska)" : {
+         "city" : "St. Mary's",
+         "name" : "St. Mary's Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PASM"
+      },
+      "PAEM: Emmonak Airport" : {
+         "city" : "Emmonak",
+         "name" : "Emmonak Airport",
+         "state" : "Alaska",
+         "code" : "PAEM"
+      },
+      "PAGT: Nightmute Airport" : {
+         "city" : "Nightmute",
+         "name" : "Nightmute Airport",
+         "state" : "Alaska",
+         "code" : "PAGT"
+      },
+      "PAGS: Gustavus Airport" : {
+         "city" : "Gustavus",
+         "name" : "Gustavus Airport",
+         "state" : "Alaska",
+         "code" : "PAGS"
+      },
+      "PABV: Birchwood Airport" : {
+         "city" : "Birchwood",
+         "name" : "Birchwood Airport",
+         "state" : "Alaska",
+         "code" : "PABV"
+      },
+      "PASC: Deadhorse Airport" : {
+         "city" : "Deadhorse",
+         "name" : "Deadhorse Airport",
+         "state" : "Alaska",
+         "code" : "PASC"
+      },
+      "PASD: Sand Point Airport" : {
+         "city" : "Sand Point",
+         "name" : "Sand Point Airport",
+         "state" : "Alaska",
+         "code" : "PASD"
+      },
+      "PALR: Chandalar Lake Airport" : {
+         "city" : "Chandalar Lake",
+         "name" : "Chandalar Lake Airport",
+         "state" : "Alaska",
+         "code" : "PALR"
+      },
+      "PAWD: Seward Airport" : {
+         "city" : "Seward",
+         "name" : "Seward Airport",
+         "state" : "Alaska",
+         "code" : "PAWD"
+      },
+      "PAFM: Ambler Airport" : {
+         "city" : "Ambler",
+         "name" : "Ambler Airport",
+         "state" : "Alaska",
+         "code" : "PAFM"
+      },
+      "PAAK: Atka Airport" : {
+         "city" : "Atka",
+         "name" : "Atka Airport",
+         "state" : "Alaska",
+         "code" : "PAAK"
+      },
+      "PAKF: False Pass Airport" : {
+         "city" : "– False Pass Airport – Aleutians East Borough",
+         "name" : "False Pass Airport",
+         "state" : "Alaska",
+         "code" : "PAKF"
+      },
+      "PAKH: Akhiok Airport" : {
+         "city" : "Akhiok",
+         "name" : "Akhiok Airport",
+         "state" : "Alaska",
+         "code" : "PAKH"
+      },
+      "PAEG: Eagle Airport" : {
+         "city" : "Eagle",
+         "name" : "Eagle Airport",
+         "state" : "Alaska",
+         "code" : "PAEG"
+      },
+      "PAMO: Mountain Village Airport" : {
+         "city" : "Mountain Village",
+         "name" : "Mountain Village Airport",
+         "state" : "Alaska",
+         "code" : "PAMO"
+      },
+      "PAGH: Shungnak Airport" : {
+         "city" : "Shungnak",
+         "name" : "Shungnak Airport",
+         "state" : "Alaska",
+         "code" : "PAGH"
+      },
+      "PASL: Sleetmute Airport" : {
+         "city" : "Sleetmute",
+         "name" : "Sleetmute Airport",
+         "state" : "Alaska",
+         "code" : "PASL"
+      },
+      "PAPE: Perryville Airport" : {
+         "city" : "Perryville",
+         "name" : "Perryville Airport",
+         "state" : "Alaska",
+         "code" : "PAPE"
+      },
+      "PAEL: Elfin Cove Seaplane Base" : {
+         "city" : "Elfin Cove",
+         "name" : "Elfin Cove Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAEL"
+      },
+      "PASW: Skwentna Airport" : {
+         "city" : "Skwentna",
+         "name" : "Skwentna Airport",
+         "state" : "Alaska",
+         "code" : "PASW"
+      },
+      "PAOR: Northway Airport" : {
+         "city" : "Northway",
+         "name" : "Northway Airport",
+         "state" : "Alaska",
+         "code" : "PAOR"
+      },
+      "PACZ: Cape Romanzof LRRS Airport" : {
+         "city" : "Cape Romanzof",
+         "name" : "Cape Romanzof LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PACZ"
+      },
+      "PAIG: Igiugig Airport" : {
+         "city" : "Igiugig",
+         "name" : "Igiugig Airport",
+         "state" : "Alaska",
+         "code" : "PAIG"
+      },
+      "PFKU: Koyukuk Airport" : {
+         "city" : "Koyukuk",
+         "name" : "Koyukuk Airport",
+         "state" : "Alaska",
+         "code" : "PFKU"
+      },
+      "PATL: Tatalina LRRS Airport" : {
+         "city" : "Tatalina",
+         "name" : "Tatalina LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PATL"
+      },
+      "PAIM: Indian Mountain LRRS Airport" : {
+         "city" : "Indian Mountain",
+         "name" : "Indian Mountain LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PAIM"
+      },
+      "PAWT: Wainwright Air Station" : {
+         "city" : "Wainwright",
+         "name" : "Wainwright Air Station",
+         "state" : "Alaska",
+         "code" : "PAWT"
+      },
+      "PAKL: Kulik Lake Airport" : {
+         "city" : "Kulik Lake",
+         "name" : "Kulik Lake Airport",
+         "state" : "Alaska",
+         "code" : "PAKL"
+      },
+      "PAWI: Wainwright Airport (Alaska)" : {
+         "city" : "Wainwright",
+         "name" : "Wainwright Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PAWI"
+      },
+      "PAEE: Eek Airport" : {
+         "city" : "Eek",
+         "name" : "Eek Airport",
+         "state" : "Alaska",
+         "code" : "PAEE"
+      },
+      "PAMD: Middleton Island Airport" : {
+         "city" : "Middleton Island",
+         "name" : "Middleton Island Airport",
+         "state" : "Alaska",
+         "code" : "PAMD"
+      },
+      "PANT: Annette Island Airport" : {
+         "city" : "– Annette Island Airport – Annette Island",
+         "name" : "Annette Island Airport",
+         "state" : "Alaska",
+         "code" : "PANT"
+      },
+      "PAMC: McGrath Airport" : {
+         "city" : "McGrath",
+         "name" : "McGrath Airport",
+         "state" : "Alaska",
+         "code" : "PAMC"
+      },
+      "PFAL: Allakaket Airport" : {
+         "city" : "Allakaket",
+         "name" : "Allakaket Airport",
+         "state" : "Alaska",
+         "code" : "PFAL"
+      },
+      "PAGM: Gambell Airport" : {
+         "city" : "Gambell",
+         "name" : "Gambell Airport",
+         "state" : "Alaska",
+         "code" : "PAGM"
+      },
+      "PAGB: Galbraith Lake Airport" : {
+         "city" : "Galbraith Lake",
+         "name" : "Galbraith Lake Airport",
+         "state" : "Alaska",
+         "code" : "PAGB"
+      },
+      "PARC: Arctic Village Airport" : {
+         "city" : "Arctic Village",
+         "name" : "Arctic Village Airport",
+         "state" : "Alaska",
+         "code" : "PARC"
+      },
+      "PAMY: Mekoryuk Airport" : {
+         "city" : "Mekoryuk",
+         "name" : "Mekoryuk Airport",
+         "state" : "Alaska",
+         "code" : "PAMY"
+      },
+      "PABM: Big Mountain Air Force Station" : {
+         "city" : "Big Mountain",
+         "name" : "Big Mountain Air Force Station",
+         "state" : "Alaska",
+         "code" : "PABM"
+      },
+      "PALH: Lake Hood Seaplane Base" : {
+         "city" : "Anchorage",
+         "name" : "Lake Hood Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PALH"
+      },
+      "PASV: Sparrevohn LRRS Airport" : {
+         "city" : "Sparrevohn",
+         "name" : "Sparrevohn LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PASV"
+      },
+      "PAJC: Chignik Airport" : {
+         "city" : "Chignik",
+         "name" : "Chignik Airport",
+         "state" : "Alaska",
+         "code" : "PAJC"
+      },
+      "PAMH: Minchumina Airport" : {
+         "city" : "Lake Minchumina",
+         "name" : "Minchumina Airport",
+         "state" : "Alaska",
+         "code" : "PAMH"
+      },
+      "PAWG: Wrangell Airport" : {
+         "city" : "Wrangell",
+         "name" : "Wrangell Airport",
+         "state" : "Alaska",
+         "code" : "PAWG"
+      },
+      "PASH: Shishmaref Airport" : {
+         "city" : "Shishmaref",
+         "name" : "Shishmaref Airport",
+         "state" : "Alaska",
+         "code" : "PASH"
+      },
+      "PAXK: Paxson Airport" : {
+         "city" : "Paxson",
+         "name" : "Paxson Airport",
+         "state" : "Alaska",
+         "code" : "PAXK"
+      },
+      "PAST: Summit Airport (Alaska)" : {
+         "city" : "Summit",
+         "name" : "Summit Airport (Alaska)",
+         "state" : "Alaska",
+         "code" : "PAST"
+      },
+      "PAKP: Anaktuvuk Pass Airport" : {
+         "city" : "Anaktuvuk Pass",
+         "name" : "Anaktuvuk Pass Airport",
+         "state" : "Alaska",
+         "code" : "PAKP"
+      },
+      "PACD: Cold Bay Airport" : {
+         "city" : "Cold Bay",
+         "name" : "Cold Bay Airport",
+         "state" : "Alaska",
+         "code" : "PACD"
+      },
+      "PAMK: St. Michael Airport" : {
+         "city" : "St. Michael",
+         "name" : "St. Michael Airport",
+         "state" : "Alaska",
+         "code" : "PAMK"
+      },
+      "PFKK: Kokhanok Airport" : {
+         "city" : "Kokhanok",
+         "name" : "Kokhanok Airport",
+         "state" : "Alaska",
+         "code" : "PFKK"
+      },
+      "PAHV: Healy River Airport" : {
+         "city" : "Healy",
+         "name" : "Healy River Airport",
+         "state" : "Alaska",
+         "code" : "PAHV"
+      },
+      "PAYA: Yakutat Airport" : {
+         "city" : "Yakutat",
+         "name" : "Yakutat Airport",
+         "state" : "Alaska",
+         "code" : "PAYA"
+      },
+      "PAPM: Platinum Airport" : {
+         "city" : "Platinum",
+         "name" : "Platinum Airport",
+         "state" : "Alaska",
+         "code" : "PAPM"
+      },
+      "PALB: Larsen Bay Airport" : {
+         "city" : "Larsen Bay",
+         "name" : "Larsen Bay Airport",
+         "state" : "Alaska",
+         "code" : "PALB"
+      },
+      "PARY: Ruby Airport" : {
+         "city" : "Ruby",
+         "name" : "Ruby Airport",
+         "state" : "Alaska",
+         "code" : "PARY"
+      },
+      "PAAT: Casco Cove Coast Guard Station" : {
+         "city" : "Attu Island",
+         "name" : "Casco Cove Coast Guard Station",
+         "state" : "Alaska",
+         "code" : "PAAT"
+      },
+      "PASN: St. Paul Island Airport" : {
+         "city" : "– St. Paul Island Airport – St. Paul Island",
+         "name" : "St. Paul Island Airport",
+         "state" : "Alaska",
+         "code" : "PASN"
+      },
+      "PAWS: Wasilla Airport" : {
+         "city" : "Wasilla",
+         "name" : "Wasilla Airport",
+         "state" : "Alaska",
+         "code" : "PAWS"
+      },
+      "PACK: Chefornak Airport" : {
+         "city" : "Chefornak",
+         "name" : "Chefornak Airport",
+         "state" : "Alaska",
+         "code" : "PACK"
+      },
+      "PABT: Bettles Airport" : {
+         "city" : "Bettles",
+         "name" : "Bettles Airport",
+         "state" : "Alaska",
+         "code" : "PABT"
+      },
+      "PAOO: Toksook Bay Airport" : {
+         "city" : "Toksook Bay",
+         "name" : "Toksook Bay Airport",
+         "state" : "Alaska",
+         "code" : "PAOO"
+      },
+      "PAEN: Kenai Municipal Airport" : {
+         "city" : "Kenai",
+         "name" : "Kenai Municipal Airport",
+         "state" : "Alaska",
+         "code" : "PAEN"
+      },
+      "PPIZ: Point Lay LRRS Airport" : {
+         "city" : "Point Lay",
+         "name" : "Point Lay LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PPIZ"
+      },
+      "PAWB: Beaver Airport" : {
+         "city" : "Beaver",
+         "name" : "Beaver Airport",
+         "state" : "Alaska",
+         "code" : "PAWB"
+      },
+      "PAPO: Point Hope Airport" : {
+         "city" : "Point Hope",
+         "name" : "Point Hope Airport",
+         "state" : "Alaska",
+         "code" : "PAPO"
+      },
+      "PAML: Manley Hot Springs Airport" : {
+         "city" : "Manley Hot Springs",
+         "name" : "Manley Hot Springs Airport",
+         "state" : "Alaska",
+         "code" : "PAML"
+      },
+      "PABA: Barter Island LRRS Airport" : {
+         "city" : "Barter Island",
+         "name" : "Barter Island LRRS Airport",
+         "state" : "Alaska",
+         "code" : "PABA"
+      },
+      "PAOM: Nome Airport" : {
+         "city" : "Nome",
+         "name" : "Nome Airport",
+         "state" : "Alaska",
+         "code" : "PAOM"
+      },
+      "PAOB: Kobuk Airport" : {
+         "city" : "– Kobuk Airport – Kobuk",
+         "name" : "Kobuk Airport",
+         "state" : "Alaska",
+         "code" : "PAOB"
+      },
+      "PARS: Russian Mission Airport" : {
+         "city" : "Russian Mission",
+         "name" : "Russian Mission Airport",
+         "state" : "Alaska",
+         "code" : "PARS"
+      },
+      "PAPC: Port Clarence Coast Guard Station" : {
+         "city" : "Port Clarence",
+         "name" : "Port Clarence Coast Guard Station",
+         "state" : "Alaska",
+         "code" : "PAPC"
+      },
+      "PACY: Yakataga Airport" : {
+         "city" : "Cape Yakataga",
+         "name" : "Yakataga Airport",
+         "state" : "Alaska",
+         "code" : "PACY"
+      },
+      "PACA: Cape Spencer Coast Guard Heliport" : {
+         "city" : "Cape Spencer",
+         "name" : "Cape Spencer Coast Guard Heliport",
+         "state" : "Alaska",
+         "code" : "PACA"
+      },
+      "PABL: Buckland Airport" : {
+         "city" : "Buckland",
+         "name" : "Buckland Airport",
+         "state" : "Alaska",
+         "code" : "PABL"
+      },
+      "PASO: Seldovia Airport" : {
+         "city" : "Seldovia",
+         "name" : "Seldovia Airport",
+         "state" : "Alaska",
+         "code" : "PASO"
+      },
+      "PAPH: Port Heiden Airport" : {
+         "city" : "Port Heiden",
+         "name" : "Port Heiden Airport",
+         "state" : "Alaska",
+         "code" : "PAPH"
+      },
+      "PADY: Kongiganak Airport" : {
+         "city" : "Kongiganak",
+         "name" : "Kongiganak Airport",
+         "state" : "Alaska",
+         "code" : "PADY"
+      },
+      "PACS: Cape Sarichef Airport" : {
+         "city" : "Cape Sarichef",
+         "name" : "Cape Sarichef Airport",
+         "state" : "Alaska",
+         "code" : "PACS"
+      },
+      "PFTO: Tok Junction Airport" : {
+         "city" : "Tok",
+         "name" : "Tok Junction Airport",
+         "state" : "Alaska",
+         "code" : "PFTO"
+      },
+      "PAMM: Metlakatla Seaplane Base" : {
+         "city" : "Metlakatla",
+         "name" : "Metlakatla Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAMM"
+      },
+      "PFAK: Akiak Airport" : {
+         "city" : "Akiak",
+         "name" : "Akiak Airport",
+         "state" : "Alaska",
+         "code" : "PFAK"
+      },
+      "PAGG: Kwigillingok Airport" : {
+         "city" : "Kwigillingok",
+         "name" : "Kwigillingok Airport",
+         "state" : "Alaska",
+         "code" : "PAGG"
+      },
+      "PAJN: Juneau International Airport" : {
+         "city" : "Juneau",
+         "name" : "Juneau International Airport",
+         "state" : "Alaska",
+         "code" : "PAJN"
+      },
+      "PFCB: Chenega Bay Airport" : {
+         "city" : "Chenega",
+         "name" : "Chenega Bay Airport",
+         "state" : "Alaska",
+         "code" : "PFCB"
+      },
+      "PAQC: Klawock Seaplane Base" : {
+         "city" : "Klawock",
+         "name" : "Klawock Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAQC"
+      },
+      "PFKT: Brevig Mission Airport" : {
+         "city" : "Brevig Mission",
+         "name" : "Brevig Mission Airport",
+         "state" : "Alaska",
+         "code" : "PFKT"
+      },
+      "PAOH: Hoonah Airport" : {
+         "city" : "Hoonah",
+         "name" : "Hoonah Airport",
+         "state" : "Alaska",
+         "code" : "PAOH"
+      },
+      "PAFK: Farewell Lake Seaplane Base" : {
+         "city" : "Farewell Lake",
+         "name" : "Farewell Lake Seaplane Base",
+         "state" : "Alaska",
+         "code" : "PAFK"
+      },
+      "PAKY: Karluk Airport" : {
+         "city" : "Karluk",
+         "name" : "Karluk Airport",
+         "state" : "Alaska",
+         "code" : "PAKY"
+      },
+      "PAWN: Noatak Airport" : {
+         "city" : "Noatak",
+         "name" : "Noatak Airport",
+         "state" : "Alaska",
+         "code" : "PAWN"
+      },
+      "PAKD: Kodiak Municipal Airport" : {
+         "city" : "Kodiak",
+         "name" : "Kodiak Municipal Airport",
+         "state" : "Alaska",
+         "code" : "PAKD"
+      },
+      "PATG: Togiak Airport" : {
+         "city" : "Togiak",
+         "name" : "Togiak Airport",
+         "state" : "Alaska",
+         "code" : "PATG"
+      },
+      "PAOC: Portage Creek Airport" : {
+         "city" : "Portage Creek",
+         "name" : "Portage Creek Airport",
+         "state" : "Alaska",
+         "code" : "PAOC"
+      },
+      "PAHX: Shageluk Airport" : {
+         "city" : "Shageluk",
+         "name" : "Shageluk Airport",
+         "state" : "Alaska",
+         "code" : "PAHX"
+      },
+      "PAJV: Jonesville Mine Airport" : {
+         "city" : "Sutton",
+         "name" : "Jonesville Mine Airport",
+         "state" : "Alaska",
+         "code" : "PAJV"
+      },
+      "PAUN: Unalakleet Airport" : {
+         "city" : "Unalakleet",
+         "name" : "Unalakleet Airport",
+         "state" : "Alaska",
+         "code" : "PAUN"
+      },
+      "PAHO: Homer Airport" : {
+         "city" : "Homer",
+         "name" : "Homer Airport",
+         "state" : "Alaska",
+         "code" : "PAHO"
+      },
+      "PAHC: Holy Cross Airport" : {
+         "city" : "Holy Cross",
+         "name" : "Holy Cross Airport",
+         "state" : "Alaska",
+         "code" : "PAHC"
+      },
+      "PFWS: South Naknek Nr 2 Airport" : {
+         "city" : "South Naknek",
+         "name" : "South Naknek Nr 2 Airport",
+         "state" : "Alaska",
+         "code" : "PFWS"
+      },
+      "PAWM: White Mountain Airport" : {
+         "city" : "White Mountain",
+         "name" : "White Mountain Airport",
+         "state" : "Alaska",
+         "code" : "PAWM"
+      },
+      "PACM: Scammon Bay Airport" : {
+         "city" : "Scammon Bay",
+         "name" : "Scammon Bay Airport",
+         "state" : "Alaska",
+         "code" : "PACM"
+      },
+      "PAPN: Pilot Point Airport" : {
+         "city" : "Pilot Point",
+         "name" : "Pilot Point Airport",
+         "state" : "Alaska",
+         "code" : "PAPN"
+      },
+      "PAAQ: Palmer Municipal Airport" : {
+         "city" : "Palmer",
+         "name" : "Palmer Municipal Airport",
+         "state" : "Alaska",
+         "code" : "PAAQ"
+      },
+      "PAMR: Merrill Field" : {
+         "city" : "Anchorage",
+         "name" : "Merrill Field",
+         "state" : "Alaska",
+         "code" : "PAMR"
+      },
+      "PFYU: Fort Yukon Airport" : {
+         "city" : "Fort Yukon",
+         "name" : "Fort Yukon Airport",
+         "state" : "Alaska",
+         "code" : "PFYU"
+      },
+      "PAFL: Tin Creek Airport" : {
+         "city" : "Farewell Lake",
+         "name" : "Tin Creek Airport",
+         "state" : "Alaska",
+         "code" : "PAFL"
+      },
+      "PANU: Nulato Airport" : {
+         "city" : "Nulato",
+         "name" : "Nulato Airport",
+         "state" : "Alaska",
+         "code" : "PANU"
+      },
+      "PAGL: Golovin Airport" : {
+         "city" : "Golovin",
+         "name" : "Golovin Airport",
+         "state" : "Alaska",
+         "code" : "PAGL"
+      },
+      "PASP: Sheep Mountain Airport" : {
+         "city" : "Sheep Mountain",
+         "name" : "Sheep Mountain Airport",
+         "state" : "Alaska",
+         "code" : "PASP"
+      },
+      "PANA: Napakiak Airport" : {
+         "city" : "Napakiak",
+         "name" : "Napakiak Airport",
+         "state" : "Alaska",
+         "code" : "PANA"
+      },
+      "PAVA: Chevak Airport" : {
+         "city" : "Chevak",
+         "name" : "Chevak Airport",
+         "state" : "Alaska",
+         "code" : "PAVA"
+      },
+      "PAGQ: Big Lake Airport" : {
+         "city" : "Big Lake",
+         "name" : "Big Lake Airport",
+         "state" : "Alaska",
+         "code" : "PAGQ"
+      },
+      "PABR: Wiley Post-Will Rogers Memorial Airport" : {
+         "city" : "Barrow",
+         "name" : "Wiley Post-Will Rogers Memorial Airport",
+         "state" : "Alaska",
+         "code" : "PABR"
+      },
+      "PAKK: Koyuk Alfred Adams Airport" : {
+         "city" : "Koyuk",
+         "name" : "Koyuk Alfred Adams Airport",
+         "state" : "Alaska",
+         "code" : "PAKK"
+      },
+      "PALG: Kalskag Airport" : {
+         "city" : "Kalskag",
+         "name" : "Kalskag Airport",
+         "state" : "Alaska",
+         "code" : "PALG"
+      },
+      "PAUK: Alakanuk Airport" : {
+         "city" : "Alakanuk",
+         "name" : "Alakanuk Airport",
+         "state" : "Alaska",
+         "code" : "PAUK"
+      },
+      "PANO: Nondalton Airport" : {
+         "city" : "Nondalton",
+         "name" : "Nondalton Airport",
+         "state" : "Alaska",
+         "code" : "PANO"
+      },
+      "PADT: Duffy's Tavern Airport" : {
+         "city" : "Slana",
+         "name" : "Duffy's Tavern Airport",
+         "state" : "Alaska",
+         "code" : "PADT"
+      },
+      "PAPR: Prospect Creek Airport" : {
+         "city" : "Prospect Creek",
+         "name" : "Prospect Creek Airport",
+         "state" : "Alaska",
+         "code" : "PAPR"
+      },
+      "PAFV: Five Mile Airport" : {
+         "city" : "Five Mile",
+         "name" : "Five Mile Airport",
+         "state" : "Alaska",
+         "code" : "PAFV"
+      },
+      "PASK: Selawik Airport" : {
+         "city" : "Selawik",
+         "name" : "Selawik Airport",
+         "state" : "Alaska",
+         "code" : "PASK"
+      },
+      "PACX: Coldfoot Airport" : {
+         "city" : "Coldfoot",
+         "name" : "Coldfoot Airport",
+         "state" : "Alaska",
+         "code" : "PACX"
+      },
+      "PADK: Adak Airport" : {
+         "city" : "– Adak Airport (Mitchell Field) – Adak Island",
+         "name" : "Adak Airport",
+         "state" : "Alaska",
+         "code" : "PADK"
+      },
+      "PAKV: Kaltag Airport" : {
+         "city" : "Kaltag",
+         "name" : "Kaltag Airport",
+         "state" : "Alaska",
+         "code" : "PAKV"
+      },
+      "PAKT: Ketchikan International Airport" : {
+         "city" : "Ketchikan",
+         "name" : "Ketchikan International Airport",
+         "state" : "Alaska",
+         "code" : "PAKT"
       }
    },
    "Iceland" : {

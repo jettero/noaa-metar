@@ -33,10 +33,6 @@ use HTML::TreeBuilder;
 
 =cut
 
-my $html = slurp("contrib/locations.html", {binmode=>":utf8"});
-my $tree = new HTML::TreeBuilder;
-   $tree->parse($html);
-
 sub title_filter {
     my $element = shift;
     my $title   = $element->attr("title");
@@ -60,41 +56,58 @@ my @states = ( "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "Ca
 my $state_city_re = do { local $"="|"; my $s = "[^\\w]\\s+([^,]+),\\s+(@states)"; qr($s) };
 
 my %res;
-for my $li ( $tree->find_by_tag_name("li") ) {
-    my $li_html = $li->as_HTML;
-    my $li_txt  = $li->as_text;
-    next unless $li_html =~ m/<b>(K[A-Z]{3})<\/b>/;
-    my $ICAO = $1;
-    my ($airport_a, @locs) = map {title_filter($_)} $li->find_by_tag_name("a");
-    my ($loc) = grep {@$_==2} map {[split m/\s*,\s*/, $_]} @locs;
+for my $locations_file (glob("contrib/locations-*.html")) {
+    my $html = slurp($locations_file, {binmode=>":utf8"});
+    my $tree = new HTML::TreeBuilder;
+       $tree->parse($html);
 
-    unless( $loc ) {
-        if( $li_txt =~ $state_city_re ) {
-            $loc = [ $1, $2 ];
+    my ($ICAO_prefix) = $locations_file =~ m/([KP])\.html$/;
+    my $airport_match = $ICAO_prefix . ($ICAO_prefix eq "K" ? "[A-Z]" :
+        "[HAFOP]" # only Hawaii, and the various Alaskian IACO please
+        ) . '[A-Z]{2}';
+
+    for my $li ( $tree->find_by_tag_name("li") ) {
+        my $li_html = $li->as_HTML;
+        my $li_txt  = $li->as_text;
+
+        next unless $li_html =~ m/<b>($airport_match)<\/b>/;
+        next if $li_txt =~ m/abandoned/;
+
+        my $ICAO = $1;
+        my ($airport_a, @locs) = map {title_filter($_)} $li->find_by_tag_name("a");
+        my ($loc) = grep {@$_==2} map {[split m/\s*,\s*/, $_]} @locs;
+
+        unless( $loc ) {
+            if( $li_txt =~ $state_city_re ) {
+                $loc = [ $1, $2 ];
+
+            } elsif( $ICAO eq "PAFR" ) {
+                $airport_a = "Bryant Army Heliport - Fort Richardson";
+                $loc = [ qw(Anchorage Alaska) ];
+
+            } elsif( $ICAO eq "KNFG" ) {
+                $loc = [ qw(Oceanside California) ];
+            }
         }
 
-        elsif( $ICAO eq "KNFG" ) {
-            $loc = [ "Oceanside", "California" ];
+        if( $loc ) {
+            my ($city, $state) = @$loc;
+            my $state_country  = "$state, United States";
+            my $name           = $airport_a;
+            my $desc           = "$ICAO: $name";
+
+            $state_country = $loc->[1] if $country_states{$loc->[1]};
+
+            $res{ $state_country }{ $desc } = {
+                code    => $ICAO,
+                name    => $name,
+                'state' => $state,
+                city    => $city,
+            };
+
+        } else {
+            die "couldn't figure out: $li_txt\n$li_html\n";
         }
-    }
-
-    if( $loc ) {
-        my ($city, $state) = @$loc;
-        my $state_country  = "$state, United States";
-        my $name           = $airport_a;
-        my $desc           = "$ICAO: $name";
-
-        $state_country = $loc->[1] if $country_states{$loc->[1]};
-
-        $res{ $state_country }{ $desc } = {
-            code    => $ICAO,
-            name    => $name,
-            'state' => $state,
-            city    => $city,
-        };
-
-    } else {
-        die "couldn't figure out: $li_txt\n$li_html\n";
     }
 }
 
