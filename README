@@ -19,7 +19,7 @@
 
    Problems with METAR decoding should be reported using the form built into
    the decode page. If you think there's a problem with a particular decode,
-   select “Report Metar Decode” from the app menu on the Decode card.
+   select ***Report Metar Decode*** from the app menu on the Decode card.
 
    The entire source for this app can be found on github:
 
@@ -40,13 +40,13 @@
 
   Thanks
 
-   Jay Kiah — found a parser bug; SueB (aka poette) — requested the first
+   Jay Kiah *** found a parser bug; SueB (aka poette) *** requested the first
    Pxxx airport (Alaska, Hawaii)
 
 References
 
    Visible links
-   1. http://twitter.com/spottedkangaroo
+   1. https://voltar.org/
    2. http://github.com/jettero/noaa-metar/issues
    3. mailto:noaa-metar-feedback@voltar.org
    4. http://github.com/jettero/noaa-metar
@@ -67,9 +67,9 @@ References
 
    Here are some helpful links:
 
-     * [1]METAR on Wikipedia
-     * [2]FMH-1 METAR Handbook (html)
-     * [3]Wikihow: METAR
+     * [1]METAR on Wikipedia
+     * [2]FMH-1 METAR Handbook (html)
+     * [3]Wikihow: METAR
 
    This is the source of the data for this app.
    [4]http://weather.noaa.gov/weather/metar.shtml
@@ -82,9 +82,9 @@ References
    the definitions mean, to how to measure them. Where is the equivalent
    document for TAF? If you have information on this [5]let me know. ]
 
-     * [6]TAF on Wikipedia
-     * [7]WMU Documents on GDPS
-     * [8]Space Archive (tutorial)
+     * [6]TAF on Wikipedia
+     * [7]WMU Documents on GDPS
+     * [8]Space Archive (tutorial)
 
    There is no decoder yet, but if you'd like to turn on TAF download
    capability, create a file on your USB drive (/media/internal/) called TAF
