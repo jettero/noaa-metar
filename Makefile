@@ -53,10 +53,7 @@ contrib/locations-P.html:
 locations.js: contrib/process_locations.pl contrib/locations-K.html contrib/locations-P.html
 	./contrib/process_locations.pl
 
-sources.json: sources.json.in sources-lite.json.in envvars
-	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
-
-rEADME: app/views/About.html app/views/Help.html Makefile
+README: app/views/About.html app/views/Help.html Makefile
 	@ echo -----=: app/views/About.html  > README
 	@ elinks -dump app/views/About.html >> README
 	@ echo                              >> README
@@ -68,14 +65,21 @@ rEADME: app/views/About.html app/views/Help.html Makefile
 metartaf_subst = ssed -R -e 's/METAR(?!.*skip MTS)/TAF/g' -e 's/metar(?!.*skip MTS)/taf/g'
 
 newenvvars:
-	if [ -f envvars ]; then \
+	@ if [ -f envvars ]; then \
         set | grep ^NM_ | sort > $@; \
         m1=$$(md5sum $@); m2=$$(md5sum envvars); \
         if [ "$$m1" = "$$m2" ]; then rm $@; else mv $@ envvars; fi \
 	fi
 
 envvars:
-	set | grep ^NM_ | sort > $@
+	@ set | grep ^NM_ | sort > $@
+
+sources.json: sources.json.in sources-lite.json.in newenvvars envvars
+	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
+
+appinfo.json: appinfo.json.in newenvvars envvars
+	@ if [ -n "$$NM_LITE" ]; then sed -e s/-metar/-metar-lite/ -e 's/-METAR/-METAR Lite/' < $< > $@; echo made $@; \
+        else cp -va $< $@; fi
 
 %.json: %.json.in newenvvars envvars
 	@echo build $@

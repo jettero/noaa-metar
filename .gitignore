@@ -11,3 +11,4 @@ app/assistants/TAF.js
 *.json
 *.tar.gz
 sources.json
+appinfo.json
