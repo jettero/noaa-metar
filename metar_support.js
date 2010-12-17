@@ -12,6 +12,62 @@ function abort_all() {
     }
 }
 
+/* {{{ */ function extract_metar(airport, html) {
+    html = html.replace(/<[^>]+>/g, ""); // STFU
+
+    var m;
+    if( m = html.match(/(No METAR observation from .+? is available in our system.)/) )
+        return m[1];
+
+    var metar = "? " + airport + " ?";
+
+    var lines = html.split("\n");
+    var potential;
+    for(var i=0; i<lines.length; i++) {
+        if( lines[i].substr(0, airport.length) === airport ) {
+
+            // Everything but the airport code and the space
+            potential = lines[i].substr(airport.length + 1);
+
+            if( potential.match(/^[\sA-Z0-9\/:\/\-\$]+$/) ) {
+                metar = potential;
+                break;
+            }
+        }
+    }
+
+    return metar;
+}
+
+/*}}}*/
+/* {{{ */ function extract_taf(airport, html) {
+    html = html.replace(/[\r\n]/g, " ").replace(/ {2,}/g, " ");
+
+    var taf = "? " + airport + " ?";
+    var m;
+
+    if( m = html.match(/(No TAF from .+? is available in our system.)/) )
+        return {TAF: m[1]};
+
+    var amd = false;
+
+    if( m = html.match( new RegExp("<pre>.*?(TAF\\s+(?:\\s*AMD\\s+)?" + airport + "\\s+.+?)</pre>") ) ) {
+
+        taf = m[1].replace(/^TAF\s+/, "")
+
+        if( taf.match(/^AMD\s+/) ) {
+            taf = taf.replace(/^AMD\s+/, "");
+            amd = true;
+        }
+
+        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "");
+    }
+
+    return {TAF: taf, AMD: amd};
+}
+
+/*}}}*/
+
 // function my_error(text, calback) {{{
 function my_error(text, callback) {
     Mojo.Log.info("my_error(): " + text);
