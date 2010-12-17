@@ -68,8 +68,7 @@ function abort_all() {
 
 /*}}}*/
 
-// function my_error(text, calback) {{{
-function my_error(text, callback) {
+/* {{{ */ function my_error(text, callback) {
     Mojo.Log.info("my_error(): " + text);
 
     Mojo.Controller.showAlertDialog({
@@ -81,9 +80,9 @@ function my_error(text, callback) {
         ]
     });
 }
-// }}}
-// function get_metar(req, callback) {{{
-function get_metar(req, callback) {
+
+/*}}}*/
+/* {{{ */ function get_metar(req, callback) {
     req.worked = false;
     Mojo.Log.info("get_metar() checking for runing reqeusts: " + req.code);
 
@@ -130,9 +129,9 @@ function get_metar(req, callback) {
         }
     });
 }
-// }}}
-// function get_taf(req, callback) {{{
-function get_taf(req, callback) {
+
+/*}}}*/
+/* {{{ */ function get_taf(req, callback) {
     req.worked = false;
     Mojo.Log.info("get_taf() checking for runing reqeusts: " + req.code);
 
@@ -182,7 +181,8 @@ function get_taf(req, callback) {
         }
     });
 }
-// }}}
+
+/*}}}*/
 
 /* {{{ runtime setup */ (function(){
     var callInProgress = function(xmlhttp) {
