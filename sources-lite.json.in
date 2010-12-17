@@ -1,4 +1,5 @@
 [
+    { "source": "lite_extra.js"      },
     { "source": "metar_support.js"   },
     { "source": "stage-assistant.js" },
 
