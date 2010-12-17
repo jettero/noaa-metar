@@ -31,7 +31,7 @@ myinstall: clean
 build_date:
 	@ echo "\"$$(date)\"" > build_date.json
 
-build: locations.js README build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json
+build: sources.json locations.js README build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
@@ -53,7 +53,10 @@ contrib/locations-P.html:
 locations.js: contrib/process_locations.pl contrib/locations-K.html contrib/locations-P.html
 	./contrib/process_locations.pl
 
-README: app/views/About.html app/views/Help.html Makefile
+sources.json: sources.json.in sources-lite.json.in envvars
+	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
+
+rEADME: app/views/About.html app/views/Help.html Makefile
 	@ echo -----=: app/views/About.html  > README
 	@ elinks -dump app/views/About.html >> README
 	@ echo                              >> README
