@@ -30,6 +30,14 @@ function METARAssistant() {
 /* {{{ */ METARAssistant.prototype.setup = function() {
     Mojo.Log.info("METAR::setup()");
 
+    var listItemTemplate = "misc/METARItem";
+    if( OPT.liteMode ) {
+        Mojo.Log.info("METAR::setup() [lite mode setup]");
+        OPT.showTAF = true;
+        listItemTemplate = "misc/METARItem-notap";
+        // $$("div.icon.noaa-metar div.title").update("NOAA METAR Lite");
+    }
+
     this.menuSetup();
 
     this.controller.setupWidget('force_update', {type: Mojo.Widget.activityButton}, {label: "Force Update"} );
@@ -48,7 +56,7 @@ function METARAssistant() {
         swipeToDelete: true,
         reorderable:   true,
         listTemplate:  'misc/listcontainer',
-        itemTemplate:  'misc/METARItem',
+        itemTemplate:  listItemTemplate,
         emptyTemplate: 'misc/empty'
     };
 
