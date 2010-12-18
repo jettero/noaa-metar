@@ -36,7 +36,7 @@ myinstall: clean
 build_date:
 	@ echo "\"$$(date)\"" > build_date.json
 
-build: sources.json locations.js README build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json appinfo.json
+build: sources.json locations.js build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json appinfo.json
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
@@ -60,14 +60,6 @@ contrib/locations-P.html:
 
 locations.js: contrib/process_locations.pl contrib/locations-K.html contrib/locations-P.html
 	./contrib/process_locations.pl
-
-README: app/views/About.html app/views/Help.html Makefile
-	@ echo -----=: app/views/About.html  > README
-	@ elinks -dump app/views/About.html >> README
-	@ echo                              >> README
-	@ echo -----=: app/views/Help.html  >> README
-	@ elinks -dump app/views/Help.html  >> README
-	@ (git add README && git commit -m "updated README" README; exit 0)
 
 newenvvars:
 	@ if [ -f envvars ]; then \
