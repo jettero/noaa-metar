@@ -54,3 +54,5 @@ div.load-progress {
     left: -24px;
     margin-top: -8px;
 }
+
+.show-when-lite { display: none; }
