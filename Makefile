@@ -13,8 +13,13 @@ release: releasebuild clean
 test:
 	+ NM_LOGLEVEL=99 make --no-print-directory build
 	palm-install -d emulator *.ipk
-	$(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar\"}'"
-	$(ssh) tail -n 100 -f /var/log/messages | ./log-parse.pl $$([ -n "$$NM_LITE" ] && echo -ca)
+	if [ -n "$$NM_LITE" ]; then \
+        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar-lite\"}'"; \
+        $(ssh) tail -n 100 -f /var/log/messages | ./log-parse.pl -ca; \
+    else \
+        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar\"}'"; \
+        $(ssh) tail -n 1000 -f /var/log/messages | ./log-parse.pl; \
+    fi
 
 lc logcontinue cl continuelog:
 	$(ssh) tail -n 0 -f /var/log/messages | ./log-parse.pl -ca
@@ -81,7 +86,7 @@ sources.json: sources.json.in sources-lite.json.in newenvvars envvars
 	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
 
 appinfo.json: appinfo.json.in newenvvars envvars
-	@ if [ -n "$$NM_LITE" ]; then sed -e s/-metar/-metar-lite/ -e 's/-METAR/-METAR Lite/' < $< > $@; echo made $@; \
+	@ if [ -n "$$NM_LITE" ]; then sed -e s/-metar/-metar-lite/ < $< > $@; echo made $@; \
         else cp -va $< $@; fi
 
 %.json: %.json.in newenvvars envvars
