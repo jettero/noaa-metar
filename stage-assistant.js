@@ -93,9 +93,12 @@ StageAssistant.prototype.menuSetup = function() {
         items: [
             { label: "Help",  command: 'myshow-Help'  },
             { label: "About", command: 'myshow-About' },
-            { label: "Report Metar Decode", command: 'report-metar', disabled: true }
         ]
     };
+
+
+    if( !OPT.liteMode )
+        this.appMenuModel.items.push({ label: "Report Metar Decode", command: 'report-metar', disabled: true });
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, this.appMenuModel);
 };
