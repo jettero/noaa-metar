@@ -31,7 +31,7 @@ myinstall: clean
 build_date:
 	@ echo "\"$$(date)\"" > build_date.json
 
-build: sources.json locations.js README build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json
+build: sources.json locations.js README build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json appinfo.json
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
 	ln -sf ./ $(name) && \
         palm-package --exclude "*.tar.gz" --exclude .git --exclude cgi --exclude "*.ipk" \
