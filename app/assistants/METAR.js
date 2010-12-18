@@ -59,7 +59,7 @@ function METARAssistant() {
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listDelete,  this.rmCode.bind(this));
     Mojo.Event.listen(this.controller.get('noaa_metar'), Mojo.Event.listReorder, this.mvCode.bind(this));
 
-    if( typeof METARDecoderAssistant !== 'undefined' )
+    if( !OPT.liteMode )
         Mojo.Event.listen(this.controller.get("noaa_metar"), Mojo.Event.listTap,     this.decode.bind(this));
 
     this.loadLocations();
