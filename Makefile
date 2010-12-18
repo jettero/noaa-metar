@@ -69,18 +69,16 @@ README: app/views/About.html app/views/Help.html Makefile
 	@ elinks -dump app/views/Help.html  >> README
 	@ (git add README && git commit -m "updated README" README; exit 0)
 
-# ssed is "super sed", not a typo. It's a debian thing and gives us the -R mode.
-metartaf_subst = ssed -R -e 's/METAR(?!.*skip MTS)/TAF/g' -e 's/metar(?!.*skip MTS)/taf/g'
-
 newenvvars:
 	@ if [ -f envvars ]; then \
         set | grep ^NM_ | sort > $@; \
-        m1=$$(md5sum $@); m2=$$(md5sum envvars); \
+        m1=$$(md5sum $@ | awk '{print $$1}'); m2=$$(md5sum envvars | awk '{print $$1}'); \
         if [ "$$m1" = "$$m2" ]; then rm $@; else mv $@ envvars; fi \
 	fi
 
 envvars:
 	@ set | grep ^NM_ | sort > $@
+
 
 sources.json: sources.json.in sources-lite.json.in newenvvars envvars
 	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
@@ -92,6 +90,9 @@ appinfo.json: appinfo.json.in newenvvars envvars
 %.json: %.json.in newenvvars envvars
 	@echo build $@
 	@./JSON_preparser.pl $< > $@
+
+# ssed is "super sed", not a typo. It's a debian thing and gives us the -R mode.
+metartaf_subst = ssed -R -e 's/METAR(?!.*skip MTS)/TAF/g' -e 's/metar(?!.*skip MTS)/taf/g'
 
 app/views/TAF.html: app/views/METAR.html Makefile
 	@ $(metartaf_subst) < $< > $@
