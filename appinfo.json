@@ -1,9 +1,0 @@
-{
-	"id": "org.voltar.noaa-metar",
-	"version": "0.9.13",
-	"vendor": "voltar.org",
-	"type": "web",
-	"main": "index.html",
-	"title": "NOAA-METAR",
-	"icon": "icon.png"
-}
