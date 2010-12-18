@@ -14,7 +14,7 @@ test:
 	+ NM_LOGLEVEL=99 make --no-print-directory build
 	palm-install -d emulator *.ipk
 	if [ -n "$$NM_LITE" ]; then \
-        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar-lite\"}'"; \
+        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.metar-lite\"}'"; \
         $(ssh) tail -n 100 -f /var/log/messages | ./log-parse.pl -ca; \
     else \
         $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar\"}'"; \
