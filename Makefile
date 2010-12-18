@@ -15,11 +15,10 @@ test:
 	palm-install -d emulator *.ipk
 	if [ -n "$$NM_LITE" ]; then \
         $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.metar-lite\"}'"; \
-        $(ssh) tail -n 100 -f /var/log/messages | ./log-parse.pl -ca; \
     else \
         $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar\"}'"; \
-        $(ssh) tail -n 1000 -f /var/log/messages | ./log-parse.pl; \
     fi
+	$(ssh) tail -n 100 -f /var/log/messages | ./log-parse.pl -ca
 
 lc logcontinue cl continuelog:
 	$(ssh) tail -n 0 -f /var/log/messages | ./log-parse.pl -ca
