@@ -79,6 +79,16 @@ StageAssistant.prototype.handleCommand = function(event) {
         if( a = cmd.match(/^myshow-(.+)/) )
             Mojo.Controller.stageController.assistant.showScene(a[1]);
 
+        else if( cmd.match(/donate/) )
+            if( OPT._thisScene )
+                OPT._thisScene.controller.serviceRequest("palm://com.palm.applicationManager", {
+                    method: "open",
+                    parameters:  {
+                       id: 'com.palm.app.browser',
+                       params: { target: "https://voltar.org/ask_paul?donation-for=noaa-metar#donate-area" }
+                    }
+                });
+
         else switch( cmd ) {
             default:
                 Mojo.Log.info("StageAssistant::handleCommand(%s): unknown menu command", cmd);
@@ -91,11 +101,13 @@ StageAssistant.prototype.menuSetup = function() {
     this.appMenuModel = {
         visible: true,
         items: [
-            { label: "Help",  command: 'myshow-Help'  },
-            { label: "About", command: 'myshow-About' },
+            { label: "Donate",  command: 'donate'       },
+            { label: "Help",    command: 'myshow-Help'  },
+            { label: "About",   command: 'myshow-About' },
         ]
     };
 
+    OPT._thisScene = this;
 
     if( !OPT.liteMode )
         this.appMenuModel.items.push({ label: "Report Metar Decode", command: 'report-metar', disabled: true });
