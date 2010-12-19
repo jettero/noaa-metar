@@ -102,16 +102,16 @@ StageAssistant.prototype.menuSetup = function() {
     this.appMenuModel = {
         visible: true,
         items: [
-            { label: "Donate",  command: 'donate'       },
-            { label: "Help",    command: 'myshow-Help'  },
-            { label: "About",   command: 'myshow-About' },
+            { label: $L("Donate"),  command: 'donate'       },
+            { label: $L("Help"),    command: 'myshow-Help'  },
+            { label: $L("About"),   command: 'myshow-About' },
         ]
     };
 
     OPT._thisScene = this;
 
     if( !OPT.liteMode )
-        this.appMenuModel.items.push({ label: "Report Metar Decode", command: 'report-metar', disabled: true });
+        this.appMenuModel.items.push({ label: $L("Report METAR Decode"), command: 'report-metar', disabled: true });
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, this.appMenuModel);
 };
