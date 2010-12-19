@@ -15,7 +15,7 @@ METARDecoderAssistant.prototype.setup = function() {
     Mojo.Log.info("METARDecoderAssistant::setup() code=%s METAR=%s", this.code, this.METAR);
 
     this.menuSetup();
-    this.appMenuModel.items[2].disabled = false;
+    this.appMenuModel.items[this.appMenuModel.items.length-1].disabled = false;
     this.controller.modelChanged(this.appMenuModel);
 
     var attrs = {
