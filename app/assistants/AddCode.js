@@ -29,7 +29,7 @@ function AddCodeAssistant(args) {
 
     var ICAO_attributes = {
         // XXX: how many many of these are default?
-        hintText:         'e.g., KORD',
+        hintText:         $L('e.g., KORD'),
         textFieldName:    'ICAO',
         modelProperty:    'original',
         multiline:        false,
@@ -51,7 +51,7 @@ function AddCodeAssistant(args) {
     };
 
     this.controller.setupWidget('ICAO', ICAO_attributes, this.ICAOModel);
-    this.controller.setupWidget('manual_add', {}, {label: "Add Code"} );
+    this.controller.setupWidget('manual_add', {}, {label: $L("Add Code")} );
     Mojo.Event.listen(this.controller.get("manual_add"), Mojo.Event.tap, this.addCode.bind(this));
 };
 
