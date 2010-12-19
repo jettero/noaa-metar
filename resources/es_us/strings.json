@@ -1,6 +1,10 @@
 {
-    "Donate": "Dona",
-    "Help":   "Ayuda",
-    "About":  "Acerca",
-    "Report METAR Decode": "Decodificador Problema"
+    "Donate":              "Dona",
+    "Help":                "Ayuda",
+    "About":               "Acerca",
+    "Report METAR Decode": "Decodificador Problema",
+    "Add NOAA METAR":      "Add NOAA METAR",
+    "Add Code":            "Agregar Código",
+    "ICAO Code":           "Código ICAO",
+    "e.g., KORD":          "por ejemplo KORD",
 }
