@@ -10,6 +10,12 @@ function StageAssistant() {
 
     OPT = Mojo.loadJSONFile(Mojo.appPath + "runtime_options.json");
 
+    if( OPT.overrideLanguage ) {
+        var p = OPT.overrideLanguage.split("_");
+        if( p.length === 2 && OPT.overrideLanguage.length === 5 )
+            Mojo.Locale.set(OPT.overrideLanguage, p[1]);
+    }
+
     try {
         if( palmGetResource("/media/internal/TAF") )
             OPT.showTAF = true;

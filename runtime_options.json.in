@@ -1,5 +1,6 @@
 {
-    "liteMode":     %LITE,false%,
-    "showTAF":      %SHOW_TAF,false%,
-    "debugDecoder": %DEBUG_DECODER,false%
+    "overrideLanguage": %LANG,false%,
+    "liteMode":         %LITE,false%,
+    "showTAF":          %SHOW_TAF,false%,
+    "debugDecoder":     %DEBUG_DECODER,false%
 }
