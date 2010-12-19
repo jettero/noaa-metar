@@ -9,7 +9,11 @@ buildliterelease litereleasebuild:
 buildrelease releasebuild:
 	+ env -i make --no-print-directory build
 
-release: releasebuild clean
+release: clean
+	rm -rf /tmp/_build_ipk && mkdir -p /tmp/_build_ipk
+	+ make --no-print-directory     releasebuild && cp -va *.ipk /tmp/_build_ipk
+	+ make --no-print-directory litereleasebuild && cp -va *.ipk /tmp/_build_ipk
+	cp -va /tmp/_build_ipk/*.ipk .
 	git fetch github gh-pages:gh-pages
 	x=$$(ls -1 *.ipk); mv -v $$x /tmp; git checkout gh-pages; mv -v /tmp/$$x .; git add *.ipk; git clean -dfx
 
