@@ -3,12 +3,18 @@ ssh=ssh -p 2222 -l root localhost
 
 default: test
 
+buildliterelease litereleasebuild:
+	+ env -i make --no-print-directory buildlite
+
 buildrelease releasebuild:
 	+ env -i make --no-print-directory build
 
 release: releasebuild clean
 	git fetch github gh-pages:gh-pages
 	x=$$(ls -1 *.ipk); mv -v $$x /tmp; git checkout gh-pages; mv -v /tmp/$$x .; git add *.ipk; git clean -dfx
+
+testlite:
+	+ NM_LITE=1 make --no-print-directory test
 
 test:
 	+ NM_LOGLEVEL=99 make --no-print-directory build
@@ -34,6 +40,9 @@ myinstall: clean
 
 build_date:
 	@ echo "\"$$(date)\"" > build_date.json
+
+buildlite:
+	+ NM_LITE=1 make --no-print-directory build
 
 build: sources.json locations.js build_date app/assistants/TAF.js app/views/TAF.html framework_config.json runtime_options.json appinfo.json
 	@-rm -vf *.ipk $(name) *.tar.gz ipkgtmp*
