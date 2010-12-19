@@ -18,7 +18,7 @@ AddCode2Assistant.prototype.setup = function() {
         emptyTemplate: 'misc/empty'
     };
 
-    this.locationsModel = {listTitle: 'Choose City', items: []};
+    this.locationsModel = {listTitle: $L('Choose City'), items: []};
 
     var cities = $H(location_data[this.state]).keys().sort(function(a,b) {
         if(a<b) return -1; if (a>b) return 1; return 0; });
