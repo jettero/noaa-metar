@@ -1,9 +1,9 @@
 {
-    "Donate":                "",
-    "Help":                  "",
-    "About":                 "",
-    "Report Decode Problem": "",
-    "Add Code":              "",
-    "e.g., KORD":            "",
-    "Choose City":           ""
+    "Donate":                "Donare",
+    "Help":                  "Aiuto",
+    "About":                 "Informazioni su",
+    "Report Decode Problem": "Segnala Decode Problema",
+    "Add Code":              "Aggiungere codice",
+    "e.g., KORD":            "ad esempio, KORD",
+    "Choose City":           "Scegli Città"
 }
