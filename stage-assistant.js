@@ -117,7 +117,7 @@ StageAssistant.prototype.menuSetup = function() {
     OPT._thisScene = this;
 
     if( !OPT.liteMode )
-        this.appMenuModel.items.push({ label: $L("Report METAR Decode"), command: 'report-metar', disabled: true });
+        this.appMenuModel.items.push({ label: $L("Report Decode Problem"), command: 'report-metar', disabled: true });
 
     this.controller.setupWidget(Mojo.Menu.appMenu, {omitDefaultItems: true}, this.appMenuModel);
 };
