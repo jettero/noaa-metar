@@ -85,7 +85,8 @@ StageAssistant.prototype.handleCommand = function(event) {
                     method: "open",
                     parameters:  {
                        id: 'com.palm.app.browser',
-                       params: { target: "https://voltar.org/ask_paul?donation-for=noaa-metar#donate-area" }
+                       params: { target: "https://voltar.org/ask_paul?donation-for="
+                           + (OPT.liteMode ? "noaa-metar-lite" : "noaa-metar") + "#donate-area" }
                     }
                 });
 
