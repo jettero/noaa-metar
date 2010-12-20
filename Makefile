@@ -54,7 +54,7 @@ build: sources.json locations.js build_date app/assistants/TAF.js app/views/TAF.
                      --exclude $(name) --exclude contrib --exclude Makefile \
                      --exclude log-parse.pl --exclude do-metar.pl \
                      --exclude framework_config.json.in --exclude runtime_options.json.in \
-                     --exclude meta --exclude metar \
+                     --exclude meta --exclude metar --exclude CheckDocs \
                      --exclude prove --exclude t-real-metar --exclude t \
           $$([ -z "$$NM_LITE" ] && echo --exclude resources ) \
           $$([ -n "$$NM_LITE" ] && echo --exclude metar.js --exclude locations.js ) \
