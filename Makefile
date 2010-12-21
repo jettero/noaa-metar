@@ -23,7 +23,7 @@ test:
 	+ NM_LOGLEVEL=99 make --no-print-directory build
 	palm-install -d emulator *.ipk
 	if [ -n "$$NM_LITE" ]; then \
-        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.metar-lite\"}'"; \
+        $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar-lite\"}'"; \
     else \
         $(ssh) luna-send -n 1 palm://com.palm.applicationManager/launch "'{\"id\":\"org.voltar.noaa-metar\"}'"; \
     fi
@@ -88,7 +88,7 @@ sources.json: sources.json.in sources-lite.json.in newenvvars envvars
 	@ if [ -n "$$NM_LITE" ]; then cp -va sources-lite.json.in $@; else cp -va sources.json.in $@; fi
 
 appinfo.json: appinfo.json.in newenvvars envvars
-	@ if [ -n "$$NM_LITE" ]; then sed -e s/noaa-metar/metar-lite/ -e 's/NOAA METAR/METAR Lite/' < $< > $@; echo made $@; \
+	@ if [ -n "$$NM_LITE" ]; then sed -e s/noaa-metar/noaa-metar-lite/ -e 's/NOAA METAR/METAR Lite/' < $< > $@; echo made $@; \
         else cp -va $< $@; fi
 
 %.json: %.json.in newenvvars envvars
