@@ -483,21 +483,24 @@
                 }
             }
 
-            else if( parts = key.match(/^A(3|\d{2})(\d{1,3})?$/) ) {
+            else if( parts = key.match(/^A(\d{2})(\d{1,3})?$/) ) {
                 // NOTE: technically this should always be A\d{2}\d{2}, but
                 // occasionally some automated stations produce (eg) A298 for
                 // 29.80 sometimes we even get 29999 too I'm even seeing A3
                 // from time to time... A2 would never be this, but A3000 might
                 // turn to A3 on buggy gear, so we allow A3, but not A2.
 
-                if( !parts[2] )
-                    parts[2] = "0"; // pfft, I see A30 and things from time to time, it's clear to me they mean inHg
+                parts.shift();
+                res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
+                res.txt = "set altimeter to " + res.altimeter_setting;
+            }
 
+            else if( parts = key.match(/^A(29|30?)$/) ) {
                 if( parts[1].length < 2 )
                     parts[1] += "0";
 
-                parts.shift();
-                res.altimeter_setting = my_parsefloat( parts.join("."), "inHg" );
+                // You do see this sometimes...
+                res.altimeter_setting = my_parsefloat( parts[1], "inHg" );
                 res.txt = "set altimeter to " + res.altimeter_setting;
             }
 
