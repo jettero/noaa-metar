@@ -142,7 +142,7 @@
         return _tmp.join("\n");
     };
 
-    var date_ob;
+    var date_ob, other_date_ob;
 
     var p2s = function() {
         if( this.length === 1 )
@@ -232,17 +232,51 @@
 
                 date_ob = new Date();
 
-                tmp.m = date_ob.getUTCMonth();
-                if( tmp.d < date_ob.getUTCDate() ) {
-                    tmp.m ++; // if the zulu date is less than the current date, it's probably next month
-                    if( tmp.m>12 )
-                        tmp.m = 1; // also rollover to january
-                }
+                tmp.m = date_ob.getUTCMonth(); // 0 - 11
+                tmp.y = date_ob.getUTCFullYear();
 
-                date_ob.setUTCDate(tmp.d);
-                date_ob.setUTCMonth(tmp.m);
+                date_ob.setUTCDate(tmp.d);  // 1 - 31
+                date_ob.setUTCMonth(tmp.m); // 0 - 11
                 date_ob.setUTCHours(tmp.H);
                 date_ob.setUTCMinutes(tmp.M);
+                date_ob.setUTCFullYear(tmp.y);
+
+                tmp.d = parseInt(tmp.d, 10);
+
+                if( OPT.debugDecoder )
+                    Mojo.Log.info("[pre]  tmp: {d:" + tmp.d + typeof tmp.d
+                                           + ", m:" + tmp.m + typeof tmp.m
+                                           + ", y:" + tmp.y + typeof tmp.y + "}");
+
+                tmp.m ++;
+                if( tmp.m > 11 ) {
+                    tmp.m = 0;
+                    tmp.y ++;
+                }
+
+                if( OPT.debugDecoder )
+                    Mojo.Log.info("[post] tmp: {d:" + tmp.d + typeof tmp.d
+                                           + ", m:" + tmp.m + typeof tmp.m
+                                           + ", y:" + tmp.y + typeof tmp.y + "}");
+
+                other_date_ob = new Date();
+                other_date_ob.setUTCDate(tmp.d);  // 1 - 31
+                other_date_ob.setUTCMonth(tmp.m); // 0 - 11
+                other_date_ob.setUTCHours(tmp.H);
+                other_date_ob.setUTCMinutes(tmp.M);
+                other_date_ob.setUTCFullYear(tmp.y);
+
+                tmp  = (new Date()).getTime()/1000;
+                tmp2 = Math.abs(tmp - date_ob.getTime()/1000);
+                tmp3 = Math.abs(tmp - other_date_ob.getTime()/1000);
+
+                if( OPT.debugDecoder )
+                    Mojo.Log.info("date compare: %s:dt-%d vs %s:dt-%d",
+                        date_ob.toLocaleString(), tmp2,
+                        other_date_ob.toLocaleString(), tmp3);
+
+                if( tmp3 < tmp2 )
+                    date_ob = other_date_ob;
 
                 res.date_ob = date_ob;
                 res.txt = date_ob.toLocaleString().replace(/\b(\d{1,2}:\d{2}):\d{2}/, "$1");
