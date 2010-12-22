@@ -1,5 +1,7 @@
 /*jslint white: false, onevar: false, laxbreak: true, maxerr: 500000
 */
+/*global Mojo OPT
+*/
 
 /* {{{ */ var PDB = { // Phenomena text DataBase
 
@@ -129,7 +131,7 @@
     var ret = [];
 
     if( metar.match(/No METAR.*our system/) )
-        return [{key: metar, txt: "(this is not a METAR report)"}]
+        return [{key: metar, txt: "(this is not a METAR report)"}];
 
     ret.toString = function() {
         var _tmp = [];
@@ -193,7 +195,7 @@
             msplit[i] = msplit[i].replace(/-/g, "");
     }
 
-    max_loop = 1000;
+    var max_loop = 1000;
     while(msplit.length) {
         max_loop --;
 
