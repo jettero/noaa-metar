@@ -6,6 +6,17 @@ use File::Slurp qw(write_file slurp);
 use JSON qw(to_json);
 use HTML::TreeBuilder;
 
+my %manual = (
+    "Minnesota, United States" => {
+        "KSGS: South St. Paul Municipal, Fleming Field" => {
+            city  => 'South St. Paul',
+            name  => "South St. Paul Municipal, Fleming Field",
+            state => "Minnesota",
+            code  => "KSGS",
+        },
+    },
+);
+
 =over
 
 =item the goal looks like this:
