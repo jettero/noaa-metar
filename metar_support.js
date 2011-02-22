@@ -13,7 +13,6 @@ function abort_all() {
 }
 
 /* {{{ */ function extract_metar(airport, html) {
-    var m;
 
     /*
     <P>The observation is:</P>
@@ -45,20 +44,15 @@ function abort_all() {
 
     Mojo.Log.info("Trying to find METAR in " + html.length + " bytes of HTML");
 
+    var m;
+
     if( m = html.match(/The observation is:(?:.|[\r\n\s])+<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)<\/FONT>/) ) {
         Mojo.Log.info("Got something(1): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
     }
 
-    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<pre>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)<\/pre>/) ) {
+    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<pre>(TAF(?:.|[\r\n\s])+?)<\/pre>/) ) {
         Mojo.Log.info("Got something(2): " + m[1]);
-        return m[1].replace(/[\r\n\s]+/, " ");
-    }
-
-    Mojo.Log.info("Not found so far, trying more generic locator...");
-
-    if( m = html.match(/>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)</) ) {
-        Mojo.Log.info("Got something(3): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
     }
 
