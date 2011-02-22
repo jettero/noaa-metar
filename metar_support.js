@@ -13,13 +13,65 @@ function abort_all() {
 }
 
 /* {{{ */ function extract_metar(airport, html) {
+    var m;
+
+    /*
+    <P>The observation is:</P>
+    </font>
+
+    <font face="courier" size = "5">
+
+    </font>
+    <hr>2011/02/21 20:53
+    KAZO 212053Z 3/4SM -SN OVC010 A2985 RMK AO2 SLPNO 6//// 53006 $
+
+    </FONT></TT></P>
+    </td>
+    */
+
+    /*
+    <P>The observation is:</P>
+    </font>
+    <font face="courier" size = "5">
+    <pre>TAF
+          AMD KAZO 211856Z 2119/2218 06012G22KT 3SM -SN BR OVC011
+          TEMPO 2119/2123 3/4SM -SN BR OVC008
+         FM220300 07010KT 4SM -SN BR OVC015
+         FM221400 07010G18KT P6SM SCT035
+
+    </pre>
+    </font>
+    */
+
+    Mojo.Log.info("Trying to find METAR in " + html.length + " bytes of HTML");
+
+    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)<\/FONT>/) ) {
+        Mojo.Log.info("Got something(1): " + m[1]);
+        return m[1].replace(/[\r\n\s]+/, " ");
+    }
+
+    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<pre>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)<\/pre>/) ) {
+        Mojo.Log.info("Got something(2): " + m[1]);
+        return m[1].replace(/[\r\n\s]+/, " ");
+    }
+
+    Mojo.Log.info("Not found so far, trying more generic locator...");
+
+    if( m = html.match(/>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)</) ) {
+        Mojo.Log.info("Got something(3): " + m[1]);
+        return m[1].replace(/[\r\n\s]+/, " ");
+    }
+
+    Mojo.Log.info("Not found so far, trying to find METAR using older techniques");
+
     html = html.replace(/<[^>]+>/g, ""); // STFU
 
-    var m;
-    if( m = html.match(/(No METAR observation from .+? is available in our system.)/) )
+    if( m = html.match(/(No METAR observation from .+? is available in our system.)/) ) {
+        Mojo.Log.info("Found explicit DB miss: " + m[1]);
         return m[1];
+    }
 
-    var metar = "? " + airport + " ?";
+    var metar = "Unable to locate METAR for " + airport + " on NOAA webpage page.";
 
     var lines = html.split("\n");
     var potential;
