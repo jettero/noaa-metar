@@ -28,20 +28,6 @@ function abort_all() {
     </td>
     */
 
-    /*
-    <P>The observation is:</P>
-    </font>
-    <font face="courier" size = "5">
-    <pre>TAF
-          AMD KAZO 211856Z 2119/2218 06012G22KT 3SM -SN BR OVC011
-          TEMPO 2119/2123 3/4SM -SN BR OVC008
-         FM220300 07010KT 4SM -SN BR OVC015
-         FM221400 07010G18KT P6SM SCT035
-
-    </pre>
-    </font>
-    */
-
     html = html.replace(/[\r\n\s]+/g, " ");
 
     Mojo.Log.info("Trying to find METAR in " + html.length + " bytes of HTML");
@@ -50,11 +36,6 @@ function abort_all() {
 
     if( m = html.match(/The observation is:.+?<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}(.+?)<\/FONT>/) ) {
         Mojo.Log.info("Got something(1): " + m[1]);
-        return m[1].replace(/[\r\n\s]+/, " ");
-    }
-
-    if( m = html.match(/The observation is:.+<pre>(TAF.+?)<\/pre>/) ) {
-        Mojo.Log.info("Got something(2): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
     }
 
@@ -91,7 +72,21 @@ function abort_all() {
 /* {{{ */ function extract_taf(airport, html) {
     html = html.replace(/[\r\n]/g, " ").replace(/ {2,}/g, " ");
 
-    var taf = "? " + airport + " ?";
+    /*
+    <P>The observation is:</P>
+    </font>
+    <font face="courier" size = "5">
+    <pre>TAF
+          AMD KAZO 211856Z 2119/2218 06012G22KT 3SM -SN BR OVC011
+          TEMPO 2119/2123 3/4SM -SN BR OVC008
+         FM220300 07010KT 4SM -SN BR OVC015
+         FM221400 07010G18KT P6SM SCT035
+
+    </pre>
+    </font>
+    */
+
+    var taf = "Unable to locate TAF for " + airport + " on NOAA webpage page.";
     var m;
 
     if( m = html.match(/(No TAF from .+? is available in our system.)/) )
