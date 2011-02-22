@@ -159,7 +159,7 @@ function METARAssistant() {
         this.METARModel.items[res.index].preMETAR      = res.preMETAR;
         this.METARModel.items[res.index].METAR         = res.METAR;
         this.METARModel.items[res.index].fetched_metar = this.now();
-        this.METARModel.items[res.index].metar_fails    = 0;
+        this.METARModel.items[res.index].metar_fails   = 0;
         this.saveLocations();
 
         if( !res.cached ) {
