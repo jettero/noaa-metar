@@ -236,6 +236,8 @@ function METARAssistant() {
     Mojo.Log.info("METAR::dbRecv(%s)", Object.toJSON(_in));
     var items = $A(_in ? _in : []);
 
+    items.each(function(i){ i.metar_fails = i.taf_fails = 0 }); // SKIP MTS
+
     this.METARModel.items = items;
     this.controller.modelChanged(this.METARModel);
     this.updateTimer();
