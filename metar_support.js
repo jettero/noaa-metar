@@ -105,7 +105,7 @@ function abort_all() {
 
     if( m = html.match( new RegExp("<pre>.*?(TAF\\s+(?:\\s*AMD\\s+)?" + airport + "\\s+.+?)</pre>") ) ) {
 
-        taf = m[1].replace(/^TAF\s+/, "")
+        taf = m[1].replace(/^TAF\s+/, "");
 
         if( taf.match(/^AMD\s+/) ) {
             taf = taf.replace(/^AMD\s+/, "");
