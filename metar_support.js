@@ -42,16 +42,18 @@ function abort_all() {
     </font>
     */
 
+    html = html.replace(/[\r\n\s]+/g, " ");
+
     Mojo.Log.info("Trying to find METAR in " + html.length + " bytes of HTML");
 
     var m;
 
-    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}((?:.|[\r\n\s])+?)<\/FONT>/) ) {
+    if( m = html.match(/The observation is:.+?<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}(.+?)<\/FONT>/) ) {
         Mojo.Log.info("Got something(1): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
     }
 
-    if( m = html.match(/The observation is:(?:.|[\r\n\s])+<pre>(TAF(?:.|[\r\n\s])+?)<\/pre>/) ) {
+    if( m = html.match(/The observation is:.+<pre>(TAF.+?)<\/pre>/) ) {
         Mojo.Log.info("Got something(2): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
     }
@@ -150,7 +152,13 @@ function abort_all() {
         onSuccess: function(transport) {
             if( transport.status === 200 ) {
                 req.worked = true;
-                req.METAR  = extract_metar(req.code, transport.responseText);
+
+                try {
+                    req.METAR  = extract_metar(req.code, transport.responseText);
+
+                } catch(e) {
+                    Mojo.Log.error("caught error during extract: " + e);
+                }
 
                 Mojo.Log.info("fetched fresh METAR(" + req.code + "): ", req.METAR);
                 callback(req);
