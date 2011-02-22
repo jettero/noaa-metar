@@ -34,6 +34,7 @@ function abort_all() {
 
     var m;
 
+    // TODO: could possibly make this better by embedding airport code like TAF below
     if( m = html.match(/The observation is:.+?<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}(.+?)<\/FONT>/) ) {
         Mojo.Log.info("Got something(1): " + m[1]);
         return m[1].replace(/[\r\n\s]+/, " ");
