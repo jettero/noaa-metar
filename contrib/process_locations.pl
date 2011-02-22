@@ -122,5 +122,11 @@ for my $locations_file (glob("contrib/locations-*.html")) {
     }
 }
 
+for my $k (keys %manual) {
+    for my $l (keys %{ $manual{$k} }) {
+        $res{$k}{$l} = $manual{$k}{$l};
+    }
+}
+
 my $js = to_json(\%res, {pretty=>1});
 write_file( "locations.js" => "var location_data = $js;" );

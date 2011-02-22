@@ -2592,6 +2592,12 @@ var location_data = {
          "state" : "Minnesota",
          "code" : "KFRM"
       },
+      "KSGS: South St. Paul Municipal, Fleming Field" : {
+         "city" : "South St. Paul",
+         "name" : "South St. Paul Municipal, Fleming Field",
+         "code" : "KSGS",
+         "state" : "Minnesota"
+      },
       "KFCM: Flying Cloud Airport" : {
          "city" : "Minneapolis",
          "name" : "Flying Cloud Airport",
