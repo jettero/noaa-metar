@@ -821,7 +821,7 @@
                 res.phenomena_begin_end = [];
 
                 for(i=0; i<tmp.length; i++) {
-                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
+                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)([BE](\d{2})(\d{2})?)?([BE](\d{2})(\d{2})?)?/);
                     //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
                     //SHRAB0107E07,SHRA,RA,B0107,01 ,07,E07,  07,
                     //SHRAB07E0107,SHRA,RA,B07  ,07 ,  ,E0107,01,07
@@ -831,10 +831,10 @@
                     res.phenomena_begin_end.push(tmp3 = { phenomena: decode_metar(parts[1]) });
 
                     if( parts[3] )
-                        tmp3.begin = my_parse_hhmm(parts[4], parts[5]);
+                        tmp3[parts[3].match(/^B/) ? "begin" : "end"] = my_parse_hhmm(parts[4], parts[5]);
 
                     if( parts[6] )
-                        tmp3.end = my_parse_hhmm(parts[7], parts[8]);
+                        tmp3[parts[6].match(/^B/) ? "begin" : "end"] = my_parse_hhmm(parts[7], parts[8]);
 
                     tmp2.push(
                         tmp3.phenomena[0].txt
