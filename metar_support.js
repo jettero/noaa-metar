@@ -70,7 +70,7 @@ function abort_all() {
 
 /*}}}*/
 /* {{{ */ function extract_taf(airport, html) {
-    html = html.replace(/[\r\n]/g, " ␤ ").replace(/ {2,}/g, " ");
+    html = html.replace(/	/g, " ").replace(/[ 	]{2,}/g, " ").replace(/[\r\n]+/g, "	");
 
     /*
     <P>The observation is:</P>
@@ -103,7 +103,7 @@ function abort_all() {
             amd = true;
         }
 
-        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "").replace(/[\s⏎␤↵]$/, "");
+        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "").replace(/^\s+/, "").replace(/\s+$/, "").replace(/	/g, " ␤ ");
     }
 
     return {TAF: taf, AMD: amd};
