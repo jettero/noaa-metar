@@ -5,7 +5,7 @@ use Tie::IxHash;
 use t::test_metar;
 
 tie my %metar, 'Tie::IxHash', (
-    '150053Z'   => qr/(2010.*14|14.*2010)/, # this is hard to test since it varies from locale to locale
+    '150053Z'   => qr/(20\d{2}.*14|14.*20\d{2})/, # this is hard to test since it varies from locale to locale
 
     RMK  => qr/remarks/,
 
