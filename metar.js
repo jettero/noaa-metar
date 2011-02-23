@@ -813,15 +813,15 @@
                 res.txt = res.precipitation[0]===0
                         ? "no hourly precipitation" : "hourly precipitation is " + res.precipitation;
 
-            } else if( key.match(/^((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
+            } else if( key.match(/^((UP|MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+)+$/) ) {
                 // NOTE: this is evil ... TSB0159E30, SHRAB05E30SHSNB20E55, RAB05E30SNB20E55, etc ... are all legal
-                tmp = key.match(/(MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+/g);
+                tmp = key.match(/(UP|MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+(B\d{2,4}|E\d{2,4})+/g);
                 tmp2 = [];
 
                 res.phenomena_begin_end = [];
 
                 for(i=0; i<tmp.length; i++) {
-                    parts = tmp[i].match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)([BE](\d{2})(\d{2})?)?([BE](\d{2})(\d{2})?)?/);
+                    parts = tmp[i].match(/((UP|MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)([BE](\d{2})(\d{2})?)?([BE](\d{2})(\d{2})?)?/);
                     //js> "SHRAB0107E07".match(/((MI|PR|BC|DR|BL|TS|FZ|SH|TS|DZ|RA|SN|SG|IC|PL|GR|GS)+)(B(\d{2})(\d{2})?)?(E(\d{2})(\d{2})?)?/);
                     //SHRAB0107E07,SHRA,RA,B0107,01 ,07,E07,  07,
                     //SHRAB07E0107,SHRA,RA,B07  ,07 ,  ,E0107,01,07
@@ -844,7 +844,7 @@
                 }
 
                 if( tmp2.length ) {
-                    tmp = tmp2.shift();
+                    tmp = tmp2.pop();
 
                     res.txt = tmp2.join(tmp2.join(" ").match(/,/) ? "; " : ", ");
                     res.txt = res.txt ? [res.txt, tmp].join(" and ") : tmp;
