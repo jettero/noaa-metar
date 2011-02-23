@@ -433,6 +433,11 @@
                 res.txt = "clear skies, visibility perfect, no detectable weather events";
             }
 
+            else if( key === "NOSIG" ) {
+                // NOTE: WMO, not FMH-1
+                res.txt = "no significant changes expected"
+            }
+
             else if( key === "SKC" ) {
                 res.automated = false;
                 res.clear_sky = true;
