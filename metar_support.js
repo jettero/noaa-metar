@@ -34,10 +34,9 @@ function abort_all() {
 
     var m;
 
-    // TODO: could possibly make this better by embedding airport code like TAF below
-    if( m = html.match(/The observation is:.+?<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}(.+?)<\/FONT>/) ) {
+    if( (m = html.match(/The observation is:.+?<hr>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}(.+?)<\/FONT>/)) && m[1].match(new RegExp(airport)) ) {
         Mojo.Log.info("Got something(1): " + m[1]);
-        return m[1].replace(/[\r\n\s]+/, " ");
+        return m[1].replace(/[\r\n\s]+/, " ").replace( new RegExp("^\\s*" + airport + "\\s*"), "" ).replace(/\s+$/, "");
     }
 
     Mojo.Log.info("Not found so far, trying to find METAR using older techniques");
