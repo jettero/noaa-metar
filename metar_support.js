@@ -103,7 +103,7 @@ function abort_all() {
             amd = true;
         }
 
-        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "");
+        taf = taf.replace(new RegExp("^" + airport + "\\s+"), "").replace(/[\s⏎␤↵]$/, "");
     }
 
     return {TAF: taf, AMD: amd};
