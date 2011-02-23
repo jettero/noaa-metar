@@ -70,7 +70,7 @@ function abort_all() {
 
 /*}}}*/
 /* {{{ */ function extract_taf(airport, html) {
-    html = html.replace(/[\r\n]/g, " ").replace(/ {2,}/g, " ");
+    html = html.replace(/[\r\n]/g, " ␤ ").replace(/ {2,}/g, " ");
 
     /*
     <P>The observation is:</P>
