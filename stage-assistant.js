@@ -86,15 +86,14 @@ StageAssistant.prototype.handleCommand = function(event) {
             Mojo.Controller.stageController.assistant.showScene(a[1]);
 
         else if( cmd.match(/donate/) )
-            if( OPT._thisScene )
-                OPT._thisScene.controller.serviceRequest("palm://com.palm.applicationManager", {
-                    method: "open",
-                    parameters:  {
-                       id: 'com.palm.app.browser',
-                       params: { target: "https://voltar.org/ask_paul?donation-for="
-                           + (OPT.liteMode ? "noaa-metar-lite" : "noaa-metar") + "#donate-area" }
-                    }
-                });
+            Mojo.Controller.stageController.activeScene().serviceRequest("palm://com.palm.applicationManager", {
+                method: "open",
+                parameters:  {
+                   id: 'com.palm.app.browser',
+                   params: { target: "https://voltar.org/ask_paul?donation-for="
+                       + (OPT.liteMode ? "noaa-metar-lite" : "noaa-metar") + "#donate-area" }
+                }
+            });
 
         else switch( cmd ) {
             default:
@@ -113,8 +112,6 @@ StageAssistant.prototype.menuSetup = function() {
             { label: $L("About"),   command: 'myshow-About' },
         ]
     };
-
-    OPT._thisScene = this;
 
     if( !OPT.liteMode )
         this.appMenuModel.items.push({ label: $L("Report Decode Problem"), command: 'report-metar', disabled: true });
