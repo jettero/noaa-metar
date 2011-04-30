@@ -4,6 +4,7 @@
 */
 
 var CHANGELOG = [
+    [ '2011-04-30', '0.9.26', "I'm not actually qualified to translate things to other langauges, so I'm not going to do it anymore." ],
     [ '2011-04-30', '0.9.26', "Added this changelog." ]
 ];
 
