@@ -85,16 +85,6 @@ StageAssistant.prototype.handleCommand = function(event) {
         if( a = cmd.match(/^myshow-(.+)/) )
             Mojo.Controller.stageController.assistant.showScene(a[1]);
 
-        else if( cmd.match(/donate/) )
-            Mojo.Controller.stageController.activeScene().serviceRequest("palm://com.palm.applicationManager", {
-                method: "open",
-                parameters:  {
-                   id: 'com.palm.app.browser',
-                   params: { target: "https://voltar.org/ask_paul?donation-for="
-                       + (OPT.liteMode ? "noaa-metar-lite" : "noaa-metar") + "#donate-area" }
-                }
-            });
-
         else switch( cmd ) {
             default:
                 Mojo.Log.info("StageAssistant::handleCommand(%s): unknown menu command", cmd);
@@ -107,9 +97,9 @@ StageAssistant.prototype.menuSetup = function() {
     this.appMenuModel = {
         visible: true,
         items: [
-            { label: $L("Donate"),  command: 'donate'       },
-            { label: $L("Help"),    command: 'myshow-Help'  },
-            { label: $L("About"),   command: 'myshow-About' },
+            { label: $L("Help"),      command: 'myshow-Help'      },
+            { label: $L("About"),     command: 'myshow-About'     },
+            { label: $L("ChangeLog"), command: 'myshow-ChangeLog' },
         ]
     };
 

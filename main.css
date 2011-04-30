@@ -56,3 +56,5 @@ div.load-progress {
 }
 
 .show-when-lite { display: none; }
+
+div.changelog-line { text-indent: -2em; margin-left: 2em; }
