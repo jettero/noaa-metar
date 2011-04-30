@@ -53,6 +53,9 @@ StageAssistant.prototype.setup = function() {
 
     this.controller.assistant.showScene('METAR');
 
+    if( CHANGELOG_COOKIE.get() !== CHANGELOG_KEY )
+        this.controller.assistant.showScene("ChangeLog");
+
     this.controller.lockOrientation = function() {
         this.setWindowOrientation(this.getWindowOrientation());
     };
