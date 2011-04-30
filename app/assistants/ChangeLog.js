@@ -20,8 +20,8 @@ ChangeLogAssistant.prototype.setup = function() {
 
     var clv = CHANGELOG_COOKIE.get();
 
-    this.OKModel          = { label: "OK, I read this.", command: CHANGELOG_KEY };
-    this.DoneModel        = { label: "Done",             command: CHANGELOG_KEY };
+    this.OKModel          = { label: $L("OK, I read this."), command: CHANGELOG_KEY };
+    this.DoneModel        = { label: $L("Done"),             command: CHANGELOG_KEY };
     this.commandMenuModel = { label: 'ChangeLog Commands', items: [ ] };
 
     if( clv === CHANGELOG_KEY ) {
